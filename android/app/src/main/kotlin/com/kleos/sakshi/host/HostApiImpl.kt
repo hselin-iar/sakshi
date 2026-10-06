@@ -1,0 +1,54 @@
+package com.kleos.sakshi.host
+
+import com.kleos.sakshi.host.gen.*
+
+/** T1.2: every method returns a canned, valid DTO or is a no-op. T1.9 wires the engine and mappers. */
+class HostApiImpl : SakshiHostApi {
+    // setup
+    override suspend fun getSetupState(): SetupStateDto = SetupStateDto(
+        usageAccessGranted = false, notificationAccessGranted = false, restrictedSettingsSuspected = false,
+        workSetSaved = false, studyHoursSaved = false, batteryHelperShown = false, weeklyNoteEnabled = false,
+        gentleMode = false, isDemo = false,
+        health = CollectionHealthDto(workerRuns7d = 0, paused = false))
+    override suspend fun openUsageAccessSettings() {}
+    override suspend fun openNotificationAccessSettings() {}
+    override suspend fun openAppInfoForRestrictedSettings() {}
+    override suspend fun openBatterySettings() {}
+    override suspend fun markBatteryHelperShown() {}
+    override suspend fun listLauncherApps(): List<AppDto> = emptyList()
+    override suspend fun saveWorkSet(entries: List<WorkSetEntryDto>): SaveResultDto = SaveResultDto(ok = true, savedCount = 0)
+    override suspend fun saveStudyHours(hours: StudyHoursDto) {}
+    override suspend fun setGentleMode(on: Boolean) {}
+    override suspend fun setUnder18(on: Boolean) {}
+    override suspend fun setWeeklyNote(enabled: Boolean): Boolean = false
+
+    // read
+    override suspend fun syncNow(): SyncStatusDto = SyncStatusDto(state = SyncStateDto.OK)
+    override suspend fun getMirror(weekStartEpochMs: Long?): MirrorDto = MirrorDto(
+        isDemo = false, provisional = true, gentle = false, weekStartEpochMs = weekStartEpochMs ?: 0L, weekLabel = "",
+        dataState = DataStateDto.LEARNING_BASELINE, dataFlags = emptyList(), dataLines = emptyList(), headline = "",
+        patterns = emptyList(), nothingToFix = false, goalTap = GoalTapDto(offered = false), reanchorOffered = false)
+    override suspend fun listMirrorWeeks(): List<WeekRefDto> = emptyList()
+    override suspend fun getTodaySoFar(): TodayDto = TodayDto(
+        isDemo = false, windows = emptyList(), line = "", dataFlags = emptyList(), dataLines = emptyList())
+    override suspend fun getWhatISee(): WhatISeeDto = WhatISeeDto(
+        isDemo = false, usageAccessGranted = false, notificationAccessGranted = false, rawEventCount = 0, notifEventCount = 0,
+        derivedDays = 0, workerRuns7d = 0, paused = false, oddEventPairs = 0, lines = emptyList())
+    override suspend fun getSayingChoices(): List<SayingDto> = emptyList()
+    override suspend fun getLake(): LakeDto = LakeDto(state = LakeStateDto.NO_DATA, phrase = "", isDemo = false)
+
+    // write
+    override suspend fun pickSaying(sayingId: String) {}
+    override suspend fun tapTryThis(kindId: String, subjectKey: String?) {}
+    override suspend fun dismissSuggestion(kindId: String, subjectKey: String?) {}
+    override suspend fun tapGoal(answer: GoalAnswerDto) {}
+    override suspend fun reanchorBaseline() {}
+    override suspend fun pause(on: Boolean) {}
+    override suspend fun exportData(includeRaw: Boolean): ExportDto = ExportDto(fileName = "", byteSize = 0)
+    override suspend fun deleteEverything() {}
+
+    // demo
+    override suspend fun startDemo(personaId: String) {}
+    override suspend fun setDemoAsOf(dayIndex: Long) {}
+    override suspend fun stopDemo() {}
+}
