@@ -4,4 +4,12 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <application>
+        <!-- Debug only: event dump for the spikes. Exported so adb can trigger it. -->
+        <receiver android:name=".host.DebugTools" android:exported="true">
+            <intent-filter>
+                <action android:name="com.kleos.sakshi.DUMP_EVENTS" />
+            </intent-filter>
+        </receiver>
+    </application>
 </manifest>
