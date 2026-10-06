@@ -74,3 +74,7 @@ Note: the three `lake_*.xml` drawables are placeholders; Track 4 replaces the fi
 3. Delete: press `DELETE EVERYTHING`. The Lake widget should read "Nothing to show yet." and the exports should be gone.
 4. Demo: `startDemo("aarav")` then `setDemoAsOf(31)`. The Lake phrase should end with "(demo)", `pause`/`exportData`/`deleteEverything` must answer DEMO_ACTIVE, and `stopDemo` returns to the real Lake. The history is a hard-coded stub until Track 2's synthesizer lands.
 5. Hash check on the phone (debug build): `adb exec-out run-as com.kleos.sakshi sh -c 'cat databases/sakshi.db databases/sakshi.db-wal' | shasum -a 256` before and after a demo; the two lines must match.
+
+## T1.14: hostile-OEM spike pass — NOT YET RUN
+
+Everything to run, in order, is in `docs/phone_test_day.md` (S-C, S-D with the helper skipped and then applied, S-F, S-H, plus the earlier outstanding checks). `tools/spike_collect.sh <label>` gathers the evidence from a connected phone into `docs/spike_runs/` (git-ignored). Fill the results table at the end of that file; the Done-when is that table complete for both phones with timestamps and OS versions.
