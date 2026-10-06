@@ -60,3 +60,9 @@ Note: the three `lake_*.xml` drawables are placeholders; Track 4 replaces the fi
 3. Run the same command again: it must log `ALREADY_SENT` and post nothing. Add `--el week <another Monday's epoch day>` to see a new week post.
 4. Tap the note: Sakshi opens (the Mirror route exists only after Track 3's router).
 5. Notification permission: with it denied, `setWeeklyNote(true)` from the debug screen should return false.
+
+## T1.12: the battery helper on real phones — NOT YET RUN
+
+1. In the debug screen press `openBatterySettings` on the iQOO Z7 and the Nothing Phone 3a. Screenshot the page that opens (expected: Android's battery optimization list, or the battery saver page on a phone without it).
+2. Follow each path in `docs/research/oem_battery.md` for that phone by hand. Correct the wording where the menus differ, and change its status in both `oem_battery.md` and `host/BatteryTips.kt` to VERIFIED_ON_DEVICE (a test keeps the two in step).
+3. Check the helper did not show the system's "allow Sakshi to ignore battery optimizations" dialog (it must not).

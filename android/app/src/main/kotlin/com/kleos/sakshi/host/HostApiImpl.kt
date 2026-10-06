@@ -59,7 +59,7 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     override suspend fun openUsageAccessSettings() = call { permissions.openUsageAccessSettings() }
     override suspend fun openNotificationAccessSettings() = call { permissions.openNotificationAccessSettings() }
     override suspend fun openAppInfoForRestrictedSettings() = call { permissions.openAppInfo() }
-    override suspend fun openBatterySettings() = call { /* T1.12 opens Android's own battery page */ }
+    override suspend fun openBatterySettings() = call { BatterySetup(appContext).open(); Unit }
     override suspend fun markBatteryHelperShown() = call { engine.markBatteryHelperShown() }
     override suspend fun listLauncherApps(): List<AppDto> = call {
         // Pre-ticking is the engine's (F2 suggestPreticks); it is not part of the façade yet, so nothing is suggested.
