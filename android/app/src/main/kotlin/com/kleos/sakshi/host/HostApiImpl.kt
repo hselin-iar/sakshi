@@ -2,11 +2,15 @@ package com.kleos.sakshi.host
 
 import android.content.Context
 import android.util.Log
+import com.kleos.sakshi.engine.model.EpochMs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.kleos.sakshi.host.gen.*
 
 /** T1.2: every method returns a canned, valid DTO or is a no-op. T1.9 wires the engine and mappers. */
 class HostApiImpl(context: Context) : SakshiHostApi {
-    private val permissions = PermissionGateway(context.applicationContext)
+    private val appContext = context.applicationContext
+    private val permissions = PermissionGateway(appContext)
 
     // setup
     override suspend fun getSetupState(): SetupStateDto {
@@ -34,7 +38,16 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     override suspend fun setWeeklyNote(enabled: Boolean): Boolean = false
 
     // read
-    override suspend fun syncNow(): SyncStatusDto = SyncStatusDto(state = SyncStateDto.OK)
+    override suspend fun syncNow(): SyncStatusDto = withContext(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
+        when (val report = AppContainer.from(appContext).ingest(EpochMs(now))) {
+            is IngestReport.Ran -> SyncStatusDto(state = SyncStateDto.OK, lastSyncEpochMs = now)
+            IngestReport.Paused -> SyncStatusDto(state = SyncStateDto.PAUSED)
+            IngestReport.NoPermission -> SyncStatusDto(state = SyncStateDto.NO_PERMISSION)
+            // The reason is a short code in ingest_state; this fixed sentence is all the user sees.
+            is IngestReport.Failed -> SyncStatusDto(state = SyncStateDto.OK, message = "I could not finish reading just now.")
+        }
+    }
     override suspend fun getMirror(weekStartEpochMs: Long?): MirrorDto = MirrorDto(
         isDemo = false, provisional = true, gentle = false, weekStartEpochMs = weekStartEpochMs ?: 0L, weekLabel = "",
         dataState = DataStateDto.LEARNING_BASELINE, dataFlags = emptyList(), dataLines = emptyList(), headline = "",

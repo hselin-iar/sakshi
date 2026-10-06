@@ -23,3 +23,12 @@ With notification access granted on the Nothing Phone 3a:
 4. Export a few rows: `adb exec-out run-as com.kleos.sakshi sqlite3 databases/sakshi.db "select * from notif_event"` (if sqlite3 is missing on the phone, use Android Studio's App Inspection).
 
 Record here: did the listener rebind by itself after force-stop, or only after opening Sakshi? How long until it did?
+
+## S-D (T1.7): background runs while the app is closed — NOT YET RUN
+
+1. Install the debug build, open Sakshi once (this schedules the 15-minute job), then close it and leave the phone idle for a few hours.
+2. `adb shell dumpsys jobscheduler | grep -A6 com.kleos.sakshi` shows the periodic job.
+3. `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.RUN_INGEST_NOW` forces one run; `adb logcat -s SakshiIngest` prints `run: Ran`.
+4. Read two consecutive `lastWorkerRunAt` values from `ingest_state` (App Inspection, or `run-as com.kleos.sakshi sqlite3 databases/sakshi.db "select lastWorkerRunAt, workerRuns7d from ingest_state"`).
+
+Record here: the dumpsys excerpt, the two timestamps, and on the iQOO Z7 whether runs stopped while idle (and whether the battery helper changed that).

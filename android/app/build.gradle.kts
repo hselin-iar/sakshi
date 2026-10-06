@@ -32,6 +32,10 @@ android {
         versionName = flutter.versionName
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true   // WorkManager's own resources, needed by SchedulerTest
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -73,4 +77,10 @@ tasks.withType<Test>().configureEach {
         "merged.release.manifest",
         rootProject.layout.buildDirectory.get().asFile.resolve(
             "app/intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml").absolutePath)
+}
+
+// With Android resources in unit tests, the packaging task reads Flutter's merged assets; declare the dependency Gradle asks for.
+tasks.matching { it.name.startsWith("package") && it.name.endsWith("UnitTestForUnitTest") }.configureEach {
+    val variant = name.removePrefix("package").removeSuffix("UnitTestForUnitTest")
+    dependsOn("copyFlutterAssets$variant")
 }

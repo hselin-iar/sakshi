@@ -9,6 +9,7 @@
         <receiver android:name=".host.DebugTools" android:exported="true">
             <intent-filter>
                 <action android:name="com.kleos.sakshi.DUMP_EVENTS" />
+                <action android:name="com.kleos.sakshi.RUN_INGEST_NOW" />
             </intent-filter>
         </receiver>
     </application>

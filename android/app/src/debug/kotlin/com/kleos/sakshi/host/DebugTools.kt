@@ -12,10 +12,17 @@ import java.io.File
  * and for Track 2's real fixtures. Nothing here is compiled into release.
  *
  *   adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.DUMP_EVENTS --ei hours 24
+ *   adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.RUN_INGEST_NOW
  *   adb exec-out run-as com.kleos.sakshi cat files/dumps/events.json > fixtures/real_s_a.json
  */
 class DebugTools : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == RUN_NOW) {
+            // Runs the same catch-up as the periodic job, right now, and logs what ingest_state says afterwards.
+            Scheduler.runNow(context)
+            Log.i(TAG, "queued an ingest run")
+            return
+        }
         if (intent.action != ACTION) return
         val hours = intent.getIntExtra("hours", 24).coerceAtLeast(1)
         val now = System.currentTimeMillis()
@@ -42,6 +49,7 @@ class DebugTools : BroadcastReceiver() {
 
     companion object {
         const val ACTION = "com.kleos.sakshi.DUMP_EVENTS"
+        const val RUN_NOW = "com.kleos.sakshi.RUN_INGEST_NOW"
         private const val TAG = "SakshiDebug"
     }
 }

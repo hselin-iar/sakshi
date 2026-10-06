@@ -25,6 +25,8 @@ class ReleaseManifestTest {
         forbidden(
             "android.permission.SYSTEM_ALERT_WINDOW",
             "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+            "android.permission.SCHEDULE_EXACT_ALARM",
+            "android.permission.USE_EXACT_ALARM",
             "android.permission.QUERY_ALL_PACKAGES"))
 
     @Test
