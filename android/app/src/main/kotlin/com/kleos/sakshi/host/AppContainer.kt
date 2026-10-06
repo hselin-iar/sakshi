@@ -9,7 +9,8 @@ import com.kleos.sakshi.data.RoomNotifStore
 import com.kleos.sakshi.data.RoomStateStore
 import com.kleos.sakshi.data.SakshiDatabase
 import com.kleos.sakshi.engine.model.EpochMs
-import com.kleos.sakshi.engine.model.ProcessReport
+import com.kleos.sakshi.engine.SakshiEngine
+import com.kleos.sakshi.engine.ports.Ports
 
 /** The one wiring point (LC-9). Data wiring only for now; T1.5 onward adds the adapters, T1.9 the engine. */
 class AppContainer(private val context: Context) {
@@ -25,14 +26,28 @@ class AppContainer(private val context: Context) {
     val catalog by lazy { AppCatalogImpl.create(context) }
     val shelf by lazy { SayingShelfImpl.create(context) }
 
+    val clock by lazy { SystemClock() }
+
+    /** Every port the engine needs, wired to the real adapters. */
+    val ports by lazy {
+        Ports(
+            events = events, notifs = notifs, coverage = notifs, gaps = gaps, derived = derived, state = state,
+            catalog = catalog, shelf = shelf, clock = clock, random = SeededRandomness())
+    }
+
+    /** T1.2's canned façade until Track 2 lands (Sync 4); nothing in the host depends on which it is. */
+    val engine by lazy { SakshiEngine(ports) }
+
+    /** Set by DemoController (T1.13). Pause, Export and Delete are refused while true. */
+    @Volatile var demoActive: Boolean = false
+
     private val ingestLock = Any()
 
     private fun ingestDeps() = IngestDeps(
         source = UsageEventsSource(context),
         hasUsageAccess = PermissionGateway(context)::usageAccessGranted,
         events = events, gaps = gaps, state = state, retention = retention,
-        // T1.9 replaces this with SakshiEngine.processNewEvents once the engine ports are all wired.
-        process = { ProcessReport(lakeChanged = false) })
+        process = engine::processNewEvents)
 
     /** The periodic job and syncNow() share one lock, so two runs never move the cursor at the same time. */
     fun ingest(asOf: EpochMs): IngestReport = synchronized(ingestLock) { runIngest(ingestDeps(), asOf) }

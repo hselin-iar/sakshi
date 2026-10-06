@@ -1,0 +1,19 @@
+{
+  "isDemo": false,
+  "usageAccessGranted": true,
+  "notificationAccessGranted": true,
+  "rawEventCount": 8400,
+  "notifEventCount": 120,
+  "derivedDays": 9,
+  "workerRuns7d": 61,
+  "paused": false,
+  "oddEventPairs": 2,
+  "lines": [
+    "line a",
+    "line b"
+  ],
+  "oldestRawEpochMs": 1000,
+  "listenerCoverage7d": 0.61,
+  "lastWorkerRunEpochMs": 2000,
+  "lastError": "INGEST_X"
+}

@@ -1,0 +1,106 @@
+{
+  "isDemo": true,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759000000000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [
+    "partialPing",
+    "unusualWeek"
+  ],
+  "dataLines": [
+    "a line",
+    "b line"
+  ],
+  "headline": "headline",
+  "parts": {
+    "stretchMin": 10.0,
+    "longestStretchMin": 32.5,
+    "inSetShare": 0.7,
+    "quietShare": 0.36,
+    "staysPerHour": 3.2,
+    "glances": 14,
+    "returnMin": 4.5,
+    "lines": {
+      "stretch": "s",
+      "stays": "p",
+      "ret": "r",
+      "quiet": "q"
+    },
+    "extrasLines": [
+      "extra one"
+    ]
+  },
+  "steadiness": {
+    "value": 116,
+    "word": "Steadier"
+  },
+  "stones": {
+    "totalStays": 17,
+    "stoneCount": 11,
+    "selfStartedCount": 4,
+    "unknownCount": 2,
+    "topStoneLabel": "Chat",
+    "noRippleRate": 0.25,
+    "line": "stones line"
+  },
+  "clearHour": {
+    "startHour": 21,
+    "endHour": 23,
+    "stretchMin": 18.5,
+    "line": "clear line"
+  },
+  "patterns": [
+    {
+      "kindId": "RHYTHM",
+      "line": "pattern (based on 9 windows over 4 days)",
+      "evidenceWindows": 9,
+      "evidenceDays": 4
+    }
+  ],
+  "suggestion": {
+    "kindId": "S2",
+    "line": "sug line",
+    "actionLabel": "Move it",
+    "actionType": "MOVE_ICON",
+    "opensSettings": false,
+    "subjectKey": "com.x"
+  },
+  "observation": {
+    "kindId": "S12",
+    "line": "obs line"
+  },
+  "nothingToFix": false,
+  "verdict": {
+    "verdict": "MOVED",
+    "line": "verdict line",
+    "approxMix": false,
+    "beforeValue": 4.1,
+    "afterValue": 3.0
+  },
+  "goalTap": {
+    "offered": true,
+    "answer": "partly"
+  },
+  "teacher": {
+    "opensThisWeek": 2,
+    "minutesThisWeek": 11.5,
+    "line": "teacher line",
+    "opensPrevWeek": 3
+  },
+  "lapseLine": "lapse",
+  "saying": {
+    "id": "sy01",
+    "text": "I am watching my mind act",
+    "source": "src",
+    "tierLabel": "reported by others",
+    "question": 86
+  },
+  "returnLine": "return",
+  "reanchorOffered": true,
+  "suggestedStudyBlock": {
+    "startMinute": 1320,
+    "endMinute": 90
+  }
+}

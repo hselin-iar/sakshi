@@ -1,0 +1,16 @@
+{
+  "isDemo": false,
+  "usageAccessGranted": false,
+  "notificationAccessGranted": false,
+  "rawEventCount": 0,
+  "notifEventCount": 0,
+  "derivedDays": 0,
+  "workerRuns7d": 0,
+  "paused": false,
+  "oddEventPairs": 0,
+  "lines": [],
+  "oldestRawEpochMs": null,
+  "listenerCoverage7d": null,
+  "lastWorkerRunEpochMs": null,
+  "lastError": null
+}
