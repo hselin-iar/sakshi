@@ -112,3 +112,6 @@ data class Reconstruction(
     val openEnded: Boolean,
     val anomalies: Int,          // odd event pairs tolerated by R1/R2; surfaced on the What I See page
 )
+
+// ---- T2.3: App Classification (engine-internal; not part of LC-1/LC-2) ----
+enum class AppClass { IN_SET, DEPENDS, NEUTRAL, OFF_SET }         // four classes only
