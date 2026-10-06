@@ -5,8 +5,9 @@ import kotlinx.serialization.json.Json
 import java.nio.charset.StandardCharsets
 
 /**
- * Loads golden fixtures from src/test/resources/{fixtures,golden}/*.json and
- * asserts actual output against them. No fixture-specific logic lives here —
+ * Loads golden fixtures from JSON files under src/test/resources/fixtures or
+ * src/test/resources/golden, and asserts actual output against them. No
+ * fixture-specific logic lives here —
  * callers pass their own serializer for whatever shape a given step's golden
  * examples need.
  */
