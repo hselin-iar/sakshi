@@ -54,6 +54,7 @@ class HostApiSmokeTest {
         expectCode(HostErrors.BAD_REQUEST) { api.dismissSuggestion("nope", null) }
         expectCode(HostErrors.BAD_REQUEST) { api.startDemo("somebody") }
         expectCode(HostErrors.BAD_REQUEST) { api.setDemoAsOf(60) }
+        expectCode(HostErrors.BAD_REQUEST) { api.setDemoAsOf(5) }   // no demo is running
         expectCode(HostErrors.BAD_REQUEST) { api.setDemoAsOf(-1) }
     }
 
@@ -63,7 +64,7 @@ class HostApiSmokeTest {
     }
 
     @Test fun pauseExportAndDeleteAreRefusedWhileADemoRuns() {
-        AppContainer.from(RuntimeEnvironment.getApplication()).demoActive = true
+        runBlocking { api.startDemo("aarav") }
         try {
             expectCode(HostErrors.DEMO_ACTIVE) { api.pause(true) }
             expectCode(HostErrors.DEMO_ACTIVE) { api.exportData(false) }

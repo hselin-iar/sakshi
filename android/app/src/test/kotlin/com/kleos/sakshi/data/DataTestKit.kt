@@ -40,3 +40,10 @@ fun derivation(day: Long, vararg windowIds: Long) = DayDerivation(
         WindowWithDetail(window(it, day = day, start = it * 1_000, end = it * 1_000 + 500), listOf(stretch(it * 10, it)), listOf(stay(it * 10 + 1, it)), 1.25, 7)
     },
     summary = daySummary(day))
+
+/** Production reads and writes Room off the main thread; tests that use the real container do the same. */
+fun off(block: () -> Unit) {
+    var error: Throwable? = null
+    Thread { try { block() } catch (t: Throwable) { error = t } }.also { it.start(); it.join() }
+    error?.let { throw it }
+}

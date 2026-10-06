@@ -40,6 +40,7 @@ class LakeWidget : AppWidgetProvider() {
     companion object {
         const val EXTRA_ROUTE = "route"
         const val ROUTE_MIRROR = "mirror"
+        const val DEMO_SUFFIX = " (demo)"
 
         /** LEARNING and NO_DATA use the still drawable. A missing row draws NO_DATA. */
         fun faceFor(row: LakeRow?, zone: ZoneId = ZoneId.systemDefault(), locale: Locale = Locale.getDefault()): Face {
@@ -83,7 +84,9 @@ class LakeWidget : AppWidgetProvider() {
                 val manager = AppWidgetManager.getInstance(context)
                 val ids = manager.getAppWidgetIds(ComponentName(context, LakeWidget::class.java))
                 if (ids.isEmpty()) return
-                val views = views(context, faceFor(container.state.lake()))
+                val face = faceFor(container.state.lake())
+                // A demo can never be mistaken for real data, even from across the room.
+                val views = views(context, if (container.demoActive) face.copy(phrase = face.phrase + DEMO_SUFFIX) else face)
                 manager.updateAppWidget(ids, views)
             } catch (e: Exception) {
                 try {

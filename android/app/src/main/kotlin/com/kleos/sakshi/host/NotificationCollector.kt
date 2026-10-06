@@ -13,7 +13,7 @@ import com.kleos.sakshi.engine.model.EpochMs
 class NotificationCollector : NotificationListenerService() {
     private val recorder: NotificationRecorder by lazy {
         val container = AppContainer.from(applicationContext)
-        NotificationRecorder(container.notifs, container.notifs, container.state, packageName) { EpochMs(System.currentTimeMillis()) }
+        NotificationRecorder(container.real.notifs, container.real.notifs, container.real.state, packageName) { EpochMs(System.currentTimeMillis()) }
     }
 
     override fun onListenerConnected() {

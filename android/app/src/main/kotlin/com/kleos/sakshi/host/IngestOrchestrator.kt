@@ -27,6 +27,8 @@ sealed interface IngestReport {
     data class Ran(val newEvents: Int, val report: ProcessReport) : IngestReport
     data object Paused : IngestReport
     data object NoPermission : IngestReport
+    /** A demo is running: nothing is read from the phone. */
+    data object DemoActive : IngestReport
     /** `code` is a short code with no package names; the next scheduled run is the retry. */
     data class Failed(val code: String) : IngestReport
 }

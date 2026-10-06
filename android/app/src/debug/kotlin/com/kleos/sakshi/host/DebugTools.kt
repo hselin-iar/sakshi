@@ -48,8 +48,8 @@ class DebugTools : BroadcastReceiver() {
             val container = AppContainer.from(context)
             val week = intent.getLongExtra("week", java.time.LocalDate.now().with(java.time.DayOfWeek.MONDAY).toEpochDay())
             Thread {
-                val note = container.state.note()
-                container.state.saveNote(note.copy(mirrorReadyWeek = WeekStart(StudyDay(week))))
+                val note = container.real.state.note()
+                container.real.state.saveNote(note.copy(mirrorReadyWeek = WeekStart(StudyDay(week))))
                 val outcome = container.noteNotifier.maybePost(NoteDecision(post = true, reason = "debug"))
                 Log.i(TAG, "weekly note decision for week $week: $outcome")
             }.start()

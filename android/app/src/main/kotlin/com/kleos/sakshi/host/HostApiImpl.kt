@@ -89,6 +89,7 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
         when (report) {
             is IngestReport.Ran -> SyncStatusDto(state = SyncStateDto.OK, lastSyncEpochMs = at.value)
             IngestReport.Paused -> SyncStatusDto(state = SyncStateDto.PAUSED)
+            IngestReport.DemoActive -> SyncStatusDto(state = SyncStateDto.OK, lastSyncEpochMs = at.value)   // nothing is read from the phone during a demo
             IngestReport.NoPermission -> SyncStatusDto(state = SyncStateDto.NO_PERMISSION)
             // The reason is a short code in ingest_state; this fixed sentence is all the user sees.
             is IngestReport.Failed -> SyncStatusDto(state = SyncStateDto.OK, message = "I could not finish reading just now.")
@@ -117,25 +118,29 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     override suspend fun reanchorBaseline() = call {
         if (!engine.reanchor(now()).ok) throw HostErrors.error(HostErrors.REANCHOR_NOT_ALLOWED)
     }
-    override suspend fun pause(on: Boolean) = call { refuseDuringDemo(); engine.pause(on, now()) }
+    // The host does Pause until the engine's use case is real; see PauseControl.
+    override suspend fun pause(on: Boolean) = call { refuseDuringDemo(); container.pauseControl.set(on, now()) }
     override suspend fun exportData(includeRaw: Boolean): ExportDto = call {
         refuseDuringDemo()
-        engine.export(includeRaw, now())
-        // T1.13: Exporter writes the file, then the share sheet opens. Until then there is no file to describe.
-        ExportDto(fileName = "", byteSize = 0)
+        val result = try {
+            container.exporter.export(includeRaw, now()).also { ExportSharer(appContext).share(it.file) }
+        } catch (e: Exception) {
+            throw HostErrors.error(HostErrors.EXPORT_FAILED, e::class.simpleName)
+        }
+        ExportDto(fileName = result.fileName, byteSize = result.byteSize)
     }
-    override suspend fun deleteEverything() = call { refuseDuringDemo(); engine.deleteEverything() }
+    override suspend fun deleteEverything() = call { refuseDuringDemo(); container.deleteEverything() }
 
-    // ---- demo (DemoController arrives in T1.13; requests are validated here, nothing starts yet) ----
+    // ---- demo ----
     override suspend fun startDemo(personaId: String) = call {
-        if (personaId !in DEMO_PERSONAS) throw HostErrors.error(HostErrors.BAD_REQUEST, "persona")
+        if (personaId !in DemoController.PERSONAS) throw HostErrors.error(HostErrors.BAD_REQUEST, "persona")
+        container.demoController.start(personaId)
     }
     override suspend fun setDemoAsOf(dayIndex: Long) = call {
         if (dayIndex !in 0..59) throw HostErrors.error(HostErrors.BAD_REQUEST, "dayIndex")
+        if (!container.demoActive) throw HostErrors.error(HostErrors.BAD_REQUEST, "no demo")
+        container.demoController.setAsOf(dayIndex.toInt())
     }
-    override suspend fun stopDemo() = call { container.demoActive = false }
+    override suspend fun stopDemo() = call { container.demoController.stop() }
 
-    private companion object {
-        val DEMO_PERSONAS = setOf("aarav", "meera", "rohan")
-    }
 }

@@ -66,3 +66,11 @@ Note: the three `lake_*.xml` drawables are placeholders; Track 4 replaces the fi
 1. In the debug screen press `openBatterySettings` on the iQOO Z7 and the Nothing Phone 3a. Screenshot the page that opens (expected: Android's battery optimization list, or the battery saver page on a phone without it).
 2. Follow each path in `docs/research/oem_battery.md` for that phone by hand. Correct the wording where the menus differ, and change its status in both `oem_battery.md` and `host/BatteryTips.kt` to VERIFIED_ON_DEVICE (a test keeps the two in step).
 3. Check the helper did not show the system's "allow Sakshi to ignore battery optimizations" dialog (it must not).
+
+## T1.13: export, delete, pause and the demo on a real phone — NOT YET RUN
+
+1. Export: on the debug screen press `exportData` (try with and without raw). The Android share sheet should open. Screenshot it, send the file to yourself, and open the JSON: confirm there is no title, text or app label, only package names.
+2. Pause: press `pause(true)`, wait, `pause(false)`. In What I see (or the database) there must be exactly one PAUSED gap, closed on resume, and no events recorded for that time.
+3. Delete: press `DELETE EVERYTHING`. The Lake widget should read "Nothing to show yet." and the exports should be gone.
+4. Demo: `startDemo("aarav")` then `setDemoAsOf(31)`. The Lake phrase should end with "(demo)", `pause`/`exportData`/`deleteEverything` must answer DEMO_ACTIVE, and `stopDemo` returns to the real Lake. The history is a hard-coded stub until Track 2's synthesizer lands.
+5. Hash check on the phone (debug build): `adb exec-out run-as com.kleos.sakshi sh -c 'cat databases/sakshi.db databases/sakshi.db-wal' | shasum -a 256` before and after a demo; the two lines must match.

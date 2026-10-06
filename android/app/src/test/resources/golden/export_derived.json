@@ -1,0 +1,200 @@
+{
+  "exportVersion": 1,
+  "exportedAt": 1759000000000,
+  "settings": {
+    "studyBlocks": [
+      {
+        "startMinute": 1200,
+        "endMinute": 1380
+      }
+    ],
+    "learnStudyHours": false,
+    "gentleMode": true,
+    "gentleExplicit": true,
+    "weeklyNoteEnabled": false,
+    "ageUnder18": false,
+    "batteryHelperShown": true,
+    "lapseAcknowledgedThrough": null,
+    "firstReadAt": 100,
+    "createdAt": 50
+  },
+  "baselines": [
+    {
+      "id": 1,
+      "frozenAt": 900,
+      "c0": 10.0,
+      "p0": 4.0,
+      "r0": 6.0,
+      "q0": 0.36,
+      "daysUsed": 8,
+      "isActive": true
+    }
+  ],
+  "weeks": [
+    {
+      "weekStart": 98,
+      "stretchMedianMin": 10.0,
+      "longestStretchMin": 30.0,
+      "staysPerHour": 4.0,
+      "returnMedianMin": 6.0,
+      "quietShare": 0.36,
+      "inSetShare": 0.7,
+      "steadiness": 100,
+      "word": "Steady",
+      "windowsCount": 12,
+      "validDays": 5,
+      "unusual": false,
+      "appOpens": 3,
+      "appMinutes": 20.0,
+      "returnsAfterLapse": 0
+    }
+  ],
+  "days": [
+    {
+      "day": 100,
+      "valid": true,
+      "windowMinutes": 60.0,
+      "quietMinutes": 5.0,
+      "inSetMinutes": 50.0,
+      "coverage": 0.9,
+      "pickups": 12,
+      "switchesPerHour": 3.5,
+      "flinch": false,
+      "rampUpMin": 1.5,
+      "lastScreenOffTs": 9000,
+      "firstStretchMin": 14.0,
+      "externalResumes": 20
+    }
+  ],
+  "windows": [
+    {
+      "id": 1,
+      "day": 100,
+      "start": 1000,
+      "end": 1500,
+      "source": "BOTH",
+      "partial": false,
+      "finalised": true,
+      "shape": "HELD",
+      "quietMinutes": 1.25,
+      "glances": 7,
+      "stretches": [
+        {
+          "id": 10,
+          "start": 1000,
+          "end": 1500,
+          "minutes": 5.0,
+          "inSetMinutes": 4.0,
+          "quietMinutes": 1.0,
+          "endedBy": "STAY"
+        }
+      ],
+      "stays": [
+        {
+          "id": 11,
+          "start": 1500,
+          "end": 1600,
+          "firstPkg": "b",
+          "pkgMain": "b",
+          "origin": "STONE",
+          "stonePkg": "b",
+          "notifClicked": true,
+          "returnMinutes": 2.5,
+          "glancesBefore": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "day": 100,
+      "start": 2000,
+      "end": 2500,
+      "source": "BOTH",
+      "partial": false,
+      "finalised": true,
+      "shape": "HELD",
+      "quietMinutes": 1.25,
+      "glances": 7,
+      "stretches": [
+        {
+          "id": 20,
+          "start": 1000,
+          "end": 1500,
+          "minutes": 5.0,
+          "inSetMinutes": 4.0,
+          "quietMinutes": 1.0,
+          "endedBy": "STAY"
+        }
+      ],
+      "stays": [
+        {
+          "id": 21,
+          "start": 1500,
+          "end": 1600,
+          "firstPkg": "b",
+          "pkgMain": "b",
+          "origin": "STONE",
+          "stonePkg": "b",
+          "notifClicked": true,
+          "returnMinutes": 2.5,
+          "glancesBefore": 3
+        }
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "kind": "RHYTHM",
+      "key": "cell:NIGHT-WEEKDAY",
+      "strength": 1.8,
+      "evidenceWindows": 9,
+      "evidenceDays": 4,
+      "firstSeen": 1000,
+      "lastSeen": 2000,
+      "args": {
+        "cell": "NIGHT-WEEKDAY",
+        "direction": "CHOPPY"
+      }
+    }
+  ],
+  "suggestionStates": [
+    {
+      "kind": "S2",
+      "subject": "com.chat",
+      "firstEligibleAt": 1,
+      "lastShownAt": 2,
+      "shownInWeek": 20000,
+      "dismissedUntil": null,
+      "retiredUntil": null,
+      "status": "shown"
+    }
+  ],
+  "experiments": [
+    {
+      "id": 1,
+      "kind": "S2",
+      "subject": "com.chat",
+      "startedAt": 10,
+      "startReason": "TAP",
+      "target": "STAYS_PER_HOUR_FROM_PKG",
+      "beforeValue": 4.1,
+      "afterValue": 3.0,
+      "windowEnd": 99,
+      "verdict": "MOVED",
+      "approxMix": false,
+      "shown": true
+    }
+  ],
+  "goalTaps": [
+    {
+      "weekStart": 20000,
+      "answer": "PARTLY"
+    }
+  ],
+  "sayingPicks": [
+    {
+      "sayingId": "sy01",
+      "pickedAt": 77
+    }
+  ]
+}

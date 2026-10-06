@@ -29,6 +29,14 @@ object GoldenJson {
     private fun pad(n: Int) = "  ".repeat(n)
     private fun lowerCamel(s: String) = s.lowercase().split('_').mapIndexed { i, w -> if (i == 0) w else w.replaceFirstChar { it.uppercase() } }.joinToString("")
 
+    /** Same check for text that is already JSON (the export file). */
+    fun checkText(name: String, actual: String): String? {
+        val file = dir.resolve("$name.json")
+        if (System.getenv("UPDATE_GOLDEN") == "1") { dir.mkdirs(); file.writeText(actual); return null }
+        if (!file.isFile) return "missing golden ${file.path}"
+        return if (file.readText() == actual) null else "golden ${file.path} differs from the exported file"
+    }
+
     /** Compares to the checked-in file; with UPDATE_GOLDEN=1 it rewrites the file instead. */
     fun check(name: String, dto: Any): String? {
         val file = dir.resolve("$name.json")
