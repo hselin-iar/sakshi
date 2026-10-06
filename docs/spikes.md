@@ -51,3 +51,12 @@ Note: `neutral_packages.json` was assembled from AOSP and OEM package names know
 Record here for the Nothing Phone 3a and the iQOO Z7: whether the widget survived reboot and a launcher change, and whether the "as of" time stayed visible when background runs stopped.
 
 Note: the three `lake_*.xml` drawables are placeholders; Track 4 replaces the files under the same names.
+
+## T1.11: the weekly note on a real phone — NOT YET RUN
+
+1. In the debug build open Sakshi, then force a decision: `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.FORCE_WEEKLY_NOTE`
+   (`adb logcat -s SakshiDebug` prints `weekly note decision for week N: POSTED`).
+2. Confirm: no sound, no vibration, no badge on the app icon, text exactly "Sakshi" / "Your Mirror is ready", no buttons. Long-press it and open the channel settings ("Weekly Mirror", low importance); screenshot both.
+3. Run the same command again: it must log `ALREADY_SENT` and post nothing. Add `--el week <another Monday's epoch day>` to see a new week post.
+4. Tap the note: Sakshi opens (the Mirror route exists only after Track 3's router).
+5. Notification permission: with it denied, `setWeeklyNote(true)` from the debug screen should return false.

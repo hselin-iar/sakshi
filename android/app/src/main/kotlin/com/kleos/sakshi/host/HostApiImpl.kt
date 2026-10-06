@@ -3,7 +3,6 @@ package com.kleos.sakshi.host
 import android.content.Context
 import android.util.Log
 import com.kleos.sakshi.engine.model.EpochMs
-import com.kleos.sakshi.engine.model.HostFacts
 import com.kleos.sakshi.engine.model.Pkg
 import com.kleos.sakshi.host.gen.*
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +13,7 @@ import kotlinx.coroutines.withContext
  * Nothing here decides anything about attention; that belongs in the engine.
  * Every call runs on a background dispatcher, and an unexpected failure becomes a typed INTERNAL error.
  */
-class HostApiImpl(context: Context) : SakshiHostApi {
+class HostApiImpl(context: Context, private val notificationRequester: PostNotificationsRequester? = null) : SakshiHostApi {
     private val appContext = context.applicationContext
     private val container get() = AppContainer.from(appContext)
     private val engine get() = container.engine
@@ -23,7 +22,7 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     private fun now() = EpochMs(System.currentTimeMillis())
 
     /** Runs `block` off the main thread; FlutterErrors pass through, anything else becomes INTERNAL (class name only as detail). */
-    private suspend fun <T> call(block: () -> T): T = withContext(Dispatchers.IO) {
+    private suspend fun <T> call(block: suspend () -> T): T = withContext(Dispatchers.IO) {
         try {
             block()
         } catch (e: FlutterError) {
@@ -37,10 +36,6 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     private fun refuseDuringDemo() {
         if (container.demoActive) throw HostErrors.error(HostErrors.DEMO_ACTIVE)
     }
-
-    private fun hostFacts() = HostFacts(
-        usageAccessGranted = permissions.usageAccessGranted(), notificationAccessGranted = permissions.notificationListenerEnabled(),
-        canPostNotifications = permissions.canPostNotifications(), lastError = container.state.ingest().lastError)
 
     // ---- setup ----
     override suspend fun getSetupState(): SetupStateDto = call {
@@ -75,9 +70,14 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     override suspend fun setGentleMode(on: Boolean) = call { engine.setGentle(on) }
     override suspend fun setUnder18(on: Boolean) = call { engine.setUnder18(on) }
     override suspend fun setWeeklyNote(enabled: Boolean): Boolean = call {
-        // Asking for POST_NOTIFICATIONS needs the Activity; T1.11 adds that. Until then "on" holds only if it is already allowed.
-        val effective = enabled && permissions.canPostNotifications()
-        engine.setWeeklyNote(effective)
+        val allowed = permissions.canPostNotifications()
+        // Asking needs the Activity. With none (cold start, worker) the request cannot be made, so it is a bad request.
+        val granted = if (enabled && !allowed) {
+            (notificationRequester ?: throw HostErrors.error(HostErrors.BAD_REQUEST, "no activity")).request()
+        } else null
+        val effective = WeeklyNoteNotifier.effective(enabled, allowed, granted)
+        engine.setWeeklyNote(effective)          // a refusal leaves the setting off
+        if (!effective) container.noteNotifier.cancel()
         effective
     }
 
@@ -99,7 +99,7 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     }
     override suspend fun listMirrorWeeks(): List<WeekRefDto> = call { engine.listMirrorWeeks(now()).map { it.toDto() } }
     override suspend fun getTodaySoFar(): TodayDto = call { engine.today(now()).toDto() }
-    override suspend fun getWhatISee(): WhatISeeDto = call { engine.whatISee(now(), hostFacts()).toDto() }
+    override suspend fun getWhatISee(): WhatISeeDto = call { engine.whatISee(now(), container.hostFacts()).toDto() }
     override suspend fun getSayingChoices(): List<SayingDto> = call { engine.chooseSayings(now()).map { it.toDto() } }
     override suspend fun getLake(): LakeDto = call { engine.lake(now()).toDto(isDemo = container.demoActive) }
 

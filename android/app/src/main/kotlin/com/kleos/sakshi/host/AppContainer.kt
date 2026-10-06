@@ -10,6 +10,7 @@ import com.kleos.sakshi.data.RoomStateStore
 import com.kleos.sakshi.data.SakshiDatabase
 import com.kleos.sakshi.engine.model.EpochMs
 import com.kleos.sakshi.engine.SakshiEngine
+import com.kleos.sakshi.engine.model.HostFacts
 import com.kleos.sakshi.engine.ports.Ports
 
 /** The one wiring point (LC-9). Data wiring only for now; T1.5 onward adds the adapters, T1.9 the engine. */
@@ -27,6 +28,12 @@ class AppContainer(private val context: Context) {
     val shelf by lazy { SayingShelfImpl.create(context) }
 
     val clock by lazy { SystemClock() }
+    val permissions by lazy { PermissionGateway(context) }
+    val noteNotifier by lazy { WeeklyNoteNotifier(context, state, permissions) }
+
+    fun hostFacts() = HostFacts(
+        usageAccessGranted = permissions.usageAccessGranted(), notificationAccessGranted = permissions.notificationListenerEnabled(),
+        canPostNotifications = permissions.canPostNotifications(), lastError = state.ingest().lastError)
 
     /** Every port the engine needs, wired to the real adapters. */
     val ports by lazy {
@@ -48,7 +55,11 @@ class AppContainer(private val context: Context) {
         hasUsageAccess = PermissionGateway(context)::usageAccessGranted,
         events = events, gaps = gaps, state = state, retention = retention,
         process = engine::processNewEvents,
-        afterProcess = { report -> if (report.lakeChanged) LakeWidget.refresh(context) })
+        afterProcess = { report ->
+            if (report.lakeChanged) LakeWidget.refresh(context)
+            // The engine decides whether a note is due; the notifier only posts it.
+            noteNotifier.maybePost(engine.noteDecision(clock.now(), hostFacts()))
+        })
 
     /** The periodic job and syncNow() share one lock, so two runs never move the cursor at the same time. */
     fun ingest(asOf: EpochMs): IngestReport = synchronized(ingestLock) { runIngest(ingestDeps(), asOf) }
