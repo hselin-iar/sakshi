@@ -22,6 +22,9 @@ class AppContainer(private val context: Context) {
     val state by lazy { RoomStateStore(database) }
     val retention by lazy { Retention(events, notifs) }
 
+    val catalog by lazy { AppCatalogImpl.create(context) }
+    val shelf by lazy { SayingShelfImpl.create(context) }
+
     private val ingestLock = Any()
 
     private fun ingestDeps() = IngestDeps(

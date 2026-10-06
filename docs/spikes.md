@@ -32,3 +32,11 @@ Record here: did the listener rebind by itself after force-stop, or only after o
 4. Read two consecutive `lastWorkerRunAt` values from `ingest_state` (App Inspection, or `run-as com.kleos.sakshi sqlite3 databases/sakshi.db "select lastWorkerRunAt, workerRuns7d from ingest_state"`).
 
 Record here: the dumpsys excerpt, the two timestamps, and on the iQOO Z7 whether runs stopped while idle (and whether the battery helper changed that).
+
+## S-E (T1.8): launcher list vs packages seen in usage events — NOT YET RUN
+
+1. After a day of normal use, dump events: `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.DUMP_EVENTS --ei hours 24` and pull `events.json`.
+2. Compare the distinct `pkg` values in the dump with the apps `listLauncherApps()` returns (the work-set screen once T3 lands, or logcat in a debug run).
+3. Packages seen in events but missing from the list fall back to their package name as the label. Record which ones, and whether any belong in `assets/sakshi/neutral_packages.json`.
+
+Note: `neutral_packages.json` was assembled from AOSP and OEM package names known to the author (Pixel/AOSP, Nothing OS, Vivo/iQOO, Xiaomi, Samsung, Oppo/Realme), NOT verified against devices or sources. Research prompt R3 was not run. Correct it against the Nothing Phone 3a and iQOO Z7 with this spike.

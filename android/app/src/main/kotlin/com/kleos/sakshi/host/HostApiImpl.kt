@@ -30,7 +30,11 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     override suspend fun openAppInfoForRestrictedSettings() = permissions.openAppInfo()
     override suspend fun openBatterySettings() {}
     override suspend fun markBatteryHelperShown() {}
-    override suspend fun listLauncherApps(): List<AppDto> = emptyList()
+    // Label lookup is the slow part, so this runs off the main thread. Pre-ticking is the engine's job (T1.9 maps it); here nothing is pre-ticked.
+    override suspend fun listLauncherApps(): List<AppDto> = withContext(Dispatchers.IO) {
+        AppContainer.from(appContext).catalog.launcherApps()
+            .map { AppDto(pkg = it.pkg.value, label = it.label, suggestedInSet = false, suggestedDepends = false) }
+    }
     override suspend fun saveWorkSet(entries: List<WorkSetEntryDto>): SaveResultDto = SaveResultDto(ok = true, savedCount = 0)
     override suspend fun saveStudyHours(hours: StudyHoursDto) {}
     override suspend fun setGentleMode(on: Boolean) {}

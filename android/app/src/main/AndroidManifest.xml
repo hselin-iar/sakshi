@@ -63,6 +63,11 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
+        <!-- The default launcher, so it can be recognised as a neutral app. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
+        </intent>
         <!-- Lists the apps a user can open, without QUERY_ALL_PACKAGES (DOC 2 §2.6.3). -->
         <intent>
             <action android:name="android.intent.action.MAIN" />
