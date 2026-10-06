@@ -10,6 +10,7 @@ class HostApiImpl(context: Context) : SakshiHostApi {
 
     // setup
     override suspend fun getSetupState(): SetupStateDto {
+        permissions.requestRebindIfNeeded()
         val state = SetupStateDto(
             usageAccessGranted = permissions.usageAccessGranted(),
             notificationAccessGranted = permissions.notificationListenerEnabled(),

@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
+import android.service.notification.NotificationListenerService
 
 /**
  * Reads real system state every time it is asked; never trusts a boolean returned by a settings page (DOC 2 §2.6.2).
@@ -44,6 +45,17 @@ class PermissionGateway(private val context: Context) {
         val granted = notificationListenerEnabled()
         if (granted) notificationSettingsOpened = false
         return restrictedSuspected(notificationSettingsOpened, granted)
+    }
+
+    /** Access is granted but the system has not bound the listener (an OEM killed it): ask it to reconnect. Called on app open. */
+    fun requestRebindIfNeeded() {
+        if (notificationListenerEnabled() && !NotificationCollector.bound) {
+            try {
+                NotificationListenerService.requestRebind(NotificationCollector.componentName(context))
+            } catch (_: Exception) {
+                // nothing to do: the next app open asks again
+            }
+        }
     }
 
     fun openUsageAccessSettings() {

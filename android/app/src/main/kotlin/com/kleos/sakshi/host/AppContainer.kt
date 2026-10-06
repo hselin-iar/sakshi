@@ -19,4 +19,12 @@ class AppContainer(context: Context) {
     val derived by lazy { RoomDerivedStore(database) }
     val state by lazy { RoomStateStore(database) }
     val retention by lazy { Retention(events, notifs) }
+
+    companion object {
+        @Volatile private var instance: AppContainer? = null
+
+        /** One container per process; the listener service and the Pigeon host share it. */
+        fun from(context: Context): AppContainer =
+            instance ?: synchronized(this) { instance ?: AppContainer(context.applicationContext).also { instance = it } }
+    }
 }
