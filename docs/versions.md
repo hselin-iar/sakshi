@@ -17,6 +17,7 @@ Never upgrade one. Changing a version is an Integration Owner decision.
 | WorkManager | 2.12.0 | `libs.versions.toml` `work` | dl.google.com/dl/android/maven2 |
 | kotlinx-coroutines | 1.11.0 | `libs.versions.toml` `coroutines` | repo1.maven.org |
 | kotlinx-serialization (json + plugin) | 1.11.0 (plugin = Kotlin version) | `libs.versions.toml` `serialization` | repo1.maven.org (stable only; 1.12.0-RC skipped) |
+| Robolectric (test-only) | 4.17 | `libs.versions.toml` `robolectric`, `testImplementation` | repo1.maven.org. **Deliberate exception to the "no other libraries" rule, approved at T1.4**: Room cannot open a database in a plain JVM test, and DOC 4 T1.4 requires in-memory Room tests under `testDebugUnitTest`. Never on the app's classpath. |
 | JUnit | 4.13.2 | `libs.versions.toml` `junit` | repo1.maven.org |
 | Pigeon | 29.0.6 | `pubspec.yaml` dev_dependencies | pub.dev API |
 | flutter_riverpod | 3.4.3 | `pubspec.yaml` | pub.dev API |

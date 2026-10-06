@@ -47,6 +47,10 @@ kotlin {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 flutter {
     source = "../.."
 }
@@ -59,6 +63,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
 }
 
 // The manifest scan in arch/ReleaseManifestTest reads the merged release manifest, so build it first.
