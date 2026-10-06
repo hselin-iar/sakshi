@@ -28,7 +28,7 @@ object GoldenFixtures {
     }
 
     private fun readResource(path: String): String {
-        val stream = checkNotNull(javaClass.classLoader.getResourceAsStream(path)) {
+        val stream = checkNotNull(javaClass.classLoader?.getResourceAsStream(path)) {
             "golden fixture not found on classpath: $path"
         }
         return stream.readBytes().toString(StandardCharsets.UTF_8)
