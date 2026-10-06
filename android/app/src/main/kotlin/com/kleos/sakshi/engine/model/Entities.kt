@@ -102,3 +102,13 @@ data class Saying(val id: String, val q: String, val text: String, val source: S
 
 // [CONTRACT GAP: AppInfo is used by AppCatalog.launcherApps() but never defined in DOC 3; shaped from AppDto (F2) plus the category port method.]
 data class AppInfo(val pkg: Pkg, val label: String, val category: Int?)
+
+// ---- T2.2: Foreground Intervals (engine-internal; not part of LC-1/LC-2) ----
+data class ForegroundInterval(val pkg: Pkg, val start: EpochMs, val end: EpochMs)
+data class ScreenSpan(val start: EpochMs, val end: EpochMs?)        // a screen-off (non-interactive) span
+data class Reconstruction(
+    val intervals: List<ForegroundInterval>,
+    val screenOff: List<ScreenSpan>,
+    val openEnded: Boolean,
+    val anomalies: Int,          // odd event pairs tolerated by R1/R2; surfaced on the What I See page
+)
