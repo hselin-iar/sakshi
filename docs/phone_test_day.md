@@ -66,7 +66,7 @@ Press `listLauncherApps` on the debug screen: the first 10 labels show. Check th
 ## 8. Pause, export, delete, demo (T1.13)
 
 1. `exportData`: the Android share sheet opens. Screenshot it. Send the file to yourself and open it: no title, text or app label, only package names. Try again with raw events if you want to see those.
-2. `pause(false)` is a no-op; use the app to press `pause` with true (edit the debug screen if needed, or note it as missing) then false. There must be exactly one PAUSED gap (`db.txt`), closed on resume.
+2. Press `pause(true)`, wait a minute, then `pause(false)`. Run `tools/spike_collect.sh <phone>-pause`: `db.txt` must show exactly one PAUSED gap, closed on resume.
 3. `startDemo(aarav)`, `setDemoAsOf(31)`: the Lake phrase ends with "(demo)"; `pause`, `exportData` and `deleteEverything` must each answer `DEMO_ACTIVE`; `stopDemo` returns the real Lake.
 4. Hash the real database around a demo: `adb exec-out run-as com.kleos.sakshi sh -c 'cat databases/sakshi.db databases/sakshi.db-wal' | shasum -a 256` before `startDemo` and after `stopDemo`. The two lines must match.
 5. Last: `DELETE EVERYTHING`. The Lake reads "Nothing to show yet." and `db.txt` shows empty tables.

@@ -65,6 +65,7 @@ class _HostDebugScreenState extends State<HostDebugScreen> {
       'dismissSuggestion(S2)': () => _api.dismissSuggestion('S2', null),
       'tapGoal(yes)': () => _api.tapGoal(GoalAnswerDto.yes),
       'reanchorBaseline': () => _api.reanchorBaseline(),
+      'pause(true)': () => _api.pause(true),
       'pause(false)': () => _api.pause(false),
       'exportData': () => _api.exportData(false),
       'DELETE EVERYTHING': () => _api.deleteEverything(),
