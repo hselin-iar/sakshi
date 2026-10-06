@@ -84,7 +84,9 @@ class HostApiImpl(context: Context) : SakshiHostApi {
     // ---- read ----
     override suspend fun syncNow(): SyncStatusDto = call {
         val at = now()
-        when (container.ingest(at)) {
+        val report = container.ingest(at)
+        LakeWidget.refresh(appContext)   // app open: redraw from the stored row even when nothing new arrived
+        when (report) {
             is IngestReport.Ran -> SyncStatusDto(state = SyncStateDto.OK, lastSyncEpochMs = at.value)
             IngestReport.Paused -> SyncStatusDto(state = SyncStateDto.PAUSED)
             IngestReport.NoPermission -> SyncStatusDto(state = SyncStateDto.NO_PERMISSION)

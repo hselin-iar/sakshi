@@ -11,6 +11,8 @@ import org.robolectric.RuntimeEnvironment
 /** Every one of the 30 Pigeon methods answers against the real container (Room on Robolectric), with the canned façade. */
 @RunWith(RobolectricTestRunner::class)
 class HostApiSmokeTest {
+    @org.junit.Before fun freshContainer() = AppContainer.reset()
+
     private val api = HostApiImpl(RuntimeEnvironment.getApplication())
 
     private fun expectCode(code: String, block: suspend () -> Unit) {

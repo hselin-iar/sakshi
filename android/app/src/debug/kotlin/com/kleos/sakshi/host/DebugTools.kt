@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.kleos.sakshi.engine.model.EpochMs
+import com.kleos.sakshi.engine.model.LakeRow
+import com.kleos.sakshi.engine.model.LakeState
 import java.io.File
 
 /**
@@ -13,6 +15,7 @@ import java.io.File
  *
  *   adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.DUMP_EVENTS --ei hours 24
  *   adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.RUN_INGEST_NOW
+ *   adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.SET_LAKE_STATE --es state choppy
  *   adb exec-out run-as com.kleos.sakshi cat files/dumps/events.json > fixtures/real_s_a.json
  */
 class DebugTools : BroadcastReceiver() {
@@ -21,6 +24,19 @@ class DebugTools : BroadcastReceiver() {
             // Runs the same catch-up as the periodic job, right now, and logs what ingest_state says afterwards.
             Scheduler.runNow(context)
             Log.i(TAG, "queued an ingest run")
+            return
+        }
+        if (intent.action == SET_LAKE) {
+            // Writes a lake_state row and redraws, to see each widget state without waiting for a window to finish.
+            val state = LakeState.entries.firstOrNull { it.name.equals(intent.getStringExtra("state"), ignoreCase = true) }
+            if (state == null) { Log.w(TAG, "state must be one of ${LakeState.entries.joinToString()}"); return }
+            val container = AppContainer.from(context)
+            val asOf = if (state == LakeState.NO_DATA) null else EpochMs(System.currentTimeMillis())
+            Thread {
+                container.state.saveLake(LakeRow(state, DEBUG_PHRASES.getValue(state), asOf))
+                LakeWidget.refresh(context)
+                Log.i(TAG, "lake_state set to $state")
+            }.start()
             return
         }
         if (intent.action != ACTION) return
@@ -50,6 +66,11 @@ class DebugTools : BroadcastReceiver() {
     companion object {
         const val ACTION = "com.kleos.sakshi.DUMP_EVENTS"
         const val RUN_NOW = "com.kleos.sakshi.RUN_INGEST_NOW"
+        const val SET_LAKE = "com.kleos.sakshi.SET_LAKE_STATE"
+        /** The fixed phrases from DOC 3 F7 (normal set). In real builds the engine's SentenceBuilder supplies them. */
+        private val DEBUG_PHRASES = mapOf(
+            LakeState.STILL to "Still water.", LakeState.RIPPLED to "A few ripples.", LakeState.CHOPPY to "Choppy water.",
+            LakeState.LEARNING to "Learning your normal.", LakeState.NO_DATA to "Nothing to show yet.")
         private const val TAG = "SakshiDebug"
     }
 }

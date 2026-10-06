@@ -40,3 +40,14 @@ Record here: the dumpsys excerpt, the two timestamps, and on the iQOO Z7 whether
 3. Packages seen in events but missing from the list fall back to their package name as the label. Record which ones, and whether any belong in `assets/sakshi/neutral_packages.json`.
 
 Note: `neutral_packages.json` was assembled from AOSP and OEM package names known to the author (Pixel/AOSP, Nothing OS, Vivo/iQOO, Xiaomi, Samsung, Oppo/Realme), NOT verified against devices or sources. Research prompt R3 was not run. Correct it against the Nothing Phone 3a and iQOO Z7 with this spike.
+
+## S-F (T1.10): the Lake widget on real launchers — NOT YET RUN
+
+1. Install the debug build, open Sakshi once, long-press the home screen and add the "sakshi" widget (2x1).
+2. Cycle the states: `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.SET_LAKE_STATE --es state still` (also `rippled`, `choppy`, `learning`, `no_data`). Screenshot each.
+3. Tap the widget: it should open Sakshi. (The Mirror route does not exist until Track 3 builds the router.)
+4. Reboot the phone and confirm the widget still shows the last state and its "as of" time. Change the launcher and add the widget again; it should redraw from stored state.
+
+Record here for the Nothing Phone 3a and the iQOO Z7: whether the widget survived reboot and a launcher change, and whether the "as of" time stayed visible when background runs stopped.
+
+Note: the three `lake_*.xml` drawables are placeholders; Track 4 replaces the files under the same names.

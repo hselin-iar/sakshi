@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PLACEHOLDER (T1.10). Track 4 replaces this file with the real art; the name is frozen. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="40dp"
+    android:viewportWidth="56"
+    android:viewportHeight="40">
+    <path android:fillColor="#FF2F6F8F" android:pathData="M0,10 L56,10 L56,40 L0,40 Z" />
+    <path android:strokeColor="#FFBFE3F2" android:strokeWidth="1.5" android:pathData="M4,22 L52,22" />
+</vector>

@@ -47,13 +47,17 @@ class AppContainer(private val context: Context) {
         source = UsageEventsSource(context),
         hasUsageAccess = PermissionGateway(context)::usageAccessGranted,
         events = events, gaps = gaps, state = state, retention = retention,
-        process = engine::processNewEvents)
+        process = engine::processNewEvents,
+        afterProcess = { report -> if (report.lakeChanged) LakeWidget.refresh(context) })
 
     /** The periodic job and syncNow() share one lock, so two runs never move the cursor at the same time. */
     fun ingest(asOf: EpochMs): IngestReport = synchronized(ingestLock) { runIngest(ingestDeps(), asOf) }
 
     companion object {
         @Volatile private var instance: AppContainer? = null
+
+        /** For tests: drop the shared container (closing its database) so the next caller builds a fresh one. */
+        fun reset() = synchronized(this) { instance?.let { runCatching { it.database.close() } }; instance = null }
 
         /** One container per process; the listener service and the Pigeon host share it. */
         fun from(context: Context): AppContainer =

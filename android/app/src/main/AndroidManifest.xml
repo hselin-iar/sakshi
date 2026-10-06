@@ -41,6 +41,16 @@
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             tools:node="remove" />
+        <receiver
+            android:name=".host.LakeWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/lake_widget_info" />
+        </receiver>
         <!-- Notification access is granted by the user in Settings; T1.6 fills in the class. -->
         <service
             android:name=".host.NotificationCollector"
