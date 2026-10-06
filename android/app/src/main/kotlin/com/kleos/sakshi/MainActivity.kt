@@ -8,6 +8,6 @@ import io.flutter.embedding.engine.FlutterEngine
 class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        SakshiHostApi.setUp(flutterEngine.dartExecutor.binaryMessenger, HostApiImpl())
+        SakshiHostApi.setUp(flutterEngine.dartExecutor.binaryMessenger, HostApiImpl(applicationContext))
     }
 }

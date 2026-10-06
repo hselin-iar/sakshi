@@ -1,18 +1,28 @@
 package com.kleos.sakshi.host
 
+import android.content.Context
+import android.util.Log
 import com.kleos.sakshi.host.gen.*
 
 /** T1.2: every method returns a canned, valid DTO or is a no-op. T1.9 wires the engine and mappers. */
-class HostApiImpl : SakshiHostApi {
+class HostApiImpl(context: Context) : SakshiHostApi {
+    private val permissions = PermissionGateway(context.applicationContext)
+
     // setup
-    override suspend fun getSetupState(): SetupStateDto = SetupStateDto(
-        usageAccessGranted = false, notificationAccessGranted = false, restrictedSettingsSuspected = false,
-        workSetSaved = false, studyHoursSaved = false, batteryHelperShown = false, weeklyNoteEnabled = false,
-        gentleMode = false, isDemo = false,
-        health = CollectionHealthDto(workerRuns7d = 0, paused = false))
-    override suspend fun openUsageAccessSettings() {}
-    override suspend fun openNotificationAccessSettings() {}
-    override suspend fun openAppInfoForRestrictedSettings() {}
+    override suspend fun getSetupState(): SetupStateDto {
+        val state = SetupStateDto(
+            usageAccessGranted = permissions.usageAccessGranted(),
+            notificationAccessGranted = permissions.notificationListenerEnabled(),
+            restrictedSettingsSuspected = permissions.restrictedSettingsSuspected(),
+            workSetSaved = false, studyHoursSaved = false, batteryHelperShown = false, weeklyNoteEnabled = false,
+            gentleMode = false, isDemo = false,
+            health = CollectionHealthDto(workerRuns7d = 0, paused = false))
+        Log.i("SakshiSetup", "usage=${state.usageAccessGranted} notif=${state.notificationAccessGranted} restricted=${state.restrictedSettingsSuspected}")
+        return state
+    }
+    override suspend fun openUsageAccessSettings() = permissions.openUsageAccessSettings()
+    override suspend fun openNotificationAccessSettings() = permissions.openNotificationAccessSettings()
+    override suspend fun openAppInfoForRestrictedSettings() = permissions.openAppInfo()
     override suspend fun openBatterySettings() {}
     override suspend fun markBatteryHelperShown() {}
     override suspend fun listLauncherApps(): List<AppDto> = emptyList()

@@ -60,3 +60,12 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
 }
+
+// The manifest scan in arch/ReleaseManifestTest reads the merged release manifest, so build it first.
+tasks.withType<Test>().configureEach {
+    dependsOn("processReleaseMainManifest")
+    systemProperty(
+        "merged.release.manifest",
+        rootProject.layout.buildDirectory.get().asFile.resolve(
+            "app/intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml").absolutePath)
+}
