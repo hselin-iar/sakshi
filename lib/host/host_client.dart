@@ -1,5 +1,8 @@
 import '../gen/sakshi_api.g.dart';
 
+// The DTOs and enums are the Pigeon-generated ones (T1.2). Re-exported so screens and fixtures keep importing host_client.dart.
+export '../gen/sakshi_api.g.dart';
+
 /// Error codes carried by [HostException.code] (LC-4).
 const hostErrorCodes = <String>[
   'NO_PERMISSION',
