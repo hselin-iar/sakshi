@@ -23,6 +23,7 @@ import com.kleos.sakshi.engine.model.PatternLine
 import com.kleos.sakshi.engine.model.SayingView
 import com.kleos.sakshi.engine.model.SteadinessView
 import com.kleos.sakshi.engine.model.StonesView
+import com.kleos.sakshi.engine.model.StudyBlockView
 import com.kleos.sakshi.engine.model.StudyDay
 import com.kleos.sakshi.engine.model.SuggestionKind
 import com.kleos.sakshi.engine.model.SuggestionView
@@ -44,6 +45,9 @@ import com.kleos.sakshi.engine.usecases.BuildWeekSummary
 import com.kleos.sakshi.engine.usecases.SayingTags
 import com.kleos.sakshi.engine.usecases.UpdateBaseline
 import com.kleos.sakshi.engine.usecases.effectiveGentle
+import com.kleos.sakshi.engine.windows.StudyHoursLearner
+import com.kleos.sakshi.engine.classify.AppClassifier
+import com.kleos.sakshi.engine.stays.StoneWave
 import java.time.ZoneId
 
 /** What the façade needs besides the view: the things a viewed Mirror changes (shown suggestion, shown verdict, acknowledged lapse). */
@@ -120,7 +124,7 @@ object MirrorBuilder {
 
         // 3. stones, the clear hour and the pattern lines
         val stays = scopeWindows.flatMap { it.stays }
-        val stones = stonesView(ports, stays)
+        val stones = stonesView(ports, stays, scopeWindows)
         val patternCtx = PatternContext(
             windows = ports.derived.windows(EpochMs(0), asOf), weeks = ports.derived.weeks(), days = allDays, baseline = baseline,
             asOf = asOf, random = ports.random, zone = zone,
@@ -186,6 +190,14 @@ object MirrorBuilder {
         val reanchorOffered = !provisional && baseline != null && baseline.id == UpdateBaseline.FIRST_BASELINE_ID &&
             weeksSinceBaseline != null && weeksSinceBaseline >= Tuning.REANCHOR_MIN_WEEK
 
+        // learned study hours are offered, never applied (F3); from week 3, when learning is on and the block differs by an hour or more
+        val suggestedBlock = if (provisional || !settings.learnStudyHours || weekNumber < 3) null
+        else {
+            val validEver = allDays.filter { it.valid }.map { it.day }.toSet()
+            val history = ports.derived.windows(EpochMs(0), asOf).filter { it.window.day in validEver }.map { it.window }
+            StudyHoursLearner.suggest(StudyHoursLearner.learn(history, zone), settings.studyBlocks)?.let { StudyBlockView(it.startMinute, it.endMinute) }
+        }
+
         val headline = when {
             parts.stretchMin == null -> if (baseline == null) SentenceBuilder.learningHeadline() else SentenceBuilder.tooLittleHeadline()
             provisional -> parts.staysPerHour?.let { SentenceBuilder.provisionalHeadline(parts.stretchMin, it) } ?: SentenceBuilder.learningHeadline()
@@ -204,7 +216,7 @@ object MirrorBuilder {
             suggestion = task?.let { SuggestionView(it.kind.name, it.subject?.value, SentenceBuilder.suggestionLine(it), SentenceBuilder.actionLabel(it.action), it.action.name, it.action == com.kleos.sakshi.engine.model.ActionType.OPEN_NOTIFICATION_SETTINGS) },
             observation = selection?.observation?.let { ObservationView(it.kind.name, SentenceBuilder.observationLine(it)) },
             nothingToFix = nothingToFix, verdict = verdict, goalTap = goalTap, teacher = teacher, lapseLine = lapseLine, saying = saying,
-            returnLine = returnLine, reanchorOffered = reanchorOffered, suggestedStudyBlock = null,
+            returnLine = returnLine, reanchorOffered = reanchorOffered, suggestedStudyBlock = suggestedBlock,
         )
 
         val knownStays = stays.filter { it.origin == Origin.STONE || it.origin == Origin.SELF_STARTED }
@@ -239,13 +251,30 @@ object MirrorBuilder {
         extrasLines = emptyList(),
     )
 
-    private fun stonesView(ports: Ports, stays: List<com.kleos.sakshi.engine.model.Stay>): StonesView? {
+    private fun stonesView(ports: Ports, stays: List<com.kleos.sakshi.engine.model.Stay>, windows: List<WindowWithDetail>): StonesView? {
         if (stays.isEmpty()) return null
         val stone = stays.count { it.origin == Origin.STONE }
         val self = stays.count { it.origin == Origin.SELF_STARTED }
         val topPkg = stays.filter { it.origin == Origin.STONE }.groupBy { it.stonePkg }.maxByOrNull { it.value.size }?.key
         val label = topPkg?.let { p -> ports.catalog.launcherApps().firstOrNull { it.pkg == p }?.label }
-        return StonesView(stays.size, stone, self, stays.count { it.origin == Origin.UNKNOWN }, label, null, SentenceBuilder.stonesLine(stays.size, stone, self))
+        return StonesView(stays.size, stone, self, stays.count { it.origin == Origin.UNKNOWN }, label, noRippleRate(ports, windows), SentenceBuilder.stonesLine(stays.size, stone, self))
+    }
+
+    /**
+     * Of the pings that arrived during a window, the share that led to no stay within a minute: the "waves that never came" (F4). Pooled
+     * over every window; null when no covered ping qualified, never zero.
+     */
+    private fun noRippleRate(ports: Ports, windows: List<WindowWithDetail>): Double? {
+        val classes = ports.state.apps().associate { it.pkg to it.userClass }
+        val classifier = AppClassifier(classes, ports.catalog)
+        var pings = 0.0; var without = 0.0
+        for (w in windows) {
+            val notifs = ports.notifs.range(w.window.start, w.window.end)
+            val rate = StoneWave.noRippleRate(w.window, notifs, ports.coverage, w.stays) { classifier.classify(it) } ?: continue
+            val n = notifs.count { it.kind == NotifKind.POSTED && !it.ongoing && classifier.classify(it.pkg) != com.kleos.sakshi.engine.model.AppClass.NEUTRAL }
+            pings += n; without += rate * n
+        }
+        return if (pings > 0) without / pings else null
     }
 
     /** Study days of the scope that any gap of this kind touches: the sentence names days, never windows. */

@@ -217,4 +217,42 @@ class SakshiEngineFacadeTest {
         engine.pause(false, at(tuesday, "10:30:00"))
         assertTrue(p.gaps.overlapping(at(tuesday, "10:40:00"), at(tuesday, "11:00:00")).isEmpty())
     }
+
+    @Test fun `learned study hours are offered at week 3 or later, only when learning is on, and not in gentle mode`() {
+        val p = newPorts(tuesday, "10:00:00"); feed(p, 21)
+        val engine = SakshiEngine(p); engine.processNewEvents(at(tuesday, "10:00:00"))
+        assertNull(engine.mirror(null, at(tuesday, "10:00:00")).suggestedStudyBlock)           // learning is off
+
+        p.state.saveSettings(p.state.settings().copy(learnStudyHours = true))
+        val offered = engine.mirror(null, at(tuesday, "10:00:00")).suggestedStudyBlock
+        assertNotNull(offered)
+        assertEquals(17 * 60 + 50, offered!!.startMinute)           // 18:00 less the ten-minute pad
+        assertTrue(offered.endMinute in 19 * 60 + 30..19 * 60 + 50)
+
+        p.state.saveSettings(p.state.settings().copy(studyBlocks = listOf(com.kleos.sakshi.engine.model.StudyBlock(17 * 60 + 50, 19 * 60 + 40)), learnStudyHours = true))
+        assertNull(engine.mirror(null, at(tuesday, "10:00:00")).suggestedStudyBlock)           // already what was saved
+
+        engine.setGentle(true)
+        p.state.saveSettings(p.state.settings().copy(studyBlocks = emptyList()))
+        assertNull(engine.mirror(null, at(tuesday, "10:00:00")).suggestedStudyBlock)           // gentle hides it
+    }
+
+    @Test fun `the no-ripple rate is the share of pings that led to no stay`() {
+        val p = newPorts(tuesday, "10:00:00"); feed(p, 21)
+        // every day: one ping right before the first pull (a wave that reached shore) and one in the middle of quiet work (one that did not)
+        (0 until 21).forEach { d ->
+            val day = firstMonday.plusDays(d.toLong())
+            p.notifs.append(com.kleos.sakshi.engine.model.NotifEvent(at(day, "18:04").let { EpochMs(it.value + 50_000) }, Pkg("X"), "msg", com.kleos.sakshi.engine.model.NotifKind.POSTED, null, false))
+            p.notifs.append(com.kleos.sakshi.engine.model.NotifEvent(at(day, "19:15"), Pkg("X"), "msg", com.kleos.sakshi.engine.model.NotifKind.POSTED, null, false))
+        }
+        val engine = SakshiEngine(p); engine.processNewEvents(at(tuesday, "10:00:00"))
+        val rate = engine.mirror(null, at(tuesday, "10:00:00")).stones!!.noRippleRate
+        assertNotNull(rate); assertEquals(0.5, rate!!, 0.01)
+    }
+
+    @Test fun `with no pings at all the no-ripple rate is missing, not zero`() {
+        val p = newPorts(tuesday, "10:00:00"); feed(p, 21)
+        val engine = SakshiEngine(p); engine.processNewEvents(at(tuesday, "10:00:00"))
+        assertNull(engine.mirror(null, at(tuesday, "10:00:00")).stones?.noRippleRate)
+    }
 }

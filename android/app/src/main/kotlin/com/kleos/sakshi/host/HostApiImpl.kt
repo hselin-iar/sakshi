@@ -19,7 +19,8 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     private val engine get() = container.engine
     private val permissions = PermissionGateway(appContext)
 
-    private fun now() = EpochMs(System.currentTimeMillis())
+    /** The container's clock: the phone's during real use, the demo's own while a demo runs (the demo path reads no other time). */
+    private fun now() = container.clock.now()
 
     /** Runs `block` off the main thread; FlutterErrors pass through, anything else becomes INTERNAL (class name only as detail). */
     private suspend fun <T> call(block: suspend () -> T): T = withContext(Dispatchers.IO) {
@@ -40,7 +41,7 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     // ---- setup ----
     override suspend fun getSetupState(): SetupStateDto = call {
         permissions.requestRebindIfNeeded()
-        val week = EpochMs(System.currentTimeMillis())
+        val week = now()
         val sevenDays = 7L * 24 * 60 * 60 * 1000
         // Null, not zero, when the listener has never been connected: "never heard" is not "heard nothing".
         val heard = container.notifs.sessions(EpochMs(0), EpochMs(week.value + 1)).isNotEmpty()

@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
-/** Every one of the 30 Pigeon methods answers against the real container (Room on Robolectric), with the canned façade. */
+/** Every one of the 30 Pigeon methods answers against the real container (Room on Robolectric), with the real engine. */
 @RunWith(RobolectricTestRunner::class)
 class HostApiSmokeTest {
     @org.junit.Before fun freshContainer() = AppContainer.reset()
@@ -33,7 +33,7 @@ class HostApiSmokeTest {
             "tapGoal" to { api.tapGoal(GoalAnswerDto.YES) }, "pause" to { api.pause(false) }, "exportData" to { api.exportData(false) },
             "deleteEverything" to { api.deleteEverything() }, "startDemo" to { api.startDemo("aarav") }, "setDemoAsOf" to { api.setDemoAsOf(3) },
             "stopDemo" to { api.stopDemo() },
-            // the canned façade refuses these two, which is a typed error and still an answer
+            // the engine can refuse these two when there is nothing to act on, which is a typed error and still an answer
             "tapTryThis" to { try { api.tapTryThis("S2", null) } catch (e: FlutterError) { e.code } },
             "reanchorBaseline" to { try { api.reanchorBaseline() } catch (e: FlutterError) { e.code } })
         assertEquals(SakshiHostApi::class.java.declaredMethods.size, calls.size)

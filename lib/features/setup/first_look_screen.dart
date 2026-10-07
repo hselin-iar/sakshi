@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../mirror/parts_card.dart';
+
 import '../../core/providers.dart';
 import '../../host/host_client.dart';
 
@@ -11,12 +13,6 @@ import '../../host/host_client.dart';
 // Calls syncNow() then getMirror(null). Shows a progress state during sync.
 // Renders headline, data lines and the Parts card from Track 4's widgets.
 //
-// Stub strategy: until Track 4 publishes parts_card.dart (T4.2), a local
-// _PartsCardStub is used with the same constructor signature.
-// Delete _PartsCardStub when the real PartsCard is imported.
-//
-// Import path when T4.2 lands (replace the stub import with):
-//   import '../../mirror/parts_card.dart';
 // ---------------------------------------------------------------------------
 
 class FirstLookScreen extends ConsumerStatefulWidget {
@@ -118,7 +114,7 @@ class _SyncProgress extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// _MirrorBody — renders headline, data lines and PartsCard stub.
+// _MirrorBody — renders headline, data lines and the Parts card.
 // ---------------------------------------------------------------------------
 
 class _MirrorBody extends StatelessWidget {
@@ -147,41 +143,9 @@ class _MirrorBody extends StatelessWidget {
           ],
           if (mirror.parts != null) ...[
             const SizedBox(height: 16),
-            // [REFACTOR CANDIDATE: replace _PartsCardStub with the real
-            // PartsCard from lib/features/mirror/parts_card.dart (T4.2)]
-            _PartsCardStub(parts: mirror.parts!),
+            PartsCard(parts: mirror.parts),
           ],
         ],
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// _PartsCardStub — temporary until Track 4 publishes parts_card.dart (T4.2).
-// Constructor signature matches the real PartsCard so the import swap is a
-// one-line change: remove this class and update the import.
-// ---------------------------------------------------------------------------
-
-class _PartsCardStub extends StatelessWidget {
-  const _PartsCardStub({required this.parts});
-
-  // ignore: unused_field
-  final PartsDto parts;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        'Parts card — Track 4 (T4.2)',
-        style: Theme.of(context).textTheme.bodySmall
-            ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );
   }
