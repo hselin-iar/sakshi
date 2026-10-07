@@ -1,0 +1,72 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [],
+  "dataLines": [],
+  "headline": "You held 15-minute stretches and 5-minute returns; close to your starting normal.",
+  "parts": {
+    "stretchMin": 14.5,
+    "longestStretchMin": 28.0,
+    "inSetShare": 0.68,
+    "quietShare": 0.12,
+    "staysPerHour": 3.2,
+    "glances": 4,
+    "returnMin": 4.8,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 15 minutes at a stretch (longest 28).",
+      "stays": "Something pulled you away about 3 times an hour.",
+      "ret": "It took you about 5 minutes to come back.",
+      "quiet": "Your phone was quiet for 12% of your work time."
+    },
+    "extrasLines": []
+  },
+  "steadiness": {
+    "value": 100,
+    "word": "Steady"
+  },
+  "stones": {
+    "totalStays": 17,
+    "stoneCount": 9,
+    "selfStartedCount": 6,
+    "unknownCount": 2,
+    "noRippleRate": 0.41,
+    "line": "9 of your 17 stays began with a ping."
+  },
+  "clearHour": {
+    "startHour": 9,
+    "endHour": 11,
+    "stretchMin": 22.0,
+    "line": "Between 09:00 and 11:00 your stretches average 22 minutes."
+  },
+  "patterns": [
+    {
+      "kindId": "RHYTHM",
+      "line": "Your work-hour windows tend to run longer in the morning than in the afternoon (based on 11 windows over 5 days).",
+      "evidenceWindows": 11,
+      "evidenceDays": 5
+    }
+  ],
+  "nothingToFix": true,
+  "goalTap": {
+    "offered": true
+  },
+  "teacher": {
+    "opensThisWeek": 5,
+    "opensPrevWeek": 7,
+    "minutesThisWeek": 18.0,
+    "line": "You opened Sakshi 5 times this week."
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "returnLine": "You came back in about 5 minutes on average.",
+  "reanchorOffered": true
+}

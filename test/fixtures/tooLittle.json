@@ -1,0 +1,28 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "tooLittleData",
+  "dataFlags": [
+    "tooLittleData"
+  ],
+  "dataLines": [
+    "Not enough windows this week to show comparisons."
+  ],
+  "headline": "Not enough data this week.",
+  "patterns": [],
+  "nothingToFix": false,
+  "goalTap": {
+    "offered": false
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "reanchorOffered": false
+}

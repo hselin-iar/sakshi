@@ -1,0 +1,64 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [
+    "unusualWeek"
+  ],
+  "dataLines": [
+    "This week looks different from your normal pattern and is not included in your trends."
+  ],
+  "headline": "You held 9-minute stretches and 9-minute returns; less steady than your starting normal.",
+  "parts": {
+    "stretchMin": 9.0,
+    "longestStretchMin": 16.0,
+    "inSetShare": 0.48,
+    "quietShare": 0.06,
+    "staysPerHour": 6.0,
+    "glances": 10,
+    "returnMin": 9.0,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 9 minutes at a stretch (longest 16).",
+      "stays": "Something pulled you away about 6 times an hour.",
+      "ret": "It took you about 9 minutes to come back.",
+      "quiet": "Your phone was quiet for 6% of your work time."
+    },
+    "extrasLines": []
+  },
+  "steadiness": {
+    "value": 74,
+    "word": "Wavering"
+  },
+  "stones": {
+    "totalStays": 21,
+    "stoneCount": 12,
+    "selfStartedCount": 7,
+    "unknownCount": 2,
+    "topStoneLabel": "Messaging app",
+    "noRippleRate": 0.38,
+    "line": "12 of your 21 stays began with a ping."
+  },
+  "patterns": [],
+  "nothingToFix": false,
+  "goalTap": {
+    "offered": true
+  },
+  "teacher": {
+    "opensThisWeek": 5,
+    "opensPrevWeek": 7,
+    "minutesThisWeek": 18.0,
+    "line": "You opened Sakshi 5 times this week."
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "returnLine": "You came back in about 9 minutes on average.",
+  "reanchorOffered": false
+}

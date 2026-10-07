@@ -6,6 +6,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.24.0'
 
 dependencies:
   flutter:
@@ -17,7 +18,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
-  pigeon: ^22.0.0
+  pigeon: ^22.7.4
 
 flutter:
   uses-material-design: true

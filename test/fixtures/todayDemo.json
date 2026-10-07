@@ -1,0 +1,16 @@
+{
+  "isDemo": true,
+  "windows": [
+    {
+      "startEpochMs": 1759632600000,
+      "endEpochMs": 1759640200000,
+      "stays": 2,
+      "shape": "HELD",
+      "stretchMin": 25.0,
+      "returnMin": 3.5
+    }
+  ],
+  "line": "One window today. You came back in about 4 minutes on average.",
+  "dataFlags": [],
+  "dataLines": []
+}

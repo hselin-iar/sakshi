@@ -1,0 +1,58 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [],
+  "dataLines": [],
+  "headline": "You held 13-minute stretches and 6-minute returns; close to your starting normal.",
+  "parts": {
+    "stretchMin": 14.5,
+    "longestStretchMin": 28.0,
+    "inSetShare": 0.68,
+    "quietShare": 0.12,
+    "staysPerHour": 3.2,
+    "glances": 4,
+    "returnMin": 4.8,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 15 minutes at a stretch (longest 28).",
+      "stays": "Something pulled you away about 3 times an hour.",
+      "ret": "It took you about 5 minutes to come back.",
+      "quiet": "Your phone was quiet for 12% of your work time."
+    },
+    "extrasLines": []
+  },
+  "steadiness": {
+    "value": 95,
+    "word": "Steady"
+  },
+  "stones": {
+    "totalStays": 17,
+    "stoneCount": 9,
+    "selfStartedCount": 6,
+    "unknownCount": 2,
+    "noRippleRate": 0.41,
+    "line": "9 of your 17 stays began with a ping."
+  },
+  "patterns": [],
+  "observation": {
+    "kindId": "S11",
+    "line": "You were away for 4 days. Your starting normal is still here."
+  },
+  "nothingToFix": false,
+  "goalTap": {
+    "offered": false
+  },
+  "lapseLine": "You were away 4 days. Your starting normal is still here.",
+  "saying": {
+    "id": "sy07",
+    "text": "No Hurry, No Worry.",
+    "source": "Complete Works, Volume 9, 9.1.214 Christine",
+    "tierLabel": "His own writing or letter",
+    "question": 212
+  },
+  "returnLine": "You came back in about 6 minutes on average.",
+  "reanchorOffered": false
+}

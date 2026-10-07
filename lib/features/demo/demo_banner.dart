@@ -1,44 +1,49 @@
+// lib/features/demo/demo_banner.dart
+// Permanent Demo Data banner (Track 4).
+// Can be used standalone or wrapping a child widget.
+
 import 'package:flutter/material.dart';
+import 'package:sakshi/core/ui_strings.dart';
 
-import '../../core/ui_strings.dart';
-
-// DemoBanner is created here (T3.1 stub) and owned by Track 4 afterwards
-// (DOC 3 v1.1 CA-2). Track 4 will replace the body with richer content.
-// DO NOT move this file; its path is referenced by app.dart.
-
-/// A persistent banner shown at the top of the app whenever [SetupStateDto.isDemo]
-/// is true. Mounted via [MaterialApp.router]'s builder in app.dart.
+/// Permanent banner indicating synthetic demo data is in use.
+/// Can be mounted standalone or wrap a [child] widget.
 class DemoBanner extends StatelessWidget {
-  const DemoBanner({super.key, required this.child});
+  const DemoBanner({super.key, this.child});
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    final banner = Material(
-      color: Theme.of(context).colorScheme.tertiaryContainer,
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    final banner = Container(
+      key: const Key('demo_banner'),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      color: cs.tertiaryContainer,
       child: SafeArea(
         bottom: false,
-        child: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-            child: Text(
-              demoBannerText,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color:
-                        Theme.of(context).colorScheme.onTertiaryContainer,
-                  ),
-              textAlign: TextAlign.center,
+        child: Center(
+          child: Text(
+            demoBannerText,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: cs.onTertiaryContainer,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.6,
             ),
           ),
         ),
       ),
     );
 
+    if (child == null) {
+      return banner;
+    }
+
     return Stack(
       children: [
-        child,
+        child!,
         Positioned(top: 0, left: 0, right: 0, child: banner),
       ],
     );
