@@ -40,6 +40,13 @@ object SentenceBuilder {
     private fun withEvidence(sentence: String, windows: Int, days: Int): String =
         "$sentence (based on ${count(windows, "window", "windows")} over ${count(days, "day", "days")})."
 
+    /** The exact Steadiness words: Wavering below 90, Steady 90 to 110, Steadier above 110. */
+    fun steadinessWord(word: Word): String = when (word) {
+        Word.WAVERING -> "Wavering"; Word.STEADY -> "Steady"; Word.STEADIER -> "Steadier"
+    }
+
+    fun firstLookLabel(): String = "Last few days"
+
     // ---------- the Mirror's headline and parts (F6) ----------
     fun headline(stretchMin: Double, returnMin: Double, word: Word): String {
         val relation = when (word) {

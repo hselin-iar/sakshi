@@ -15,6 +15,10 @@ import java.time.ZoneId
  * freeze; nothing yet calls for a re-anchor.
  */
 object UpdateBaseline {
+    /** The first baseline is row 1 and a re-anchor is row 2, so "never re-anchored" is "the active baseline has id 1". */
+    const val FIRST_BASELINE_ID = 1L
+    const val REANCHORED_BASELINE_ID = 2L
+
     fun run(ports: Ports, asOf: EpochMs, zone: ZoneId): Boolean {
         val existing = ports.state.baseline()
         if (existing != null && existing.isActive) return false
@@ -41,7 +45,7 @@ object UpdateBaseline {
         }
 
         val baseline = BaselineService.computeBaseline(dayData) ?: return false
-        ports.state.saveBaseline(baseline)
+        ports.state.saveBaseline(baseline.copy(id = FIRST_BASELINE_ID))
         return true
     }
 }

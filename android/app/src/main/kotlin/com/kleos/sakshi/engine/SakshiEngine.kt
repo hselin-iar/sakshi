@@ -1,22 +1,46 @@
 package com.kleos.sakshi.engine
 
+import com.kleos.sakshi.engine.lake.LakeBuilder
+import com.kleos.sakshi.engine.metrics.Weeks
+import com.kleos.sakshi.engine.mirror.MirrorBuilder
+import com.kleos.sakshi.engine.mirror.SentenceBuilder
+import com.kleos.sakshi.engine.mirror.TodayBuilder
 import com.kleos.sakshi.engine.model.*
+import com.kleos.sakshi.engine.note.NoteContext
+import com.kleos.sakshi.engine.note.WeeklyNote
 import com.kleos.sakshi.engine.ports.Ports
+import com.kleos.sakshi.engine.privacy.ExportBuilder
+import com.kleos.sakshi.engine.privacy.WhatISeeBuilder
+import com.kleos.sakshi.engine.usecases.BuildWeekSummary
+import com.kleos.sakshi.engine.usecases.ChooseSayings
+import com.kleos.sakshi.engine.usecases.DeleteEverything
+import com.kleos.sakshi.engine.usecases.DismissSuggestion
 import com.kleos.sakshi.engine.usecases.FinalizeWindows
+import com.kleos.sakshi.engine.usecases.FootprintStart
+import com.kleos.sakshi.engine.usecases.GoalTapUseCase
+import com.kleos.sakshi.engine.usecases.JudgeExperiments
+import com.kleos.sakshi.engine.usecases.PauseCollection
+import com.kleos.sakshi.engine.usecases.PickSaying
+import com.kleos.sakshi.engine.usecases.Reanchor
 import com.kleos.sakshi.engine.usecases.RecomputeDay
+import com.kleos.sakshi.engine.usecases.RunPatterns
+import com.kleos.sakshi.engine.usecases.SettingsUseCases
+import com.kleos.sakshi.engine.usecases.TapOutcome
+import com.kleos.sakshi.engine.usecases.TapTryThis
 import com.kleos.sakshi.engine.usecases.UpdateBaseline
 import java.time.ZoneId
 
 /**
- * The façade (LC-3). T1.2 stubs: every method returns an empty-but-valid view with `provisional = true`, or is a no-op.
- * No engine logic here; Track 2 replaces each body.
+ * The façade (LC-3). It only sequences use cases and builders; every decision about attention lives in them.
+ * `isDemo` is true for the Time Machine's own store, so a demo view says so.
  */
-class SakshiEngine(private val ports: Ports) {
-    // T2.8: no Settings field carries the user's zone, and this locked signature can't take one as a
-    // parameter, so this reads the device's configured zone -- not wall-clock time or randomness, so
-    // DependencyRuleTest's ban on those doesn't cover it, but it's a gap worth a Settings field later.
+class SakshiEngine(private val ports: Ports, private val isDemo: Boolean = false) {
+    // No Settings field carries the user's zone and the locked signatures cannot take one, so the device's configured zone is read.
+    // That is neither wall-clock time nor randomness; it is a gap worth a Settings field later.
+    private val zone: ZoneId get() = ZoneId.systemDefault()
+
     fun processNewEvents(asOf: EpochMs): ProcessReport {
-        val zone = ZoneId.systemDefault()
+        SettingsUseCases.ensureInitialised(ports, asOf)
         val oldest = ports.events.oldest() ?: return ProcessReport()
 
         val touchedDays = ports.events.range(oldest, asOf)
@@ -39,53 +63,125 @@ class SakshiEngine(private val ports: Ports) {
         }
 
         val baselineFrozen = UpdateBaseline.run(ports, asOf, zone)
-
+        val lakeChanged = refreshDerived(asOf)
         return ProcessReport(
-            daysRecomputed = touchedDays.size + staleDays.size,
-            newWindows = newWindows,
-            baselineFrozen = baselineFrozen,
+            daysRecomputed = touchedDays.size + staleDays.size, newWindows = newWindows,
+            baselineFrozen = baselineFrozen, lakeChanged = lakeChanged,
         )
     }
 
-    fun mirror(week: WeekStart?, asOf: EpochMs): MirrorView = MirrorView(
-        isDemo = false, provisional = true, gentle = false, weekStart = asOf, weekLabel = "",
-        dataState = DataState.LEARNING_BASELINE, dataFlags = emptyList(), dataLines = emptyList(), headline = "",
-        parts = null, steadiness = null, stones = null, clearHour = null, patterns = emptyList(),
-        suggestion = null, observation = null, nothingToFix = false, verdict = null,
-        goalTap = GoalTapView(offered = false, answer = null), teacher = null, lapseLine = null, saying = null,
-        returnLine = null, reanchorOffered = false, suggestedStudyBlock = null)
+    /** Everything that is built from the derived days: weeks, the Mirror-ready mark, patterns, experiments, the Lake row. True if the Lake changed. */
+    private fun refreshDerived(asOf: EpochMs): Boolean {
+        BuildWeekSummary.run(ports, asOf, zone)
+        val ready = BuildWeekSummary.latestMirrorWeek(ports, asOf, zone)
+        if (ready != null) ports.state.saveNote(ports.state.note().copy(mirrorReadyWeek = ready))
+        RunPatterns.run(ports, asOf, zone)
+        FootprintStart.run(ports, asOf, zone)
+        JudgeExperiments.run(ports, asOf, zone)
 
-    fun listMirrorWeeks(asOf: EpochMs): List<WeekRef> = emptyList()
+        val before = ports.state.lake()
+        val view = LakeBuilder.build(ports, asOf, zone)
+        val row = LakeRow(view.state, view.phrase, view.asOf)
+        ports.state.saveLake(row)
+        return before != row
+    }
 
-    fun today(asOf: EpochMs): TodayView = TodayView(
-        isDemo = false, windows = emptyList(), parts = null, line = "", dataFlags = emptyList(), dataLines = emptyList())
+    /** A changed work set or study block changes which windows exist: derived rows are thrown away and rebuilt from the raw events. The frozen baseline stays. */
+    private fun rederive() {
+        ports.derived.clearDerived()
+        processNewEvents(ports.clock.now())
+    }
 
-    fun lake(asOf: EpochMs): LakeView = LakeView(state = LakeState.NO_DATA, phrase = "", asOf = null)
+    fun mirror(week: WeekStart?, asOf: EpochMs): MirrorView {
+        val built = MirrorBuilder.build(ports, week, asOf, zone, isDemo)
+        val f = built.facts
+        if (isDemo || !f.completed) return built.view
+        // Seeing a Mirror is what changes state: the week counts as read, a verdict is marked shown, a suggestion is marked offered, a lapse is acknowledged.
+        val note = ports.state.note()
+        if (note.mirrorViewedWeek != f.week) ports.state.saveNote(note.copy(mirrorViewedWeek = f.week))
+        f.verdictExperimentId?.let { id -> ports.state.experiments().firstOrNull { it.id == id }?.let { ports.state.saveExperiment(it.copy(shown = true)) } }
+        f.currentTask?.takeIf { built.view.suggestion != null }?.let { t ->
+            val existing = ports.state.suggestionStates().firstOrNull { it.kind == t.kind && it.subject == t.subject }
+            ports.state.saveSuggestionState(
+                (existing ?: SuggestionState(t.kind, t.subject, asOf, null, null, null, null, "shown")).copy(lastShownAt = asOf, shownInWeek = f.week),
+            )
+        }
+        if (f.lapseShown) f.lapse?.let { l ->
+            ports.state.saveSettings(ports.state.settings().copy(lapseAcknowledgedThrough = l.endedAt))
+        }
+        return built.view
+    }
 
-    fun whatISee(asOf: EpochMs, host: HostFacts): WhatISeeView = WhatISeeView(
-        isDemo = false, usageAccessGranted = host.usageAccessGranted, notificationAccessGranted = host.notificationAccessGranted,
-        rawEventCount = 0, notifEventCount = 0, oldestRawEvent = null, derivedDays = 0, listenerCoverage7d = null,
-        lastWorkerRun = null, workerRuns7d = 0, paused = false, lastError = host.lastError, oddEventPairs = 0, lines = emptyList())
+    fun listMirrorWeeks(asOf: EpochMs): List<WeekRef> {
+        val weeks = ports.derived.weeks().filter { it.validDays >= BuildWeekSummary.MIRROR_MIN_VALID_DAYS }
+            .map { it.weekStart }.filter { Weeks.isCompleted(it, asOf, zone) }.sortedByDescending { it.studyDay.epochDay }
+        return weeks.map { WeekRef(Weeks.startMs(it, zone), SentenceBuilder.weekLabel(it, zone), completed = true) }
+    }
 
-    fun saveWorkSet(entries: List<WorkSetEntry>): SaveResult = SaveResult(ok = true, savedCount = 0, userMessage = null)
-    fun saveStudyHours(h: StudyHours) {}
+    fun today(asOf: EpochMs): TodayView = TodayBuilder.build(ports, asOf, zone, isDemo)
 
-    fun setGentle(on: Boolean) {}
-    fun setUnder18(on: Boolean) {}
-    fun setWeeklyNote(on: Boolean) {}
-    fun markBatteryHelperShown() {}
+    fun lake(asOf: EpochMs): LakeView = LakeBuilder.build(ports, asOf, zone)
 
-    fun tapTryThis(kind: SuggestionKind, subject: Pkg?, asOf: EpochMs): TapResult = TapResult(ok = false, reason = null)
-    fun dismissSuggestion(kind: SuggestionKind, subject: Pkg?, asOf: EpochMs) {}
-    fun tapGoal(answer: GoalAnswer, asOf: EpochMs) {}
-    fun reanchor(asOf: EpochMs): ReanchorResult = ReanchorResult(ok = false, reason = null)
+    fun whatISee(asOf: EpochMs, host: HostFacts): WhatISeeView = WhatISeeBuilder.build(ports, asOf, host, zone, isDemo)
 
-    fun chooseSayings(asOf: EpochMs): List<Saying> = emptyList()
-    fun pickSaying(id: String, asOf: EpochMs) {}
+    fun saveWorkSet(entries: List<WorkSetEntry>): SaveResult {
+        val result = SettingsUseCases.saveWorkSet(ports, entries, ports.clock.now())
+        if (result.ok) rederive()
+        return result
+    }
 
-    fun pause(on: Boolean, asOf: EpochMs) {}
-    fun export(includeRaw: Boolean, asOf: EpochMs): ExportDocument =
-        ExportDocument(exportVersion = 1, exportedAt = asOf, includeRaw = includeRaw)
-    fun deleteEverything() {}
-    fun noteDecision(asOf: EpochMs, host: HostFacts): NoteDecision = NoteDecision(post = false, reason = null)
+    fun saveStudyHours(h: StudyHours) {
+        SettingsUseCases.saveStudyHours(ports, h)
+        rederive()
+    }
+
+    fun setGentle(on: Boolean) = SettingsUseCases.setGentle(ports, on)
+    fun setUnder18(on: Boolean) = SettingsUseCases.setUnder18(ports, on)
+    fun setWeeklyNote(on: Boolean) = SettingsUseCases.setWeeklyNote(ports, on)
+    fun markBatteryHelperShown() = SettingsUseCases.markBatteryHelperShown(ports)
+
+    fun tapTryThis(kind: SuggestionKind, subject: Pkg?, asOf: EpochMs): TapResult {
+        val current = MirrorBuilder.build(ports, null, asOf, zone, isDemo).facts.currentTask
+        return when (TapTryThis.run(ports, kind, subject, current, asOf)) {
+            TapOutcome.STARTED, TapOutcome.ALREADY_RUNNING -> TapResult(ok = true, reason = null)
+            TapOutcome.STALE -> TapResult(ok = false, reason = "STALE")
+        }
+    }
+
+    fun dismissSuggestion(kind: SuggestionKind, subject: Pkg?, asOf: EpochMs) = DismissSuggestion.run(ports, kind, subject, asOf)
+
+    fun tapGoal(answer: GoalAnswer, asOf: EpochMs) {
+        val week = BuildWeekSummary.latestMirrorWeek(ports, asOf, zone) ?: return
+        GoalTapUseCase.run(ports, answer, week)
+    }
+
+    fun reanchor(asOf: EpochMs): ReanchorResult = Reanchor.run(ports, asOf, zone)
+
+    fun chooseSayings(asOf: EpochMs): List<Saying> {
+        val facts = MirrorBuilder.build(ports, null, asOf, zone, isDemo).facts
+        return ChooseSayings.run(ports, facts.sayingTags, facts.weekNumber, asOf)
+    }
+
+    fun pickSaying(id: String, asOf: EpochMs) = PickSaying.run(ports, id, asOf)
+
+    fun pause(on: Boolean, asOf: EpochMs) = PauseCollection.run(ports, on, asOf)
+
+    fun export(includeRaw: Boolean, asOf: EpochMs): ExportDocument = ExportBuilder.build(includeRaw, asOf)
+
+    fun deleteEverything() = DeleteEverything.run(ports)
+
+    fun noteDecision(asOf: EpochMs, host: HostFacts): NoteDecision {
+        val settings = ports.state.settings()
+        val state = ports.state.note()
+        val week = BuildWeekSummary.latestMirrorWeek(ports, asOf, zone)
+        val validDays = week?.let { w -> ports.derived.days(w.studyDay, StudyDay(w.studyDay.epochDay + 6)).count { it.valid } } ?: 0
+        val live = ports.derived.windows(EpochMs(asOf.value - 24 * 3_600_000L), EpochMs(asOf.value + 1)).any { !it.window.finalised }
+        return WeeklyNote.decide(
+            NoteContext(
+                asOf = asOf, enabled = settings.weeklyNoteEnabled, canPost = host.canPostNotifications, lastCompletedWeek = week,
+                validDaysInThatWeek = validDays, lastNoteWeek = state.lastNoteWeek, mirrorViewedWeek = state.mirrorViewedWeek,
+                inWindowNow = live, zone = zone,
+            ),
+        )
+    }
 }

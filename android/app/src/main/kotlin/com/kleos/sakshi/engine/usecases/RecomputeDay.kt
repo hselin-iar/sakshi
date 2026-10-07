@@ -55,7 +55,9 @@ object RecomputeDay {
 
         val studyBlocks = ports.state.settings().studyBlocks
         val gaps = ports.gaps.overlapping(dayStart, dayEnd)
-        val windows = WindowFinder.find(day, dayIntervals, effectiveClasses, studyBlocks, gaps, asOf, zone)
+        // WindowFinder leaves id = 0. The stores attach stretches and stays to a window by id, so every window needs its own.
+        // Its start time is unique (windows never overlap) and stable across recomputes of the same day.
+        val windows = WindowFinder.find(day, dayIntervals, effectiveClasses, studyBlocks, gaps, asOf, zone).map { it.copy(id = it.start.value) }
 
         val notifs = ports.notifs.range(EpochMs(dayStart.value - NOTIF_LOOKBACK_MS), dayEnd)
             .filter { it.ts.value <= asOf.value }
@@ -65,6 +67,10 @@ object RecomputeDay {
         val coverage = ports.coverage.coverageFraction(dayStart, dayEnd)
         val pickups = rawEvents.count { it.type == RawType.KEYGUARD_HIDDEN && it.ts.value in dayStart.value until dayEnd.value }
         val valid = WindowFinder.isValidDay(windowDetails.map { it.window })
+        val own = ports.catalog.ownPackage()
+        val externalResumes = rawEvents.count {
+            it.type == RawType.ACTIVITY_RESUMED && it.pkg != null && it.pkg != own && it.ts.value in dayStart.value until dayEnd.value
+        }
 
         val summary = DaySummary(
             day = day,
@@ -84,7 +90,7 @@ object RecomputeDay {
             // needed), firstStretchMin is the day's chronologically first stretch.
             lastScreenOffTs = dayScreenOff.maxByOrNull { it.start.value }?.start,
             firstStretchMin = windowDetails.flatMap { it.stretches }.minByOrNull { it.start.value }?.minutes,
-            externalResumes = 0,
+            externalResumes = externalResumes,
         )
 
         return DayDerivation(windowDetails, summary)
