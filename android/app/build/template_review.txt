@@ -1,0 +1,167 @@
+0 of your last 0 returns took more than one and a half times your usual time to get back.
+0 of your last 0 stays began with no ping.
+0 of your last 0 windows had a pull away in the first 5 minutes.
+1 of your 0 stays began with a ping.
+4–10 Oct
+50% of your stretches end between 20 and 25 minutes, usually when you reach for the phone yourself.
+55% of your stretches end between 20 and 25 minutes (based on 4 windows over 3 days).
+55% of your stretches end between 20 and 25 minutes, usually just after a ping (based on 4 windows over 3 days).
+55% of your stretches end between 20 and 25 minutes, usually when you reach for the phone yourself (based on 4 windows over 3 days).
+7 windows in a similar time slot began with pings (based on 4 windows over 3 days).
+7 windows in a similar time slot began with you reaching for the phone (based on 4 windows over 3 days).
+A few ripples.
+Add it to your work set
+After a stay, it took you about 0 minutes to get back.
+After a stay, it took you about 1 minute to get back.
+Between 00:00 and 02:00 your stretches average 22 minutes.
+Between 09:00 and 11:00 your stretches are longer and you are pulled away less than in the rest of your day.
+Calm.
+Choppy water.
+Collection was paused for 0 days this week.
+Everything is stored on this phone and nowhere else.
+Fewer things have been pulling you away over the last four weeks (based on 4 windows over 3 days).
+Heard pings for 0% of the last 7 days.
+Held
+I am still learning your starting normal.
+I can see which app is in front and when (package names and times). I never read what is on your screen.
+I could not read part of this week.
+I could not tell which of your 0 stays began with a ping.
+I could not tell which of your 1 stay began with a ping.
+I did not see 0 days this week (the phone was off, or I was away longer than Android keeps data). They are left out.
+I did not see enough finished windows in those two weeks to say whether anything changed.
+I have not heard any pings yet.
+I have not run in the background yet.
+I have seen 0 days of the 8 I need to learn your starting normal.
+I have seen 1 day of the 8 I need to learn your starting normal.
+I need a few more days before I can say anything about what to try.
+I note when an app sends a notification: its name, time and category. Never the words.
+It took you about 0 minutes to get back.
+It took you about 1 minute to get back.
+Keep the phone in another room while you start
+Last background run 0 minutes ago; 61 runs in the last 7 days.
+Last background run 1 minute ago; 61 runs in the last 7 days.
+Learning your normal.
+Leave the page you were on open
+More things have been pulling you away over the last four weeks (based on 4 windows over 3 days).
+Most of your stays began with no ping.
+Move its icon to a second screen
+No finished window yet today.
+Nothing to fix this week.
+Nothing to show yet.
+Of your 30 windows, 12 had no pull away, 9 were pulled by pings and 9 by you reaching for the phone (based on 4 windows over 3 days).
+Of your 30 windows, 12 had no pull away, 9 were pulled by pings and 9 by you reaching for the phone; the reaching mostly began after 22:30 (based on 4 windows over 3 days).
+On 0 of the last 14 nights the screen stayed on past 01:30, and the next day's first stretch was shorter.
+On the 5 nights the screen stayed on past 01:30, the next day's first stretch was about 6 minutes shorter (based on 4 windows over 3 days).
+One app is behind 0 of your last 0 ping-driven stays.
+One app is behind 0 of your last 0 stays.
+One app outside your work set took about 0% of your window time.
+Ping awareness is off, so I can't tell a ping from a reach.
+Ping awareness is partial; I have not heard a ping in the days I could check. Stays I could not check are left out of the ping count.
+Ping awareness is partial; I last heard a ping 1 day ago. Stays I could not check are left out of the ping count.
+Ping awareness is partial; I last heard a ping 2 days ago. Stays I could not check are left out of the ping count.
+Pinged
+Plan a short put-down at that mark
+Pulls away dropped by 31% over two weeks (based on 14 windows over 7 days).
+Put the hardest thing first
+Put the phone face down while you work
+Reached
+Review its notifications
+Since week 4, things have pulled you away less often than before (based on 4 windows over 3 days).
+Since week 4, things have pulled you away more often than before (based on 4 windows over 3 days).
+Since week 4, your phone has been less quiet than before (based on 4 windows over 3 days).
+Since week 4, your phone has been quieter than before (based on 4 windows over 3 days).
+Since week 4, your return time has been longer than before (based on 4 windows over 3 days).
+Since week 4, your return time has been shorter than before (based on 4 windows over 3 days).
+Since week 4, your stretches have been longer than before (based on 4 windows over 3 days).
+Since week 4, your stretches have been shorter than before (based on 4 windows over 3 days).
+Some ripples.
+Some waves.
+Something pulled you away about 0 times an hour.
+Something pulled you away about once an hour.
+Still water.
+The number of self-started stays per hour was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+The number of self-started stays per hour was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The number of self-started stays per hour went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+The number of self-started stays per hour went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The number of stays per hour from that app was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+The number of stays per hour from that app was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The number of stays per hour from that app went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+The number of stays per hour from that app went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The number of stays per hour that began with a ping from that app was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+The number of stays per hour that began with a ping from that app was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The number of stays per hour that began with a ping from that app went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+The number of stays per hour that began with a ping from that app went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The share of stretches that ended in a put-down was 410% before and 300% after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+The share of stretches that ended in a put-down was 410% before and 300% after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The share of stretches that ended in a put-down went from 410% to 300% in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+The share of stretches that ended in a put-down went from 410% to 300% in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The share of window time in apps outside your work set was 410% before and 300% after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+The share of window time in apps outside your work set was 410% before and 300% after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The share of window time in apps outside your work set went from 410% to 300% in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+The share of window time in apps outside your work set went from 410% to 300% in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The share of windows with a pull away in the first minutes was 410% before and 300% after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+The share of windows with a pull away in the first minutes was 410% before and 300% after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+The share of windows with a pull away in the first minutes went from 410% to 300% in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+The share of windows with a pull away in the first minutes went from 410% to 300% in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+There is not enough from this week to say much yet.
+These are your last few days as Android kept them.
+This looks like an unusual week, so I have left it out of the trends.
+Those two weeks included an unusual week or a change to your apps, so I cannot say whether anything changed.
+Today so far: 1 finished window.
+Today so far: 2 finished windows. You held 0-minute stretches.
+Too little data this week to say much.
+Turn the screen off by 00:30
+You held 0-minute stretches and 0-minute returns; close to your starting normal.
+You held 0-minute stretches and 0-minute returns; less steady than your starting normal.
+You held 0-minute stretches and 0-minute returns; steadier than your starting normal.
+You looked at other apps 0 times this week for under 30 seconds each, and 0 of those looks became stays.
+You opened me 0 times this week.
+You opened me 3 times in week 2 and 0 times this week.
+You opened me 3 times in week 2 and once this week.
+You opened me once this week.
+You stayed in your work apps for about 0 minutes at a stretch (longest 10).
+You stayed in your work apps for about 0 minutes at a stretch.
+You stayed in your work apps for about 1 minute at a stretch (longest 11).
+You stayed in your work apps for about 1 minute at a stretch.
+You were away 0 days. Your starting normal is still here.
+You were away 1 day. Your starting normal is still here.
+Your afternoon windows on weekends tend to have fewer pulls away than your other windows (based on 4 windows over 3 days).
+Your afternoon windows on weekends tend to have more pulls away than your other windows (based on 4 windows over 3 days).
+Your evening windows on weekdays tend to have fewer pulls away than your other windows (based on 4 windows over 3 days).
+Your evening windows on weekdays tend to have more pulls away than your other windows (based on 4 windows over 3 days).
+Your first stretch the next day (in minutes) was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+Your first stretch the next day (in minutes) was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+Your first stretch the next day (in minutes) went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+Your first stretch the next day (in minutes) went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+Your last few days: you held about 0 minutes at a stretch. Something pulled you away about 0 times an hour.
+Your last few days: you held about 0 minutes at a stretch. Something pulled you away about once an hour.
+Your last few days: you held about 1 minute at a stretch. Something pulled you away about 0 times an hour.
+Your last few days: you held about 1 minute at a stretch. Something pulled you away about once an hour.
+Your late-night windows on weekdays tend to have fewer pulls away than your other windows (based on 4 windows over 3 days).
+Your late-night windows on weekdays tend to have more pulls away than your other windows (based on 4 windows over 3 days).
+Your late-night windows on weekends tend to have fewer pulls away than your other windows (based on 4 windows over 3 days).
+Your late-night windows on weekends tend to have more pulls away than your other windows (based on 4 windows over 3 days).
+Your morning windows on weekdays tend to have fewer pulls away than your other windows (based on 4 windows over 3 days).
+Your morning windows on weekdays tend to have more pulls away than your other windows (based on 4 windows over 3 days).
+Your phone has been less quiet during work time over the last four weeks (based on 4 windows over 3 days).
+Your phone has been quieter during work time over the last four weeks (based on 4 windows over 3 days).
+Your phone was 31% quieter during work time over two weeks (based on 14 windows over 7 days).
+Your phone was quiet for 0% of your work time.
+Your return time got 31% shorter over two weeks (based on 14 windows over 7 days).
+Your return time has been getting longer over the last four weeks (based on 4 windows over 3 days).
+Your return time has been getting shorter over the last four weeks (based on 4 windows over 3 days).
+Your stretches got 31% longer over two weeks (based on 14 windows over 7 days).
+Your stretches have been getting longer over the last four weeks (based on 4 windows over 3 days).
+Your stretches have been getting shorter over the last four weeks (based on 4 windows over 3 days).
+Your usual stretch length (in minutes) was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+Your usual stretch length (in minutes) was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+Your usual stretch length (in minutes) went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+Your usual stretch length (in minutes) went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+Your usual time to get back (in minutes) was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause.
+Your usual time to get back (in minutes) was 4.1 before and 3.0 after the two weeks you tried it, which is not a clear change. This is correlation, not cause. Weekday and weekend windows were not balanced, so this comparison is approximate.
+Your usual time to get back (in minutes) went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight.
+Your usual time to get back (in minutes) went from 4.1 to 3.0 in the two weeks after you tried it. This is correlation, not cause; it could also have been a lighter fortnight. Weekday and weekend windows were not balanced, so this comparison is approximate.
+his own writing or letter
+recorded lecture
+reported by others
+type not resolved in the Outcome Map

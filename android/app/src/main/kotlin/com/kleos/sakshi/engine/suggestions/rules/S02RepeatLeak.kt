@@ -23,7 +23,8 @@ object S02RepeatLeak : SuggestionRule {
 
         return Candidate(
             kind = SuggestionKind.S2, subject = pkg, impactShare = share,
-            target = TargetMetric.STAYS_PER_HOUR_FROM_PKG, args = emptyMap(), action = ActionType.MOVE_ICON,
+            target = TargetMetric.STAYS_PER_HOUR_FROM_PKG,
+            args = mapOf("count" to pkgStays.size.toString(), "of" to stays.size.toString()), action = ActionType.MOVE_ICON,
         )
     }
 }

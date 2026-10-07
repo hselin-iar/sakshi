@@ -30,7 +30,8 @@ object S07WorkSetLeak : SuggestionRule {
 
         return Candidate(
             kind = SuggestionKind.S7, subject = topPkg, impactShare = coverage,
-            target = TargetMetric.WORKSET_COVERAGE, args = emptyMap(), action = ActionType.ADD_TO_WORK_SET,
+            target = TargetMetric.WORKSET_COVERAGE,
+            args = mapOf("pct" to Math.round(coverage * 100).toString()), action = ActionType.ADD_TO_WORK_SET,
         )
     }
 }

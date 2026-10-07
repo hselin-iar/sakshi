@@ -17,6 +17,7 @@ object S10GlanceReassurance : SuggestionRule {
         if (glances < Tuning.S10_MIN_GLANCES) return null
         if (stays == 0 || glances.toDouble() / stays < Tuning.S10_GLANCE_PER_STAY) return null
 
-        return Candidate(kind = SuggestionKind.S10, subject = null, impactShare = 0.0, target = null, args = emptyMap(), action = ActionType.NONE)
+        return Candidate(kind = SuggestionKind.S10, subject = null, impactShare = 0.0, target = null,
+            args = mapOf("glances" to glances.toString(), "stays" to stays.toString()), action = ActionType.NONE)
     }
 }

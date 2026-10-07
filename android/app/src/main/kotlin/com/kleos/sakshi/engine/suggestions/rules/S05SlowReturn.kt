@@ -29,7 +29,8 @@ object S05SlowReturn : SuggestionRule {
 
         return Candidate(
             kind = SuggestionKind.S5, subject = null, impactShare = exceededShare,
-            target = TargetMetric.MEDIAN_RETURN, args = emptyMap(), action = ActionType.LEAVE_PAGE_OPEN,
+            target = TargetMetric.MEDIAN_RETURN,
+            args = mapOf("count" to withReturn.count { it > Tuning.S5_RATIO * r0 }.toString(), "of" to withReturn.size.toString()), action = ActionType.LEAVE_PAGE_OPEN,
         )
     }
 }

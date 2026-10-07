@@ -44,9 +44,16 @@ object DataStates {
         flags.mapNotNull { flag ->
             when (flag) {
                 DataFlag.PING_OFF -> "Ping awareness is off, so I can't tell a ping from a reach."
-                DataFlag.PARTIAL_PING ->
-                    "Ping awareness is partial; I last heard a ping $lastPingDaysAgo days ago. " +
-                        "Stays I could not check are left out of the ping count."
+                DataFlag.PARTIAL_PING -> {
+                    // Never "null days ago": with no ping heard at all there is no day to name.
+                    val heard = when (lastPingDaysAgo) {
+                        null -> "I have not heard a ping in the days I could check."
+                        0 -> "I last heard a ping today."
+                        1 -> "I last heard a ping 1 day ago."
+                        else -> "I last heard a ping $lastPingDaysAgo days ago."
+                    }
+                    "Ping awareness is partial; $heard Stays I could not check are left out of the ping count."
+                }
                 DataFlag.NOT_SEEN ->
                     "I did not see $notSeenDays days this week (the phone was off, or I was away longer " +
                         "than Android keeps data). They are left out."

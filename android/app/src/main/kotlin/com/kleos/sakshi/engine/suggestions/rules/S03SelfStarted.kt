@@ -26,7 +26,8 @@ object S03SelfStarted : SuggestionRule {
 
         return Candidate(
             kind = SuggestionKind.S3, subject = null, impactShare = share,
-            target = TargetMetric.SELF_STARTED_PER_HOUR, args = emptyMap(), action = ActionType.PHONE_FACE_DOWN,
+            target = TargetMetric.SELF_STARTED_PER_HOUR,
+            args = mapOf("count" to known.count { it.origin == Origin.SELF_STARTED }.toString(), "of" to known.size.toString()), action = ActionType.PHONE_FACE_DOWN,
         )
     }
 }

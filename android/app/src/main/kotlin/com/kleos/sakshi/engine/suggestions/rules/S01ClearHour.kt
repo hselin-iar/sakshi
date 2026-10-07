@@ -28,7 +28,10 @@ object S01ClearHour : SuggestionRule {
         return Candidate(
             kind = SuggestionKind.S1, subject = null, impactShare = impactShare,
             target = TargetMetric.STRETCH_IN_SLOT,
-            args = mapOf("startHour" to clear.startHour.toString(), "endHour" to clear.endHour.toString()),
+            args = mapOf(
+                "startHour" to clear.startHour.toString(), "endHour" to clear.endHour.toString(),
+                "stretchMin" to clear.stretchMin.toString(),
+            ),
             action = ActionType.FIRST_THING_HARDEST,
         )
     }

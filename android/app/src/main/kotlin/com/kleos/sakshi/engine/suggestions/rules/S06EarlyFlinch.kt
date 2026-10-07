@@ -27,7 +27,8 @@ object S06EarlyFlinch : SuggestionRule {
 
         return Candidate(
             kind = SuggestionKind.S6, subject = null, impactShare = share,
-            target = TargetMetric.FLINCH_RATE, args = emptyMap(), action = ActionType.PHONE_IN_OTHER_ROOM,
+            target = TargetMetric.FLINCH_RATE,
+            args = mapOf("count" to flinched.toString(), "of" to ctx.windows.size.toString(), "minutes" to Tuning.FLINCH_FIRST_MIN.toString()), action = ActionType.PHONE_IN_OTHER_ROOM,
         )
     }
 }

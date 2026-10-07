@@ -18,6 +18,8 @@ object S12Win : SuggestionRule {
                 it.args["run3"] == "true" && it.strength >= Tuning.S12_IMPROVE
         } ?: return null
 
-        return Candidate(kind = SuggestionKind.S12, subject = null, impactShare = pattern.strength, target = null, args = pattern.args, action = ActionType.NONE)
+        return Candidate(kind = SuggestionKind.S12, subject = null, impactShare = pattern.strength, target = null,
+            args = pattern.args + mapOf("evidenceWindows" to pattern.evidenceWindows.toString(), "evidenceDays" to pattern.evidenceDays.toString()),
+            action = ActionType.NONE)
     }
 }

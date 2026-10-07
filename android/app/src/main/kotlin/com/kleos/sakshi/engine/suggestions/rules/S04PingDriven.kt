@@ -29,7 +29,8 @@ object S04PingDriven : SuggestionRule {
 
         return Candidate(
             kind = SuggestionKind.S4, subject = topPkg, impactShare = stoneShare,
-            target = TargetMetric.PINGS_FROM_PKG_IN_WINDOWS, args = emptyMap(), action = ActionType.OPEN_NOTIFICATION_SETTINGS,
+            target = TargetMetric.PINGS_FROM_PKG_IN_WINDOWS,
+            args = mapOf("count" to topPkgEntry.value.size.toString(), "of" to stoneStays.size.toString()), action = ActionType.OPEN_NOTIFICATION_SETTINGS,
         )
     }
 }
