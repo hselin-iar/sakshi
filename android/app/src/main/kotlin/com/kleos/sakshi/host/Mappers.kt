@@ -2,9 +2,7 @@ package com.kleos.sakshi.host
 
 import com.kleos.sakshi.engine.model.*
 import com.kleos.sakshi.host.gen.*
-import java.time.Instant
 import java.time.ZoneId
-import com.kleos.sakshi.engine.tuning.Tuning
 
 /**
  * Engine views to Pigeon DTOs, field for field. No decisions here: nothing is computed, filtered or reworded.
@@ -131,12 +129,9 @@ fun setupStateDto(
         workerRuns7d = ingest.workerRuns7d.toLong(), paused = ingest.paused, lastWorkerRunEpochMs = ingest.lastWorkerRunAt?.value,
         listenerCoverage7d = listenerCoverage7d, lastError = ingest.lastError))
 
-/**
- * Epoch milliseconds back to a week start. A week begins Monday 04:00 local, so this is the study-day rule plus a step back to Monday.
- * [REFACTOR CANDIDATE: use StudyDay.of from Track 2 (T2.1) after the merge so the 04:00 rule lives in one place.]
- */
+/** Epoch milliseconds back to a week start: the Monday of the study day (04:00 rule from the engine's StudyDay.of). */
 fun weekStartOf(epochMs: Long, zone: ZoneId = ZoneId.systemDefault()): WeekStart {
-    val studyDate = Instant.ofEpochMilli(epochMs).atZone(zone).minusHours(Tuning.STUDY_DAY_START_HOUR.toLong()).toLocalDate()
+    val studyDate = java.time.LocalDate.ofEpochDay(StudyDay.of(EpochMs(epochMs), zone).epochDay)
     val monday = studyDate.minusDays((studyDate.dayOfWeek.value - 1).toLong())
     return WeekStart(StudyDay(monday.toEpochDay()))
 }

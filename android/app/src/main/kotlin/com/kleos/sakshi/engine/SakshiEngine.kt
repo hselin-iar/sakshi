@@ -2,13 +2,50 @@ package com.kleos.sakshi.engine
 
 import com.kleos.sakshi.engine.model.*
 import com.kleos.sakshi.engine.ports.Ports
+import com.kleos.sakshi.engine.usecases.FinalizeWindows
+import com.kleos.sakshi.engine.usecases.RecomputeDay
+import com.kleos.sakshi.engine.usecases.UpdateBaseline
+import java.time.ZoneId
 
 /**
  * The façade (LC-3). T1.2 stubs: every method returns an empty-but-valid view with `provisional = true`, or is a no-op.
  * No engine logic here; Track 2 replaces each body.
  */
-class SakshiEngine(@Suppress("unused") private val ports: Ports) {
-    fun processNewEvents(asOf: EpochMs): ProcessReport = ProcessReport(lakeChanged = false)
+class SakshiEngine(private val ports: Ports) {
+    // T2.8: no Settings field carries the user's zone, and this locked signature can't take one as a
+    // parameter, so this reads the device's configured zone -- not wall-clock time or randomness, so
+    // DependencyRuleTest's ban on those doesn't cover it, but it's a gap worth a Settings field later.
+    fun processNewEvents(asOf: EpochMs): ProcessReport {
+        val zone = ZoneId.systemDefault()
+        val oldest = ports.events.oldest() ?: return ProcessReport()
+
+        val touchedDays = ports.events.range(oldest, asOf)
+            .map { StudyDay.of(it.ts, zone) }
+            .distinct()
+            .sortedBy { it.epochDay }
+
+        var newWindows = 0
+        for (day in touchedDays) {
+            val derivation = RecomputeDay.recompute(day, asOf, ports, zone)
+            ports.derived.replaceDay(day, derivation)
+            newWindows += derivation.windows.size
+        }
+
+        val today = StudyDay.of(asOf, zone)
+        val lookback = (0..2).map { StudyDay(today.epochDay - it) }.filterNot { it in touchedDays }
+        val staleDays = FinalizeWindows.staleDays(ports, asOf, lookback, zone)
+        for (day in staleDays) {
+            ports.derived.replaceDay(day, RecomputeDay.recompute(day, asOf, ports, zone))
+        }
+
+        val baselineFrozen = UpdateBaseline.run(ports, asOf, zone)
+
+        return ProcessReport(
+            daysRecomputed = touchedDays.size + staleDays.size,
+            newWindows = newWindows,
+            baselineFrozen = baselineFrozen,
+        )
+    }
 
     fun mirror(week: WeekStart?, asOf: EpochMs): MirrorView = MirrorView(
         isDemo = false, provisional = true, gentle = false, weekStart = asOf, weekLabel = "",
