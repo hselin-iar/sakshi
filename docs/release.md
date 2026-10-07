@@ -14,9 +14,10 @@ R8 code shrinking and resource shrinking stay on at Flutter's defaults. The debu
 ## What the audit refuses
 
 An exit code other than 0 means do not ship. It fails on:
-- any of: `INTERNET`, `SYSTEM_ALERT_WINDOW`, `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`, `QUERY_ALL_PACKAGES`, `SCHEDULE_EXACT_ALARM`, `USE_EXACT_ALARM`, `BIND_ACCESSIBILITY_SERVICE`, `BIND_DEVICE_ADMIN`, any `FOREGROUND_SERVICE*`, and contacts, location, camera, microphone and SMS permissions
+- any of: `SYSTEM_ALERT_WINDOW`, `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`, `QUERY_ALL_PACKAGES`, `SCHEDULE_EXACT_ALARM`, `USE_EXACT_ALARM`, `BIND_ACCESSIBILITY_SERVICE`, `BIND_DEVICE_ADMIN`, any `FOREGROUND_SERVICE*`, and contacts, location, camera, microphone and SMS permissions
 - an accessibility service, a device admin receiver, a foreground service or its type, or WorkManager's foreground service in the manifest
 - the `DebugTools` receiver in the manifest or its code in the dex
+- cleartext (non-HTTPS) traffic not switched off (`INTERNET` itself is allowed since 2026-10-07, for Ask Sakshi only; see `docs/ask.md`)
 - a debuggable APK, `allowBackup` not set to false, or the notification listener service missing
 - a signature that does not verify, or one made with the Android **debug** key
 
@@ -47,7 +48,7 @@ To make a new key (this invalidates updates for existing installs):
 ## Install and the no-network demonstration (on the phones)
 
 1. `adb install -r build/app/outputs/flutter-apk/app-release.apk`, **and** separately copy the file to the phone and install it from the Files app. The two routes can differ for the notification-access "restricted setting" (spike S-H, see `docs/phone_test_day.md`).
-2. Turn airplane mode on and complete the setup flow (usage access, optionally notification access). Sakshi works with no network because it has no `INTERNET` permission at all; the audit output above is the proof.
+2. Turn airplane mode on and complete the setup flow (usage access, optionally notification access). Everything except "Ask Sakshi" works with no network; with airplane mode on, Ask answers from the offline engine (its source line says so). The only network use is the Ask call, over HTTPS (docs/ask.md).
 3. Screenshot the install and the finished setup, on the Nothing Phone 3a and the iQOO Z7.
 
 The setup flow itself is Track 3's screens. Until they land, the debug-screen buttons (`openUsageAccessSettings`, `getSetupState`) stand in for it.

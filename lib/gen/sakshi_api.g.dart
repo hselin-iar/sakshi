@@ -1366,6 +1366,121 @@ class SayingDto {
   }
 }
 
+class AskTurnDto {
+  AskTurnDto({
+    required this.role,
+    required this.text,
+  });
+
+  String role;
+
+  String text;
+
+  List<Object?> _toList() {
+    return <Object?>[
+      role,
+      text,
+    ];
+  }
+
+  Object encode() {
+    return _toList();  }
+
+  static AskTurnDto decode(Object result) {
+    result as List<Object?>;
+    return AskTurnDto(
+      role: result[0]! as String,
+      text: result[1]! as String,
+    );
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (other is! AskTurnDto || other.runtimeType != runtimeType) {
+      return false;
+    }
+    if (identical(this, other)) {
+      return true;
+    }
+    return _deepEquals(role, other.role) && _deepEquals(text, other.text);
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
+
+  @override
+  String toString() {
+    return 'AskTurnDto(role: $role, text: $text)';
+  }
+}
+
+class AskReplyDto {
+  AskReplyDto({
+    required this.text,
+    required this.source,
+    required this.isDemo,
+    this.quote,
+    this.quoteSource,
+  });
+
+  String text;
+
+  String source;
+
+  bool isDemo;
+
+  String? quote;
+
+  String? quoteSource;
+
+  List<Object?> _toList() {
+    return <Object?>[
+      text,
+      source,
+      isDemo,
+      quote,
+      quoteSource,
+    ];
+  }
+
+  Object encode() {
+    return _toList();  }
+
+  static AskReplyDto decode(Object result) {
+    result as List<Object?>;
+    return AskReplyDto(
+      text: result[0]! as String,
+      source: result[1]! as String,
+      isDemo: result[2]! as bool,
+      quote: result[3] as String?,
+      quoteSource: result[4] as String?,
+    );
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (other is! AskReplyDto || other.runtimeType != runtimeType) {
+      return false;
+    }
+    if (identical(this, other)) {
+      return true;
+    }
+    return _deepEquals(text, other.text) && _deepEquals(source, other.source) && _deepEquals(isDemo, other.isDemo) && _deepEquals(quote, other.quote) && _deepEquals(quoteSource, other.quoteSource);
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
+
+  @override
+  String toString() {
+    return 'AskReplyDto(text: $text, source: $source, isDemo: $isDemo, quote: $quote, quoteSource: $quoteSource)';
+  }
+}
+
 class MirrorDto {
   MirrorDto({
     required this.isDemo,
@@ -2032,26 +2147,32 @@ class _PigeonCodec extends StandardMessageCodec {
     }    else if (value is SayingDto) {
       buffer.putUint8(154);
       writeValue(buffer, value.encode());
-    }    else if (value is MirrorDto) {
+    }    else if (value is AskTurnDto) {
       buffer.putUint8(155);
       writeValue(buffer, value.encode());
-    }    else if (value is WeekRefDto) {
+    }    else if (value is AskReplyDto) {
       buffer.putUint8(156);
       writeValue(buffer, value.encode());
-    }    else if (value is TodayWindowDto) {
+    }    else if (value is MirrorDto) {
       buffer.putUint8(157);
       writeValue(buffer, value.encode());
-    }    else if (value is TodayDto) {
+    }    else if (value is WeekRefDto) {
       buffer.putUint8(158);
       writeValue(buffer, value.encode());
-    }    else if (value is WhatISeeDto) {
+    }    else if (value is TodayWindowDto) {
       buffer.putUint8(159);
       writeValue(buffer, value.encode());
-    }    else if (value is LakeDto) {
+    }    else if (value is TodayDto) {
       buffer.putUint8(160);
       writeValue(buffer, value.encode());
-    }    else if (value is ExportDto) {
+    }    else if (value is WhatISeeDto) {
       buffer.putUint8(161);
+      writeValue(buffer, value.encode());
+    }    else if (value is LakeDto) {
+      buffer.putUint8(162);
+      writeValue(buffer, value.encode());
+    }    else if (value is ExportDto) {
+      buffer.putUint8(163);
       writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
@@ -2120,18 +2241,22 @@ class _PigeonCodec extends StandardMessageCodec {
       case 154:
         return SayingDto.decode(readValue(buffer)!);
       case 155:
-        return MirrorDto.decode(readValue(buffer)!);
+        return AskTurnDto.decode(readValue(buffer)!);
       case 156:
-        return WeekRefDto.decode(readValue(buffer)!);
+        return AskReplyDto.decode(readValue(buffer)!);
       case 157:
-        return TodayWindowDto.decode(readValue(buffer)!);
+        return MirrorDto.decode(readValue(buffer)!);
       case 158:
-        return TodayDto.decode(readValue(buffer)!);
+        return WeekRefDto.decode(readValue(buffer)!);
       case 159:
-        return WhatISeeDto.decode(readValue(buffer)!);
+        return TodayWindowDto.decode(readValue(buffer)!);
       case 160:
-        return LakeDto.decode(readValue(buffer)!);
+        return TodayDto.decode(readValue(buffer)!);
       case 161:
+        return WhatISeeDto.decode(readValue(buffer)!);
+      case 162:
+        return LakeDto.decode(readValue(buffer)!);
+      case 163:
         return ExportDto.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -2245,6 +2370,25 @@ class SakshiHostApi {
         isNullValid: true,
     )
     ;
+  }
+
+  Future<AskReplyDto> askSakshi(String question, List<AskTurnDto> history) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.askSakshi$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[question, history]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    return pigeonVar_replyValue! as AskReplyDto;
   }
 
   Future<bool> requestLakeWidget() async {

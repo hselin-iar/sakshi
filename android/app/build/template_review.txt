@@ -35,6 +35,7 @@ I have seen 0 days of the 8 I need to learn your starting normal.
 I have seen 1 day of the 8 I need to learn your starting normal.
 I need a few more days before I can say anything about what to try.
 I note when an app sends a notification: its name, time and category. Never the words.
+If you ask Sakshi a question, a short summary of your numbers is sent to a language service to write the reply. It has no app names, no notification words and no events.
 It took you about 0 minutes to get back.
 It took you about 1 minute to get back.
 Keep the phone in another room while you start

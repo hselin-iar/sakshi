@@ -1279,6 +1279,100 @@ data class SayingDto (
 }
 
 /** Generated class from Pigeon that represents data sent in messages. */
+data class AskTurnDto (
+  val role: String,
+  val text: String
+)
+ {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): AskTurnDto {
+      val role = pigeonVar_list[0] as String
+      val text = pigeonVar_list[1] as String
+      return AskTurnDto(role, text)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf(
+      role,
+      text,
+    )
+  }
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other.javaClass != javaClass) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    val other = other as AskTurnDto
+    return SakshiApiPigeonUtils.deepEquals(this.role, other.role) && SakshiApiPigeonUtils.deepEquals(this.text, other.text)
+  }
+
+  override fun hashCode(): Int {
+    var result = javaClass.hashCode()
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.role)
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.text)
+    return result
+  }
+  override fun toString(): String {
+    return "AskTurnDto(role=$role, text=$text)"
+  }
+}
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class AskReplyDto (
+  val text: String,
+  val source: String,
+  val isDemo: Boolean,
+  val quote: String? = null,
+  val quoteSource: String? = null
+)
+ {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): AskReplyDto {
+      val text = pigeonVar_list[0] as String
+      val source = pigeonVar_list[1] as String
+      val isDemo = pigeonVar_list[2] as Boolean
+      val quote = pigeonVar_list[3] as String?
+      val quoteSource = pigeonVar_list[4] as String?
+      return AskReplyDto(text, source, isDemo, quote, quoteSource)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf(
+      text,
+      source,
+      isDemo,
+      quote,
+      quoteSource,
+    )
+  }
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other.javaClass != javaClass) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    val other = other as AskReplyDto
+    return SakshiApiPigeonUtils.deepEquals(this.text, other.text) && SakshiApiPigeonUtils.deepEquals(this.source, other.source) && SakshiApiPigeonUtils.deepEquals(this.isDemo, other.isDemo) && SakshiApiPigeonUtils.deepEquals(this.quote, other.quote) && SakshiApiPigeonUtils.deepEquals(this.quoteSource, other.quoteSource)
+  }
+
+  override fun hashCode(): Int {
+    var result = javaClass.hashCode()
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.text)
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.source)
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.isDemo)
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.quote)
+    result = 31 * result + SakshiApiPigeonUtils.deepHash(this.quoteSource)
+    return result
+  }
+  override fun toString(): String {
+    return "AskReplyDto(text=$text, source=$source, isDemo=$isDemo, quote=$quote, quoteSource=$quoteSource)"
+  }
+}
+
+/** Generated class from Pigeon that represents data sent in messages. */
 data class MirrorDto (
   val isDemo: Boolean,
   val provisional: Boolean,
@@ -1883,35 +1977,45 @@ private open class SakshiApiPigeonCodec : StandardMessageCodec() {
       }
       155.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          MirrorDto.fromList(it)
+          AskTurnDto.fromList(it)
         }
       }
       156.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          WeekRefDto.fromList(it)
+          AskReplyDto.fromList(it)
         }
       }
       157.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          TodayWindowDto.fromList(it)
+          MirrorDto.fromList(it)
         }
       }
       158.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          TodayDto.fromList(it)
+          WeekRefDto.fromList(it)
         }
       }
       159.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          WhatISeeDto.fromList(it)
+          TodayWindowDto.fromList(it)
         }
       }
       160.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          LakeDto.fromList(it)
+          TodayDto.fromList(it)
         }
       }
       161.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
+          WhatISeeDto.fromList(it)
+        }
+      }
+      162.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
+          LakeDto.fromList(it)
+        }
+      }
+      163.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
           ExportDto.fromList(it)
         }
@@ -2025,32 +2129,40 @@ private open class SakshiApiPigeonCodec : StandardMessageCodec() {
         stream.write(154)
         writeValue(stream, value.toList())
       }
-      is MirrorDto -> {
+      is AskTurnDto -> {
         stream.write(155)
         writeValue(stream, value.toList())
       }
-      is WeekRefDto -> {
+      is AskReplyDto -> {
         stream.write(156)
         writeValue(stream, value.toList())
       }
-      is TodayWindowDto -> {
+      is MirrorDto -> {
         stream.write(157)
         writeValue(stream, value.toList())
       }
-      is TodayDto -> {
+      is WeekRefDto -> {
         stream.write(158)
         writeValue(stream, value.toList())
       }
-      is WhatISeeDto -> {
+      is TodayWindowDto -> {
         stream.write(159)
         writeValue(stream, value.toList())
       }
-      is LakeDto -> {
+      is TodayDto -> {
         stream.write(160)
         writeValue(stream, value.toList())
       }
-      is ExportDto -> {
+      is WhatISeeDto -> {
         stream.write(161)
+        writeValue(stream, value.toList())
+      }
+      is LakeDto -> {
+        stream.write(162)
+        writeValue(stream, value.toList())
+      }
+      is ExportDto -> {
+        stream.write(163)
         writeValue(stream, value.toList())
       }
       else -> super.writeValue(stream, value)
@@ -2066,6 +2178,7 @@ interface SakshiHostApi {
   suspend fun openNotificationAccessSettings()
   suspend fun openAppInfoForRestrictedSettings()
   suspend fun openBatterySettings()
+  suspend fun askSakshi(question: String, history: List<AskTurnDto>): AskReplyDto
   suspend fun requestLakeWidget(): Boolean
   suspend fun markBatteryHelperShown()
   suspend fun listLauncherApps(): List<AppDto>
@@ -2181,6 +2294,26 @@ interface SakshiHostApi {
               val wrapped: List<Any?> = try {
                 api.openBatterySettings()
                 listOf(null)
+              } catch (exception: Throwable) {
+                SakshiApiPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.sakshi.SakshiHostApi.askSakshi$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val questionArg = args[0] as String
+            val historyArg = args[1] as List<AskTurnDto>
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                listOf(api.askSakshi(questionArg, historyArg))
               } catch (exception: Throwable) {
                 SakshiApiPigeonUtils.wrapError(exception)
               }

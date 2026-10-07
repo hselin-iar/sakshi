@@ -16,8 +16,12 @@ class ReleaseManifestTest {
 
     private fun forbidden(vararg prefixes: String) = permissions.filter { p -> prefixes.any { p.startsWith(it) } }
 
+    // Policy change 2026-10-07 (docs/ask.md): INTERNET is allowed for "Ask Sakshi" only, and only over HTTPS.
     @Test
-    fun noInternet() = assertEquals(emptyList<String>(), forbidden("android.permission.INTERNET"))
+    fun internetIsDeclaredOnceAndOnlyOverHttps() {
+        assertEquals(listOf("android.permission.INTERNET"), forbidden("android.permission.INTERNET"))
+        assertTrue("cleartext traffic must stay off", manifest.contains("""android:usesCleartextTraffic="false""""))
+    }
 
     @Test
     fun noOverlayBatteryExemptionOrAllPackages() = assertEquals(

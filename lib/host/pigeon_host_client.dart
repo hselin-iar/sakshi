@@ -44,6 +44,9 @@ class PigeonHostClient implements HostClient {
   Future<void> openBatterySettings() => _call(() => _api.openBatterySettings());
 
   @override
+  Future<AskReplyDto> askSakshi(String question, List<AskTurnDto> history) => _call(() => _api.askSakshi(question, history));
+
+  @override
   Future<bool> requestLakeWidget() => _call(() => _api.requestLakeWidget());
 
   @override

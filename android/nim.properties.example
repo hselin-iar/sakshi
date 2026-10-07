@@ -1,0 +1,9 @@
+# Copy this file to android/nim.properties (git-ignored) and put your NVIDIA NIM key after the equals sign.
+# Get a key at https://build.nvidia.com. The key is compiled into the APK, so anyone with the APK can read it out:
+# use a throwaway key with a spending limit, and revoke it after the event. Leave it blank and Ask Sakshi answers offline.
+NIM_API_KEY=
+# chat answers (fast)
+NIM_MODEL=openai/gpt-oss-20b
+# "give me an idea to try": a reasoning model that turns the numbers into small experiments
+NIM_IDEAS_MODEL=nvidia/nemotron-3-super-120b-a12b
+NIM_BASE_URL=https://integrate.api.nvidia.com/v1

@@ -6,7 +6,7 @@ Android-only passive attention app (Flutter UI, Kotlin host, pure-Kotlin engine)
 
 Sakshi reads what Android already records (app foreground events, screen on/off, and the **package, time and category** of notifications, never their text). It turns that into windows, stretches, stays and returns against the user's **own** starting normal and shows a weekly Mirror with at most one plain suggestion. It also has a Lake home-screen widget, a "What I see" privacy page (Pause, Export, Delete) and a synthetic-data Time Machine demo.
 
-It never blocks, delays, locks or hides anything. No accounts, no cloud, no `INTERNET` permission, no typing anywhere.
+It never blocks, delays, locks or hides anything. No accounts. **Policy change, Integration Owner, 2026-10-07 (docs/ask.md):** the app now has the `INTERNET` permission, HTTPS only, used for exactly one thing, "Ask Sakshi" (a chat that sends a short summary of the person's numbers, never app names, notification words or events, to a language service); typing exists only in that chat; when the person asks the chat for ideas, the language service may offer one or two small things to try as invitations tied to their numbers (never orders, never "should/must/need to", never judgments), labelled as written by the service, while the Mirror's own measured suggestion stays the only one the app judges. Everything else is as before: no cloud storage, no sync, nothing else leaves the phone.
 
 ## 2. Session start (every session)
 
@@ -18,7 +18,7 @@ It never blocks, delays, locks or hides anything. No accounts, no cloud, no `INT
 ## 3. Stack and commands
 
 - UI: Flutter (Dart), `flutter_riverpod` (manual providers, no code generation), `go_router`. **No other packages.**
-- Bridge: Pigeon, pull-only. Single file `pigeons/sakshi_api.dart` (31 host methods; the 31st, requestLakeWidget, is a Contract Change).
+- Bridge: Pigeon, pull-only. Single file `pigeons/sakshi_api.dart` (32 host methods; the 31st, requestLakeWidget, and the 32nd, askSakshi, are Contract Changes).
 - Native: Kotlin, **one** Android module. Room (KSP), WorkManager, native `AppWidgetProvider`/RemoteViews, `NotificationListenerService`, kotlinx.serialization, manual DI (`AppContainer`). No Hilt, no kapt.
 - Engine: package `com.kleos.sakshi.engine`, pure Kotlin, JUnit 4 local tests.
 - minSdk 29. Study day starts at 04:00 local. Raw events kept 14 days.
@@ -72,7 +72,7 @@ You never add, rename or remove a field, method, enum value or port in them. If 
 - Import `android.*`, `androidx.*`, `host.*`, `data.*` or `io.flutter.*` inside `engine/`; call `System.currentTimeMillis`, `Instant.now`, `LocalDateTime.now` or `Random()` there.
 - Add a text field to `NotifEvent`; read notification title or text; log package names in a release build.
 - Add a dependency, library or Gradle plugin; upgrade a version; restructure the Flutter template; split the Android module.
-- Add `INTERNET`, accessibility, overlay, device-admin, foreground-service, battery-exemption or `QUERY_ALL_PACKAGES` to the release manifest.
+- Add accessibility, overlay, device-admin, foreground-service, battery-exemption or `QUERY_ALL_PACKAGES` to the release manifest.
 - Put logic about attention in collectors, the widget, `HostApiImpl`, `Mappers` or any Flutter file.
 - Refactor outside the current step, gold-plate (spinners, animations, logging frameworks, error UI the step did not ask for), merge two steps, or start the next step early.
 - Add a text field to setup or measurement. No typing in Sakshi.

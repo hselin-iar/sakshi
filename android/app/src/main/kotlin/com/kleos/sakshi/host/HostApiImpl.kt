@@ -2,6 +2,9 @@ package com.kleos.sakshi.host
 
 import android.content.Context
 import android.util.Log
+import com.kleos.sakshi.engine.ask.AskGuard
+import com.kleos.sakshi.engine.ask.AskPrompt
+import com.kleos.sakshi.engine.ask.OfflineAnswerer
 import com.kleos.sakshi.engine.model.EpochMs
 import com.kleos.sakshi.engine.model.Pkg
 import com.kleos.sakshi.host.gen.*
@@ -13,7 +16,11 @@ import kotlinx.coroutines.withContext
  * Nothing here decides anything about attention; that belongs in the engine.
  * Every call runs on a background dispatcher, and an unexpected failure becomes a typed INTERNAL error.
  */
-class HostApiImpl(context: Context, private val notificationRequester: PostNotificationsRequester? = null) : SakshiHostApi {
+class HostApiImpl(
+    context: Context,
+    private val notificationRequester: PostNotificationsRequester? = null,
+    private val nim: NimClient = NimClient.fromBuildConfig(),
+) : SakshiHostApi {
     private val appContext = context.applicationContext
     private val container get() = AppContainer.from(appContext)
     private val engine get() = container.engine
@@ -61,6 +68,33 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     override suspend fun openNotificationAccessSettings() = call { permissions.openNotificationAccessSettings() }
     override suspend fun openAppInfoForRestrictedSettings() = call { permissions.openAppInfo() }
     override suspend fun openBatterySettings() = call { BatterySetup(appContext).open(); Unit }
+    /**
+     * Ask Sakshi. The engine builds the facts (numbers and the app's own sentences, never app names); the language service, if configured,
+     * writes the reply; the reply is dropped for the engine's own offline answer if the service fails, times out or breaks a copy rule.
+     * A quote is always a saying from the shelf, printed from the shelf by id.
+     */
+    override suspend fun askSakshi(question: String, history: List<AskTurnDto>): AskReplyDto = call {
+        val q = question.trim().take(MAX_QUESTION_CHARS)
+        if (q.isBlank()) throw HostErrors.error(HostErrors.BAD_REQUEST, "question")
+        val asOf = now()
+        val ctx = engine.askContext(asOf)
+        val turns = history.takeLast(MAX_TURNS).map { NimClient.Turn(it.role, it.text.take(MAX_TURN_CHARS)) }
+
+        val fromService = if (nim.configured) {
+            try {
+                val ideas = OfflineAnswerer.intentOf(q) == OfflineAnswerer.Intent.SUGGEST
+                AskPrompt.parse(nim.chat(AskPrompt.system(ctx, ideas), turns, q, ideas), ctx)?.takeIf { AskGuard.isClean(it.text) }
+            } catch (e: Exception) {
+                Log.w("SakshiAsk", "service unavailable: ${e::class.simpleName}")   // the class name only; never the question or any text
+                null
+            }
+        } else null
+
+        val answer = fromService ?: engine.askOffline(q, asOf)
+        // a quote is always offered: the one the model named, else one from the shelf picked steadily from the question
+        val quote = answer.quote ?: ctx.sayings.takeIf { it.isNotEmpty() }?.let { it[(q.hashCode() and 0x7fffffff) % it.size] }
+        AskReplyDto(text = answer.text, source = if (fromService != null) "LLM" else "OFFLINE", isDemo = container.demoActive, quote = quote?.text, quoteSource = quote?.source)
+    }
     override suspend fun requestLakeWidget(): Boolean = call {
         val manager = android.appwidget.AppWidgetManager.getInstance(appContext)
         // Not every launcher can pin; the screen then says how to add it by hand.
@@ -156,4 +190,10 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     }
     override suspend fun stopDemo() = call { container.demoController.stop() }
 
+
+    private companion object {
+        const val MAX_QUESTION_CHARS = 300
+        const val MAX_TURNS = 6
+        const val MAX_TURN_CHARS = 600
+    }
 }

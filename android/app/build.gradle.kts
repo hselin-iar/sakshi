@@ -15,6 +15,14 @@ val keyProps = Properties().apply {
     if (f.exists()) f.inputStream().use { load(it) }
 }
 
+// "Ask Sakshi" language service (NVIDIA NIM). The key lives in android/nim.properties, which is git-ignored, and is compiled into the
+// build; without the file the chat answers offline. A key compiled into an APK can be read out of it: use a throwaway key. See docs/ask.md.
+val nimProps = Properties().apply {
+    val f = rootProject.file("nim.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+fun nim(name: String, default: String) = "\"" + (nimProps.getProperty(name) ?: default).trim() + "\""
+
 android {
     namespace = "com.kleos.sakshi"
     compileSdk = flutter.compileSdkVersion
@@ -38,6 +46,14 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        buildConfigField("String", "NIM_API_KEY", nim("NIM_API_KEY", ""))
+        buildConfigField("String", "NIM_MODEL", nim("NIM_MODEL", "openai/gpt-oss-20b"))
+        buildConfigField("String", "NIM_IDEAS_MODEL", nim("NIM_IDEAS_MODEL", "nvidia/nemotron-3-super-120b-a12b"))
+        buildConfigField("String", "NIM_BASE_URL", nim("NIM_BASE_URL", "https://integrate.api.nvidia.com/v1"))
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     testOptions {

@@ -27,8 +27,8 @@ if [ -z "$PERMS" ]; then echo "  (none)"; else printf '%s\n' "$PERMS" | sed 's/^
 echo
 
 # --- permissions Sakshi promised never to ship ---
-FORBIDDEN_EXACT="android.permission.INTERNET
-android.permission.SYSTEM_ALERT_WINDOW
+# INTERNET is allowed since 2026-10-07 for "Ask Sakshi" (docs/ask.md); it is checked separately below, with cleartext traffic off.
+FORBIDDEN_EXACT="android.permission.SYSTEM_ALERT_WINDOW
 android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
 android.permission.QUERY_ALL_PACKAGES
 android.permission.BIND_ACCESSIBILITY_SERVICE
@@ -50,6 +50,9 @@ echo "Checks:"
 for p in $FORBIDDEN_EXACT; do printf '%s\n' "$PERMS" | grep -qx "$p" && fail "forbidden permission $p"; done
 printf '%s\n' "$PERMS" | grep -q '^android.permission.FOREGROUND_SERVICE' && fail "a foreground-service permission is declared"
 [ "$FAIL" -eq 0 ] && ok "none of the forbidden permissions are declared"
+if printf '%s\n' "$PERMS" | grep -qx 'android.permission.INTERNET'; then
+  echo "  note: INTERNET is declared (allowed for Ask Sakshi, decision 2026-10-07: HTTPS only, summary numbers only)"
+fi
 
 # --- manifest contents: services, receivers, flags ---
 MANIFEST=$("$AAPT2" dump xmltree --file AndroidManifest.xml "$APK" 2>&1)
@@ -61,6 +64,7 @@ echo "$MANIFEST" | grep -q 'host.DebugTools' && fail "the debug tools receiver i
 echo "$MANIFEST" | grep -q 'debuggable(0x0101000f)=true' && fail "the APK is debuggable"
 echo "$MANIFEST" | grep -q 'allowBackup(0x01010280)=false' || fail "allowBackup is not set to false"
 echo "$MANIFEST" | grep -q 'android.permission.BIND_NOTIFICATION_LISTENER_SERVICE' || fail "the notification listener service is missing"
+echo "$MANIFEST" | grep -q 'usesCleartextTraffic(0x010104ec)=false' || fail "cleartext (non-HTTPS) traffic is not switched off"
 [ "$FAIL" -eq 0 ] && ok "no accessibility, device admin, foreground service or debug tools; backup off; listener present"
 
 # --- debug tooling in the code itself ---

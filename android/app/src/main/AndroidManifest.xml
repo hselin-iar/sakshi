@@ -7,6 +7,9 @@
     <!-- WorkManager's library manifest adds a foreground-service permission and service. DOC 2 §2.6.1 promises
          none, and the ingest job never runs as a foreground service, so both are removed from the merge. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" tools:node="remove" />
+    <!-- Policy change by the Integration Owner, 2026-10-07: "Ask Sakshi" sends a short summary of the person's own numbers (no app names, no
+         notification words, no events) to a language service to write the reply, over HTTPS only. This is the one network use. See docs/ask.md. -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Requested at runtime only if the user turns the optional weekly note on. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -14,6 +17,7 @@
         android:label="साक्षी"
         android:name="${applicationName}"
         android:allowBackup="false"
+        android:usesCleartextTraffic="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher">
         <activity

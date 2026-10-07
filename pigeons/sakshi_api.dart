@@ -67,6 +67,11 @@ class GoalTapDto { GoalTapDto({required this.offered, this.answer}); bool offere
 class TeacherDto { TeacherDto({required this.opensThisWeek, required this.minutesThisWeek, required this.line, this.opensPrevWeek}); int opensThisWeek; double minutesThisWeek; String line; int? opensPrevWeek; }
 class SayingDto { SayingDto({required this.id, required this.text, required this.source, required this.tierLabel, required this.question}); String id; String text; String source; String tierLabel; int question; }
 
+// Contract Change (Ask Sakshi). A turn of the conversation: role is 'user' or 'sakshi'. The reply's source is 'LLM' (the language service wrote it)
+// or 'OFFLINE' (the engine wrote it from the same numbers); quote and quoteSource are always a saying from the shelf, never text from the model.
+class AskTurnDto { AskTurnDto({required this.role, required this.text}); String role; String text; }
+class AskReplyDto { AskReplyDto({required this.text, required this.source, required this.isDemo, this.quote, this.quoteSource}); String text; String source; bool isDemo; String? quote; String? quoteSource; }
+
 class MirrorDto {
   MirrorDto({required this.isDemo, required this.provisional, required this.gentle, required this.weekStartEpochMs, required this.weekLabel, required this.dataState,
       required this.dataFlags, required this.dataLines, required this.headline, required this.patterns, required this.nothingToFix, required this.goalTap, required this.reanchorOffered,
@@ -99,6 +104,7 @@ abstract class SakshiHostApi {
   @async void openNotificationAccessSettings();
   @async void openAppInfoForRestrictedSettings();
   @async void openBatterySettings();                       // opens Android's own page; never requests the exemption
+  @async AskReplyDto askSakshi(String question, List<AskTurnDto> history);              // Contract Change (32nd method): the chat; always answers, offline if the service cannot be reached
   @async bool requestLakeWidget();                         // Contract Change (31st method): asks the launcher to pin the Lake widget; false when it cannot
   @async void markBatteryHelperShown();
   @async List<AppDto> listLauncherApps();

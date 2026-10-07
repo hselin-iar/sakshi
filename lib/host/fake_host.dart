@@ -43,6 +43,17 @@ class FakeHost implements HostClient {
   Future<void> openBatterySettings() async {}
 
   @override
+  Future<AskReplyDto> askSakshi(String question, List<AskTurnDto> history) async => AskReplyDto(
+    text:
+        'Here is how the week looked. You held 14-minute stretches and 4-minute returns; steadier than your starting normal. '
+        'This is a preview with made-up numbers.',
+    source: 'OFFLINE',
+    isDemo: true,
+    quote: 'I am watching my mind act.',
+    quoteSource: 'Complete Works, Vol. 8',
+  );
+
+  @override
   Future<bool> requestLakeWidget() async => true;
 
   @override

@@ -21,7 +21,7 @@ const firstScreenLine2 =
     'It never reads messages, titles, contents or what you type.';
 
 const firstScreenLine3 =
-    'Nothing leaves your device. No account, no internet, no cloud.';
+    'Your data stays on your phone, with no account. Only if you ask Sakshi a question is a short summary of your numbers, with no app names, sent to write the answer.';
 
 const firstScreenLine4 = 'It shows you patterns in your own data, once a week.';
 
@@ -185,3 +185,32 @@ const homeUsageNeededTitle = 'Allow usage access';
 const homeUsageNeededBody =
     'Sakshi reads which app is open and when, from Android\'s own record. It never reads what is inside an app.';
 const homeUsageNeededButton = 'Continue setup';
+
+// ---------------------------------------------------------------------------
+// Ask Sakshi (the chat)
+// ---------------------------------------------------------------------------
+
+const titleAsk = 'Ask Sakshi';
+const homeAskTitle = 'Ask Sakshi';
+const homeAskBody = 'Ask about your numbers in plain words. A line from Swami Vivekananda comes with each answer.';
+const askGreeting =
+    'Namaste. I am Sakshi, the witness. I can tell you what I see in your own numbers: your stretches, how often you were pulled away, how quickly you came back, today, and the Lake.';
+const askInputHint = 'Ask about your numbers';
+const askSend = 'Send';
+const askThinking = 'Looking at your numbers…';
+const askFailed = 'I could not answer just now. Please try again.';
+const askDisclosureReal =
+    'To write each answer, your question and a short summary of your numbers are sent to a language service (NVIDIA). The summary has no app names, no notification words and no events.';
+const askDisclosureDemo = 'Demo data: only made-up numbers and your question are used.';
+const askDisclosureAccept = 'I understand';
+const askSourceService = 'Written by a language service from a summary of your numbers.';
+const askSourceOffline = 'Written on your phone from your numbers. No network used.';
+const askChips = <String>[
+  'How was my week?',
+  'Why do I get pulled away?',
+  'How quickly do I come back?',
+  'What about today?',
+  'Am I getting steadier?',
+  'Give me an idea to try',
+  'Give me a Vivekananda quote',
+];

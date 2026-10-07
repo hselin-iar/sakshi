@@ -32,6 +32,9 @@ abstract class HostClient {
   Future<void> openAppInfoForRestrictedSettings();
   Future<void> openBatterySettings();
 
+  /// Ask Sakshi: a question about the person's own numbers. Always answers; falls back to an offline answer when the language service cannot be reached.
+  Future<AskReplyDto> askSakshi(String question, List<AskTurnDto> history);
+
   /// Asks the launcher to pin the Lake widget to the home screen. False when the launcher cannot.
   Future<bool> requestLakeWidget();
   Future<void> markBatteryHelperShown();

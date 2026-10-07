@@ -321,6 +321,7 @@ object SentenceBuilder {
         "I can see which app is in front and when (package names and times). I never read what is on your screen.",
         "I note when an app sends a notification: its name, time and category. Never the words.",
         "Everything is stored on this phone and nowhere else.",
+        "If you ask Sakshi a question, a short summary of your numbers is sent to a language service to write the reply. It has no app names, no notification words and no events.",
         if (listenerCoverage7d != null) "Heard pings for ${percent(listenerCoverage7d)} of the last 7 days." else "I have not heard any pings yet.",
         if (lastRunMinutesAgo != null) "Last background run ${minutes(lastRunMinutesAgo.toDouble())} ago; ${count(runs7d, "run", "runs")} in the last 7 days."
         else "I have not run in the background yet.",

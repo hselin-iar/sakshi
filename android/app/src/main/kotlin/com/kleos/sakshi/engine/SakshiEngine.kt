@@ -1,5 +1,8 @@
 package com.kleos.sakshi.engine
 
+import com.kleos.sakshi.engine.ask.AskAnswer
+import com.kleos.sakshi.engine.ask.AskContext
+import com.kleos.sakshi.engine.ask.OfflineAnswerer
 import com.kleos.sakshi.engine.lake.LakeBuilder
 import com.kleos.sakshi.engine.metrics.Weeks
 import com.kleos.sakshi.engine.mirror.MirrorBuilder
@@ -191,4 +194,17 @@ class SakshiEngine(private val ports: Ports, private val isDemo: Boolean = false
             ),
         )
     }
+
+    // ---- Ask Sakshi (Contract Change, additive): the facts a chat may use, and an answer that needs no network ----
+
+    /** The views the app already shows, read without marking anything as seen. */
+    fun askContext(asOf: EpochMs): AskContext = AskContext(
+        mirror = MirrorBuilder.build(ports, null, asOf, zone, isDemo).view,
+        today = TodayBuilder.build(ports, asOf, zone, isDemo),
+        lake = LakeBuilder.build(ports, asOf, zone),
+        sayings = ports.shelf.all(),
+        zone = zone,
+    )
+
+    fun askOffline(question: String, asOf: EpochMs): AskAnswer = OfflineAnswerer.answer(question, askContext(asOf), ports.random)
 }

@@ -208,6 +208,7 @@ class _Body extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        _AskCard(onTap: () => context.push('/ask')),
         if (setup.isDemo)
           _DemoBar(
             onMove: () => context.push('/demo'),
@@ -590,4 +591,64 @@ class _ErrorCard extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// The way into the chat. Placed first on Home so it is the first thing to try, in demo and in real use.
+class _AskCard extends StatelessWidget {
+  const _AskCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Card(
+      key: const Key('home_ask_card'),
+      color: colors.secondaryContainer,
+      margin: const EdgeInsets.only(bottom: 12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: SakshiColors.gold,
+                ),
+                child: const Icon(
+                  Icons.chat_bubble_outline,
+                  color: SakshiColors.deepBrown,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      homeAskTitle,
+                      style: Theme.of(context).textTheme.titleMedium
+                          ?.copyWith(color: colors.onSecondaryContainer),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      homeAskBody,
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: colors.onSecondaryContainer),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: colors.onSecondaryContainer),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

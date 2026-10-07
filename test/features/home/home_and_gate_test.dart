@@ -39,6 +39,10 @@ Future<GoRouter> _launch(WidgetTester tester, SetupStateDto state) async {
       ...homeRoutes,
       // Stand-ins so a tap has somewhere to go.
       GoRoute(
+        path: '/ask',
+        builder: (c, s) => const Scaffold(body: Text('ask page')),
+      ),
+      GoRoute(
         path: '/settings',
         builder: (c, s) => const Scaffold(body: Text('settings page')),
       ),
@@ -199,6 +203,19 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.text('Allow usage access'), findsOneWidget);
         expect(find.text('Choose the apps you work in'), findsNothing);
+      },
+    );
+  });
+
+  group('Ask Sakshi on Home', () {
+    testWidgets(
+      'the card is there in real use and in the demo, and opens the chat',
+      (tester) async {
+        await _launch(tester, _state());
+        expect(find.byKey(const Key('home_ask_card')), findsOneWidget);
+        await tester.tap(find.byKey(const Key('home_ask_card')));
+        await tester.pumpAndSettle();
+        expect(find.text('ask page'), findsOneWidget);
       },
     );
   });
