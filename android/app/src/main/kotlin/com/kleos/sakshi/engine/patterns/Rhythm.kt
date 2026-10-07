@@ -25,11 +25,13 @@ object Rhythm : PatternDetector {
         val windows = qualifyingWindows(ctx).filter { (it.window.end.value - it.window.start.value) >= MIN_WINDOW_MS }
         if (windows.isEmpty()) return emptyList()
 
-        val rateByWindow = windows.associateWith { rate(it) }
-        val overall = median(rateByWindow.values.toList())
+        // Not associateWith: WindowWithDetail is a data class, and two structurally-identical
+        // windows (same fields, different fixture entries) would collapse into one map key,
+        // silently dropping a real window instead of just reusing its rate.
+        val overall = median(windows.map { rate(it) })
 
         return windows.groupBy { cellKey(it, ctx.zone) }.mapNotNull { (key, cellWindows) ->
-            val cellValue = median(cellWindows.map { rateByWindow[it]!! })
+            val cellValue = median(cellWindows.map { rate(it) })
             val ratio = (cellValue + Tuning.RATE_EPS) / (overall + Tuning.RATE_EPS)
             val cellDays = cellWindows.map { it.window.day }.distinct().size
             if (!EvidenceGate.passes(cellWindows.size, cellDays, ratio)) return@mapNotNull null
