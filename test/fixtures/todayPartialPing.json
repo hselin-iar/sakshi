@@ -1,0 +1,18 @@
+{
+  "isDemo": false,
+  "windows": [
+    {
+      "startEpochMs": 1759632600000,
+      "endEpochMs": 1759636200000,
+      "stays": 4,
+      "stretchMin": 12.0
+    }
+  ],
+  "line": "One window today.",
+  "dataFlags": [
+    "partialPing"
+  ],
+  "dataLines": [
+    "Ping tracking was active for part of today — some stays are listed as unknown origin."
+  ]
+}

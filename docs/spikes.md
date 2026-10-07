@@ -1,0 +1,80 @@
+# Real-phone findings
+
+## S-A / S-B (T1.5): event reading on the Nothing Phone 3a — NOT YET RUN
+
+Pending a real phone. How to run, with the debug build installed and usage access granted:
+
+1. Do the scripted 5-minute sequence: switch between three apps, enter split-screen, start picture-in-picture, lock and unlock.
+2. `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.DUMP_EVENTS --ei hours 72`
+3. `adb logcat -s SakshiDebug` prints the count and the oldest timestamp.
+4. `adb exec-out run-as com.kleos.sakshi cat files/dumps/events.json > fixtures/real_s_a.json`
+
+Record here, three lines:
+- Oldest event returned (how far back Android keeps events):
+- Events per day (roughly):
+- Anything odd in the sequence (split-screen pairs, PiP, lock ordering):
+
+## S-C (T1.6): listener survival — NOT YET RUN
+
+With notification access granted on the Nothing Phone 3a:
+1. Post test notifications from three apps, tap one, dismiss one.
+2. Force-stop Sakshi (App info > Force stop), wait a few minutes, post another notification, open Sakshi.
+3. Expected: tapped notification stored with `removal = CLICK`; the session open before the force-stop is closed at the last notification it heard; a new session opens on rebind (the app open calls requestRebind if the listener is granted but not bound).
+4. Export a few rows: `adb exec-out run-as com.kleos.sakshi sqlite3 databases/sakshi.db "select * from notif_event"` (if sqlite3 is missing on the phone, use Android Studio's App Inspection).
+
+Record here: did the listener rebind by itself after force-stop, or only after opening Sakshi? How long until it did?
+
+## S-D (T1.7): background runs while the app is closed — NOT YET RUN
+
+1. Install the debug build, open Sakshi once (this schedules the 15-minute job), then close it and leave the phone idle for a few hours.
+2. `adb shell dumpsys jobscheduler | grep -A6 com.kleos.sakshi` shows the periodic job.
+3. `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.RUN_INGEST_NOW` forces one run; `adb logcat -s SakshiIngest` prints `run: Ran`.
+4. Read two consecutive `lastWorkerRunAt` values from `ingest_state` (App Inspection, or `run-as com.kleos.sakshi sqlite3 databases/sakshi.db "select lastWorkerRunAt, workerRuns7d from ingest_state"`).
+
+Record here: the dumpsys excerpt, the two timestamps, and on the iQOO Z7 whether runs stopped while idle (and whether the battery helper changed that).
+
+## S-E (T1.8): launcher list vs packages seen in usage events — NOT YET RUN
+
+1. After a day of normal use, dump events: `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.DUMP_EVENTS --ei hours 24` and pull `events.json`.
+2. Compare the distinct `pkg` values in the dump with the apps `listLauncherApps()` returns (the work-set screen once T3 lands, or logcat in a debug run).
+3. Packages seen in events but missing from the list fall back to their package name as the label. Record which ones, and whether any belong in `assets/sakshi/neutral_packages.json`.
+
+Note: `neutral_packages.json` was assembled from AOSP and OEM package names known to the author (Pixel/AOSP, Nothing OS, Vivo/iQOO, Xiaomi, Samsung, Oppo/Realme), NOT verified against devices or sources. Research prompt R3 was not run. Correct it against the Nothing Phone 3a and iQOO Z7 with this spike.
+
+## S-F (T1.10): the Lake widget on real launchers — NOT YET RUN
+
+1. Install the debug build, open Sakshi once, long-press the home screen and add the "sakshi" widget (2x1).
+2. Cycle the states: `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.SET_LAKE_STATE --es state still` (also `rippled`, `choppy`, `learning`, `no_data`). Screenshot each.
+3. Tap the widget: it should open Sakshi. (The Mirror route does not exist until Track 3 builds the router.)
+4. Reboot the phone and confirm the widget still shows the last state and its "as of" time. Change the launcher and add the widget again; it should redraw from stored state.
+
+Record here for the Nothing Phone 3a and the iQOO Z7: whether the widget survived reboot and a launcher change, and whether the "as of" time stayed visible when background runs stopped.
+
+Note: the three `lake_*.xml` drawables are placeholders; Track 4 replaces the files under the same names.
+
+## T1.11: the weekly note on a real phone — NOT YET RUN
+
+1. In the debug build open Sakshi, then force a decision: `adb shell am broadcast -n com.kleos.sakshi/.host.DebugTools -a com.kleos.sakshi.FORCE_WEEKLY_NOTE`
+   (`adb logcat -s SakshiDebug` prints `weekly note decision for week N: POSTED`).
+2. Confirm: no sound, no vibration, no badge on the app icon, text exactly "Sakshi" / "Your Mirror is ready", no buttons. Long-press it and open the channel settings ("Weekly Mirror", low importance); screenshot both.
+3. Run the same command again: it must log `ALREADY_SENT` and post nothing. Add `--el week <another Monday's epoch day>` to see a new week post.
+4. Tap the note: Sakshi opens (the Mirror route exists only after Track 3's router).
+5. Notification permission: with it denied, `setWeeklyNote(true)` from the debug screen should return false.
+
+## T1.12: the battery helper on real phones — NOT YET RUN
+
+1. In the debug screen press `openBatterySettings` on the iQOO Z7 and the Nothing Phone 3a. Screenshot the page that opens (expected: Android's battery optimization list, or the battery saver page on a phone without it).
+2. Follow each path in `docs/research/oem_battery.md` for that phone by hand. Correct the wording where the menus differ, and change its status in both `oem_battery.md` and `host/BatteryTips.kt` to VERIFIED_ON_DEVICE (a test keeps the two in step).
+3. Check the helper did not show the system's "allow Sakshi to ignore battery optimizations" dialog (it must not).
+
+## T1.13: export, delete, pause and the demo on a real phone — NOT YET RUN
+
+1. Export: on the debug screen press `exportData` (try with and without raw). The Android share sheet should open. Screenshot it, send the file to yourself, and open the JSON: confirm there is no title, text or app label, only package names.
+2. Pause: press `pause(true)`, wait, `pause(false)`. In What I see (or the database) there must be exactly one PAUSED gap, closed on resume, and no events recorded for that time.
+3. Delete: press `DELETE EVERYTHING`. The Lake widget should read "Nothing to show yet." and the exports should be gone.
+4. Demo: `startDemo("aarav")` then `setDemoAsOf(31)`. The Lake phrase should end with "(demo)", `pause`/`exportData`/`deleteEverything` must answer DEMO_ACTIVE, and `stopDemo` returns to the real Lake. The history is a hard-coded stub until Track 2's synthesizer lands.
+5. Hash check on the phone (debug build): `adb exec-out run-as com.kleos.sakshi sh -c 'cat databases/sakshi.db databases/sakshi.db-wal' | shasum -a 256` before and after a demo; the two lines must match.
+
+## T1.14: hostile-OEM spike pass — NOT YET RUN
+
+Everything to run, in order, is in `docs/phone_test_day.md` (S-C, S-D with the helper skipped and then applied, S-F, S-H, plus the earlier outstanding checks). `tools/spike_collect.sh <label>` gathers the evidence from a connected phone into `docs/spike_runs/` (git-ignored). Fill the results table at the end of that file; the Done-when is that table complete for both phones with timestamps and OS versions.

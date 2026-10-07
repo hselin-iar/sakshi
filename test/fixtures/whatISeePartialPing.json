@@ -1,0 +1,23 @@
+{
+  "isDemo": false,
+  "usageAccessGranted": true,
+  "notificationAccessGranted": true,
+  "rawEventCount": 3100,
+  "notifEventCount": 88,
+  "derivedDays": 10,
+  "workerRuns7d": 41,
+  "paused": false,
+  "oddEventPairs": 2,
+  "lines": [
+    "Usage access: on.",
+    "Ping tracking: on.",
+    "Raw events kept: 3 100 (10 days).",
+    "Notification events kept: 88 (10 days).",
+    "Background runs in the last 7 days: 41.",
+    "Last background run: 2 hours ago.",
+    "Ping tracking active for 61% of the last 7 days."
+  ],
+  "oldestRawEpochMs": 1758830400000,
+  "listenerCoverage7d": 0.61,
+  "lastWorkerRunEpochMs": 1759692000000
+}

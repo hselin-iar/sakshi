@@ -1,0 +1,46 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "learningBaseline",
+  "dataFlags": [],
+  "dataLines": [
+    "Building your starting normal — a few more days and comparisons will appear."
+  ],
+  "headline": "Your last few days: you held about 12 minutes at a stretch. Something pulled you away about 4 times an hour.",
+  "parts": {
+    "stretchMin": 12.0,
+    "longestStretchMin": 22.0,
+    "inSetShare": 0.6,
+    "staysPerHour": 4.1,
+    "glances": 6,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 12 minutes at a stretch (longest 22).",
+      "stays": "Something pulled you away about 4 times an hour."
+    },
+    "extrasLines": []
+  },
+  "stones": {
+    "totalStays": 17,
+    "stoneCount": 9,
+    "selfStartedCount": 6,
+    "unknownCount": 2,
+    "noRippleRate": 0.41,
+    "line": "9 of your 17 stays began with a ping."
+  },
+  "patterns": [],
+  "nothingToFix": false,
+  "goalTap": {
+    "offered": false
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "reanchorOffered": false
+}

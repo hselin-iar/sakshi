@@ -1,0 +1,40 @@
+{
+  "isDemo": false,
+  "windows": [
+    {
+      "startEpochMs": 1759632600000,
+      "endEpochMs": 1759636200000,
+      "stays": 3,
+      "shape": "HELD",
+      "stretchMin": 22.0,
+      "returnMin": 4.5
+    },
+    {
+      "startEpochMs": 1759640400000,
+      "endEpochMs": 1759645800000,
+      "stays": 5,
+      "shape": "PINGED",
+      "stretchMin": 14.0,
+      "returnMin": 6.0
+    }
+  ],
+  "line": "Two windows today. You came back in about 5 minutes on average.",
+  "dataFlags": [],
+  "dataLines": [],
+  "parts": {
+    "stretchMin": 14.5,
+    "longestStretchMin": 28.0,
+    "inSetShare": 0.68,
+    "quietShare": 0.12,
+    "staysPerHour": 3.2,
+    "glances": 4,
+    "returnMin": 4.8,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 15 minutes at a stretch (longest 28).",
+      "stays": "Something pulled you away about 3 times an hour.",
+      "ret": "It took you about 5 minutes to come back.",
+      "quiet": "Your phone was quiet for 12% of your work time."
+    },
+    "extrasLines": []
+  }
+}

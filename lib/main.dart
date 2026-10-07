@@ -1,41 +1,48 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'gen/sakshi_api.g.dart';
+import 'app.dart';
+import 'core/providers.dart';
+import 'host/fake_host.dart';
+import 'host/fixtures/setup_fixtures.dart';
+import 'host/host_client.dart';
+import 'host/pigeon_host_client.dart';
 
-void main() => runApp(const SakshiSkeleton());
+// ---------------------------------------------------------------------------
+// Which host runs the app (the Sync 8 swap).
+//
+//  - On a phone, in every build mode (debug, profile, release): the real Android host, through Pigeon.
+//  - In a browser, where no Android host exists, or when asked with --dart-define=SAKSHI_FAKE_HOST=true:
+//    the in-memory FakeHost over the fixtures, so every screen can be looked at without a phone.
+//    Start it in a given state with --dart-define=SAKSHI_FAKE_STATE=fresh|usage|both|restricted|done|demo (default: fresh).
+// ---------------------------------------------------------------------------
 
-class SakshiSkeleton extends StatelessWidget {
-  const SakshiSkeleton({super.key});
+const bool _forceFake = bool.fromEnvironment('SAKSHI_FAKE_HOST');
+const String _fakeState = String.fromEnvironment(
+  'SAKSHI_FAKE_STATE',
+  defaultValue: 'fresh',
+);
 
-  @override
-  Widget build(BuildContext context) => const MaterialApp(home: _SpikeScreen());
+HostClient _chooseHost() {
+  if (!kIsWeb && !_forceFake) return PigeonHostClient();
+  return FakeHost(
+    initial: switch (_fakeState) {
+      'usage' => SetupFixtures.usageGranted,
+      'both' => SetupFixtures.bothGranted,
+      'restricted' => SetupFixtures.restrictedSuspected,
+      'done' => SetupFixtures.allDone,
+      'demo' => SetupFixtures.demoActive,
+      _ => SetupFixtures.nothingGranted,
+    },
+  );
 }
 
-class _SpikeScreen extends StatefulWidget {
-  const _SpikeScreen();
-
-  @override
-  State<_SpikeScreen> createState() => _SpikeScreenState();
-}
-
-class _SpikeScreenState extends State<_SpikeScreen> {
-  String _reply = '';
-
-  Future<void> _call() async {
-    final state = await SakshiHostApi().getSetupState();
-    setState(() => _reply = 'usage access: ${state.usageAccessGranted}');
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton(onPressed: _call, child: const Text('Ask host')),
-          Text(_reply),
-        ],
-      ),
+void main() {
+  runApp(
+    ProviderScope(
+      overrides: [hostClientProvider.overrideWithValue(_chooseHost())],
+      child: const SakshiApp(),
     ),
   );
 }

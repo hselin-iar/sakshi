@@ -1,0 +1,14 @@
+{
+  "weeks": [
+    {
+      "weekStartEpochMs": 1000,
+      "label": "28 Sep–4 Oct",
+      "completed": true
+    },
+    {
+      "weekStartEpochMs": 2000,
+      "label": "5–11 Oct",
+      "completed": false
+    }
+  ]
+}

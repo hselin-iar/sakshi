@@ -1,0 +1,37 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": true,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [],
+  "dataLines": [],
+  "headline": "Your week, gently.",
+  "parts": {
+    "glances": 0,
+    "lines": {},
+    "extrasLines": []
+  },
+  "stones": {
+    "totalStays": 14,
+    "stoneCount": 0,
+    "selfStartedCount": 0,
+    "unknownCount": 14,
+    "line": "You had 14 stays this week."
+  },
+  "patterns": [],
+  "nothingToFix": false,
+  "goalTap": {
+    "offered": false
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "returnLine": "You came back in about 5 minutes on average.",
+  "reanchorOffered": false
+}

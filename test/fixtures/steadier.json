@@ -1,0 +1,86 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [],
+  "dataLines": [],
+  "headline": "You held 18-minute stretches and 4-minute returns; steadier than your starting normal.",
+  "parts": {
+    "stretchMin": 18.0,
+    "longestStretchMin": 34.0,
+    "inSetShare": 0.74,
+    "quietShare": 0.15,
+    "staysPerHour": 2.5,
+    "glances": 3,
+    "returnMin": 3.8,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 18 minutes at a stretch (longest 34).",
+      "stays": "Something pulled you away about 2 to 3 times an hour.",
+      "ret": "It took you about 4 minutes to come back.",
+      "quiet": "Your phone was quiet for 15% of your work time."
+    },
+    "extrasLines": []
+  },
+  "steadiness": {
+    "value": 116,
+    "word": "Steadier"
+  },
+  "stones": {
+    "totalStays": 14,
+    "stoneCount": 4,
+    "selfStartedCount": 9,
+    "unknownCount": 1,
+    "line": "Most of your stays began with no ping."
+  },
+  "clearHour": {
+    "startHour": 9,
+    "endHour": 11,
+    "stretchMin": 22.0,
+    "line": "Between 09:00 and 11:00 your stretches average 22 minutes."
+  },
+  "patterns": [
+    {
+      "kindId": "RHYTHM",
+      "line": "Your work-hour windows tend to run longer in the morning than in the afternoon (based on 11 windows over 5 days).",
+      "evidenceWindows": 11,
+      "evidenceDays": 5
+    },
+    {
+      "kindId": "TREND",
+      "line": "Your return time has been getting shorter over the last four weeks (based on 14 windows over 7 days).",
+      "evidenceWindows": 14,
+      "evidenceDays": 7
+    }
+  ],
+  "observation": {
+    "kindId": "S12",
+    "line": "Your return time improved by 20% over two weeks (based on 14 windows over 7 days)."
+  },
+  "nothingToFix": true,
+  "goalTap": {
+    "offered": true,
+    "answer": "partly"
+  },
+  "teacher": {
+    "opensThisWeek": 2,
+    "opensPrevWeek": 3,
+    "minutesThisWeek": 6.0,
+    "line": "You opened Sakshi 2 times this week."
+  },
+  "saying": {
+    "id": "sy05",
+    "text": "the faculty of detaching ourselves at a moment's notice from anything.",
+    "source": "Complete Works, Volume 6, 6.4.157 Margot",
+    "tierLabel": "His own writing or letter",
+    "question": 66
+  },
+  "returnLine": "You came back in about 4 minutes on average.",
+  "reanchorOffered": false,
+  "suggestedStudyBlock": {
+    "startMinute": 540,
+    "endMinute": 720
+  }
+}

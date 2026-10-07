@@ -1,0 +1,62 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [
+    "pingOff"
+  ],
+  "dataLines": [
+    "Ping tracking is off — all stays show as unknown origin."
+  ],
+  "headline": "You held 13-minute stretches; close to your starting normal.",
+  "parts": {
+    "stretchMin": 13.0,
+    "longestStretchMin": 25.0,
+    "inSetShare": 0.65,
+    "quietShare": 0.11,
+    "staysPerHour": 3.5,
+    "glances": 5,
+    "returnMin": 5.5,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 13 minutes at a stretch (longest 25).",
+      "stays": "Something pulled you away about 3 to 4 times an hour.",
+      "ret": "It took you about 6 minutes to come back.",
+      "quiet": "Your phone was quiet for 11% of your work time."
+    },
+    "extrasLines": []
+  },
+  "steadiness": {
+    "value": 97,
+    "word": "Steady"
+  },
+  "stones": {
+    "totalStays": 16,
+    "stoneCount": 0,
+    "selfStartedCount": 0,
+    "unknownCount": 16,
+    "line": "All stays are unknown origin — ping tracking is off."
+  },
+  "patterns": [],
+  "nothingToFix": true,
+  "goalTap": {
+    "offered": true
+  },
+  "teacher": {
+    "opensThisWeek": 5,
+    "opensPrevWeek": 7,
+    "minutesThisWeek": 18.0,
+    "line": "You opened Sakshi 5 times this week."
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "returnLine": "You came back in about 6 minutes on average.",
+  "reanchorOffered": false
+}
