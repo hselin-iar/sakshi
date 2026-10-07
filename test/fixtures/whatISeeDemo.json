@@ -1,0 +1,16 @@
+{
+  "isDemo": true,
+  "usageAccessGranted": true,
+  "notificationAccessGranted": true,
+  "rawEventCount": 8640,
+  "notifEventCount": 720,
+  "derivedDays": 60,
+  "workerRuns7d": 0,
+  "paused": false,
+  "oddEventPairs": 0,
+  "lines": [
+    "Demo data — Aarav persona, day 31.",
+    "Raw events kept: 8 640 (synthetic).",
+    "Notification events kept: 720 (synthetic)."
+  ]
+}

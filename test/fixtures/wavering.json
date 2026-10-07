@@ -1,0 +1,81 @@
+{
+  "isDemo": false,
+  "provisional": false,
+  "gentle": false,
+  "weekStartEpochMs": 1759603800000,
+  "weekLabel": "5–11 Oct",
+  "dataState": "ok",
+  "dataFlags": [],
+  "dataLines": [],
+  "headline": "You held 10-minute stretches and 7-minute returns; less steady than your starting normal.",
+  "parts": {
+    "stretchMin": 10.0,
+    "longestStretchMin": 18.0,
+    "inSetShare": 0.55,
+    "quietShare": 0.08,
+    "staysPerHour": 5.1,
+    "glances": 8,
+    "returnMin": 7.2,
+    "lines": {
+      "stretch": "You stayed in your work apps for about 10 minutes at a stretch (longest 18).",
+      "stays": "Something pulled you away about 5 times an hour.",
+      "ret": "It took you about 7 minutes to come back.",
+      "quiet": "Your phone was quiet for 8% of your work time."
+    },
+    "extrasLines": []
+  },
+  "steadiness": {
+    "value": 82,
+    "word": "Wavering"
+  },
+  "stones": {
+    "totalStays": 21,
+    "stoneCount": 12,
+    "selfStartedCount": 7,
+    "unknownCount": 2,
+    "topStoneLabel": "Messaging app",
+    "noRippleRate": 0.38,
+    "line": "12 of your 21 stays began with a ping."
+  },
+  "patterns": [
+    {
+      "kindId": "BREAK_POINT",
+      "line": "Most stretches end around the 20-to-25-minute mark (based on 10 windows over 8 days).",
+      "evidenceWindows": 10,
+      "evidenceDays": 8
+    },
+    {
+      "kindId": "SHAPE",
+      "line": "About half your evening windows ended shortly after a ping arrived (based on 9 windows over 6 days).",
+      "evidenceWindows": 9,
+      "evidenceDays": 6
+    }
+  ],
+  "suggestion": {
+    "kindId": "S4",
+    "line": "One app accounts for 8 of your last 12 ping-driven stays.",
+    "actionLabel": "Review its notifications",
+    "actionType": "OPEN_NOTIFICATION_SETTINGS",
+    "opensSettings": true,
+    "subjectKey": "com.example.messaging"
+  },
+  "nothingToFix": false,
+  "goalTap": {
+    "offered": true
+  },
+  "teacher": {
+    "opensThisWeek": 5,
+    "opensPrevWeek": 7,
+    "minutesThisWeek": 18.0,
+    "line": "You opened Sakshi 5 times this week."
+  },
+  "saying": {
+    "id": "sy03",
+    "text": "Until you know what the mind is doing you cannot control it.",
+    "source": "Complete Works, Volume 1, 1.3.6 Pratyahara And Dharana",
+    "tierLabel": "Type not resolved in the Outcome Map",
+    "question": 7
+  },
+  "returnLine": "You came back in about 7 minutes on average.",
+  "reanchorOffered": false
+}

@@ -1,0 +1,20 @@
+﻿name: sakshi
+description: A passive witness for a student's attention.
+publish_to: none
+
+# Versions pinned per docs/versions.md (Track 1, Step T1.1).
+# DO NOT upgrade without a Contract Change commit.
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.24.5'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.6.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pigeon: ^22.7.4
