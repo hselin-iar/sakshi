@@ -135,10 +135,16 @@ class SakshiEngineFacadeTest {
         val p = newPorts(LocalDate.of(2026, 9, 17), "10:00:00"); feed(p, 3)
         val engine = SakshiEngine(p); engine.processNewEvents(at(LocalDate.of(2026, 9, 17), "10:00:00"))
         val m = engine.mirror(null, at(LocalDate.of(2026, 9, 17), "10:00:00"))
+        println("FIRSTLOOK label=${m.weekLabel} headline=${m.headline} dataLines=${m.dataLines} parts=${m.parts?.lines} stones=${m.stones?.line} lake=${engine.lake(at(LocalDate.of(2026, 9, 17), "10:00:00")).phrase}")
         assertTrue(m.provisional)
         assertNull(m.steadiness)
         assertTrue(m.dataLines.any { it.contains("of 8") || it.contains("8") })
         assertNull(m.suggestion)
+        // the First look is never an empty page: a label, a headline, the parts so far, and the honest "learning" line
+        assertEquals("Last few days", m.weekLabel)
+        assertTrue(m.headline.isNotBlank())
+        assertNotNull(m.parts); assertNotNull(m.parts!!.lines.stretch)
+        assertNotNull(m.stones)
     }
 
     @Test fun `gentle mode keeps only the return line, honest data lines and the saying`() {
