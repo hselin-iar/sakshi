@@ -18,111 +18,80 @@ import 'package:sakshi/host/fake_host.dart';
 
 void main() {
   Widget wrap(Widget child) {
-    return MaterialApp(home: Scaffold(body: child));
+    return MaterialApp(
+      home: Scaffold(
+        body: child,
+      ),
+    );
   }
 
   group('SayingPicker', () {
-    testWidgets(
-      'renders three saying cards with verbatim text, source, and tier labels A, C, D',
-      (tester) async {
-        String? pickedId;
-        var dismissed = false;
+    testWidgets('renders three saying cards with verbatim text, source, and tier labels A, C, D', (tester) async {
+      String? pickedId;
+      var dismissed = false;
 
-        await tester.pumpWidget(
-          wrap(
-            SayingPicker(
-              choices: sayingChoices,
-              onPickSaying: (id) => pickedId = id,
-              onDismiss: () => dismissed = true,
-            ),
-          ),
-        );
+      await tester.pumpWidget(wrap(
+        SayingPicker(
+          choices: sayingChoices,
+          onPickSaying: (id) => pickedId = id,
+          onDismiss: () => dismissed = true,
+        ),
+      ));
 
-        // Title & three choice cards
-        expect(find.byKey(const Key('saying_picker_title')), findsOneWidget);
-        expect(find.byKey(const Key('saying_choice_0')), findsOneWidget);
-        expect(find.byKey(const Key('saying_choice_1')), findsOneWidget);
-        expect(find.byKey(const Key('saying_choice_2')), findsOneWidget);
+      // Title & three choice cards
+      expect(find.byKey(const Key('saying_picker_title')), findsOneWidget);
+      expect(find.byKey(const Key('saying_choice_0')), findsOneWidget);
+      expect(find.byKey(const Key('saying_choice_1')), findsOneWidget);
+      expect(find.byKey(const Key('saying_choice_2')), findsOneWidget);
 
-        // Verify tier labels A, C, D display correctly
-        expect(
-          find.textContaining('Type not resolved in the Outcome Map'),
-          findsOneWidget,
-        ); // Tier D
-        expect(
-          find.textContaining('His own writing or letter'),
-          findsOneWidget,
-        ); // Tier A
-        expect(
-          find.textContaining('Reported by others'),
-          findsOneWidget,
-        ); // Tier C
+      // Verify tier labels A, C, D display correctly
+      expect(find.textContaining('Type not resolved in the Outcome Map'), findsOneWidget); // Tier D
+      expect(find.textContaining('His own writing or letter'), findsOneWidget); // Tier A
+      expect(find.textContaining('Reported by others'), findsOneWidget); // Tier C
 
-        // Verify verbatim sayings texts
-        expect(
-          find.textContaining(
-            'Until you know what the mind is doing you cannot control it.',
-          ),
-          findsOneWidget,
-        );
-        expect(
-          find.textContaining(
-            "the faculty of detaching ourselves at a moment's notice",
-          ),
-          findsOneWidget,
-        );
-        expect(
-          find.textContaining('I am watching my mind act'),
-          findsOneWidget,
-        );
+      // Verify verbatim sayings texts
+      expect(find.textContaining('Until you know what the mind is doing you cannot control it.'), findsOneWidget);
+      expect(find.textContaining("the faculty of detaching ourselves at a moment's notice"), findsOneWidget);
+      expect(find.textContaining('I am watching my mind act'), findsOneWidget);
 
-        // Tap on second choice (sy05)
-        await tester.tap(find.byKey(const Key('saying_choice_1')));
-        expect(pickedId, 'sy05');
+      // Tap on second choice (sy05)
+      await tester.tap(find.byKey(const Key('saying_choice_1')));
+      expect(pickedId, 'sy05');
 
-        // Dismiss button
-        expect(
-          find.byKey(const Key('saying_picker_dismiss_button')),
-          findsOneWidget,
-        );
-        await tester.tap(find.byKey(const Key('saying_picker_dismiss_button')));
-        expect(dismissed, isTrue);
-      },
-    );
+      // Dismiss button
+      expect(find.byKey(const Key('saying_picker_dismiss_button')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('saying_picker_dismiss_button')));
+      expect(dismissed, isTrue);
+    });
 
-    testWidgets('renders SizedBox.shrink when choices list is empty', (
-      tester,
-    ) async {
-      await tester.pumpWidget(wrap(const SayingPicker(choices: [])));
+    testWidgets('renders SizedBox.shrink when choices list is empty', (tester) async {
+      await tester.pumpWidget(wrap(
+        const SayingPicker(choices: []),
+      ));
 
       expect(find.byKey(const Key('saying_picker_title')), findsNothing);
-      expect(
-        find.byKey(const Key('saying_picker_dismiss_button')),
-        findsNothing,
-      );
+      expect(find.byKey(const Key('saying_picker_dismiss_button')), findsNothing);
     });
   });
 
   group('SayingFooter', () {
-    testWidgets(
-      'renders chosen saying with verbatim text, source, and tier label',
-      (tester) async {
-        final saying = sayingChoices[0];
+    testWidgets('renders chosen saying with verbatim text, source, and tier label', (tester) async {
+      final saying = sayingChoices[0];
 
-        await tester.pumpWidget(wrap(SayingFooter(saying: saying)));
+      await tester.pumpWidget(wrap(
+        SayingFooter(saying: saying),
+      ));
 
-        expect(find.byKey(const Key('saying_footer_text')), findsOneWidget);
-        expect(find.text('“${saying.text}”'), findsOneWidget);
-        expect(find.byKey(const Key('saying_footer_source')), findsOneWidget);
-        expect(
-          find.text('${saying.source} · ${saying.tierLabel}'),
-          findsOneWidget,
-        );
-      },
-    );
+      expect(find.byKey(const Key('saying_footer_text')), findsOneWidget);
+      expect(find.text('“${saying.text}”'), findsOneWidget);
+      expect(find.byKey(const Key('saying_footer_source')), findsOneWidget);
+      expect(find.text('${saying.source} · ${saying.tierLabel}'), findsOneWidget);
+    });
 
     testWidgets('renders SizedBox.shrink when saying is null', (tester) async {
-      await tester.pumpWidget(wrap(const SayingFooter(saying: null)));
+      await tester.pumpWidget(wrap(
+        const SayingFooter(saying: null),
+      ));
 
       expect(find.byKey(const Key('saying_footer_text')), findsNothing);
       expect(find.byKey(const Key('saying_footer_source')), findsNothing);
@@ -135,11 +104,11 @@ void main() {
         ProviderScope(
           overrides: [
             hostClientProvider.overrideWithValue(FakeHost()),
-            sayingChoicesProvider.overrideWith(
-              (ref) => Future.value(sayingChoices),
-            ),
+            sayingChoicesProvider.overrideWith((ref) => Future.value(sayingChoices)),
           ],
-          child: const MaterialApp(home: SayingPickerScreen()),
+          child: const MaterialApp(
+            home: SayingPickerScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -149,16 +118,16 @@ void main() {
       expect(find.byKey(const Key('saying_choice_0')), findsOneWidget);
     });
 
-    testWidgets('renders empty message when no choices available', (
-      tester,
-    ) async {
+    testWidgets('renders empty message when no choices available', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             hostClientProvider.overrideWithValue(FakeHost()),
             sayingChoicesProvider.overrideWith((ref) => Future.value([])),
           ],
-          child: const MaterialApp(home: SayingPickerScreen()),
+          child: const MaterialApp(
+            home: SayingPickerScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();

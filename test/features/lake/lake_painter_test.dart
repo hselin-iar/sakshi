@@ -12,31 +12,28 @@ import 'package:sakshi/host/fixtures/mirror_fixtures.dart';
 void main() {
   Widget wrap(Widget child) {
     return MaterialApp(
-      home: Scaffold(body: Center(child: child)),
+      home: Scaffold(
+        body: Center(child: child),
+      ),
     );
   }
 
   group('LakePainter and LakeWidgetView', () {
-    testWidgets('renders all five Lake states and paints correctly', (
-      tester,
-    ) async {
+    testWidgets('renders all five Lake states and paints correctly', (tester) async {
       for (final entry in allLakeFixtures.entries) {
         final lake = entry.value;
 
-        await tester.pumpWidget(wrap(LakeWidgetView(lake: lake)));
+        await tester.pumpWidget(wrap(
+          LakeWidgetView(lake: lake),
+        ));
 
-        expect(
-          find.byKey(Key('lake_canvas_${lake.state.name}')),
-          findsOneWidget,
-        );
+        expect(find.byKey(Key('lake_canvas_${lake.state.name}')), findsOneWidget);
         expect(find.byKey(const Key('lake_phrase')), findsOneWidget);
         expect(find.text(lake.phrase), findsOneWidget);
       }
     });
 
-    testWidgets('paints three distinct visual states: still, rippled, choppy', (
-      tester,
-    ) async {
+    testWidgets('paints three distinct visual states: still, rippled, choppy', (tester) async {
       // Test still painter directly
       final stillPainter = LakePainter(state: LakeStateDto.still);
       final learningPainter = LakePainter(state: LakeStateDto.learning);
@@ -57,7 +54,9 @@ void main() {
           overrides: [
             lakeProvider.overrideWith((ref) => Future.value(lakeRippled)),
           ],
-          child: const MaterialApp(home: LakeScreen()),
+          child: const MaterialApp(
+            home: LakeScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();

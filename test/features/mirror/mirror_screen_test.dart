@@ -7,7 +7,6 @@
 // Also tests that all 16 fixtures render without error, and tests loading and error states.
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,120 +20,91 @@ import 'package:sakshi/host/fake_host.dart';
 void main() {
   Widget wrapContent(MirrorDto mirror) {
     return MaterialApp(
-      home: Scaffold(body: MirrorContent(mirror: mirror)),
+      home: Scaffold(
+        body: MirrorContent(mirror: mirror),
+      ),
     );
   }
 
   group('Structural Rules in MirrorContent', () {
-    testWidgets(
-      'Rule 1: nothingToFix shows "Nothing to fix this week" as a normal state',
-      (tester) async {
-        await tester.pumpWidget(wrapContent(nothingToFix));
+    testWidgets('Rule 1: nothingToFix shows "Nothing to fix this week" as a normal state', (tester) async {
+      await tester.pumpWidget(wrapContent(nothingToFix));
 
-        expect(find.byKey(const Key('nothing_to_fix_line')), findsOneWidget);
-        expect(find.text('Nothing to fix this week'), findsOneWidget);
-        // Ensures no suggestions or observations are shown
-        expect(find.byKey(const Key('suggestion_line')), findsNothing);
-      },
-    );
+      expect(find.byKey(const Key('nothing_to_fix_line')), findsOneWidget);
+      expect(find.text('Nothing to fix this week'), findsOneWidget);
+      // Ensures no suggestions or observations are shown
+      expect(find.byKey(const Key('suggestion_line')), findsNothing);
+    });
 
-    testWidgets(
-      'Rule 2: gentle shows no Steadiness widget, no re-anchor card, and no study-hours card',
-      (tester) async {
-        await tester.pumpWidget(wrapContent(gentle));
+    testWidgets('Rule 2: gentle shows no Steadiness widget, no re-anchor card, and no study-hours card', (tester) async {
+      await tester.pumpWidget(wrapContent(gentle));
 
-        // 1. No Steadiness widget
-        expect(find.byKey(const Key('steadiness_widget')), findsNothing);
-        expect(find.textContaining('Steadiness:'), findsNothing);
+      // 1. No Steadiness widget
+      expect(find.byKey(const Key('steadiness_widget')), findsNothing);
+      expect(find.textContaining('Steadiness:'), findsNothing);
 
-        // 2. No re-anchor card
-        expect(find.byKey(const Key('reanchor_line')), findsNothing);
-        expect(find.byKey(const Key('reanchor_button')), findsNothing);
+      // 2. No re-anchor card
+      expect(find.byKey(const Key('reanchor_line')), findsNothing);
+      expect(find.byKey(const Key('reanchor_button')), findsNothing);
 
-        // 3. No study-hours card
-        expect(find.byKey(const Key('study_hours_line')), findsNothing);
-        expect(find.byKey(const Key('study_hours_use_button')), findsNothing);
+      // 3. No study-hours card
+      expect(find.byKey(const Key('study_hours_line')), findsNothing);
+      expect(find.byKey(const Key('study_hours_use_button')), findsNothing);
 
-        // Gentle headline and return/stay data rendered cleanly
-        expect(find.text('Your week, gently.'), findsOneWidget);
-        expect(find.text('You had 14 stays this week.'), findsOneWidget);
-      },
-    );
+      // Gentle headline and return/stay data rendered cleanly
+      expect(find.text('Your week, gently.'), findsOneWidget);
+      expect(find.text('You had 14 stays this week.'), findsOneWidget);
+    });
 
-    testWidgets(
-      'Rule 3: partialPing shows its flag line above the stones card',
-      (tester) async {
-        await tester.pumpWidget(wrapContent(partialPing));
+    testWidgets('Rule 3: partialPing shows its flag line above the stones card', (tester) async {
+      await tester.pumpWidget(wrapContent(partialPing));
 
-        final flagFinder = find.byKey(const Key('flag_stones_0'));
-        final stonesLineFinder = find.byKey(const Key('stones_line'));
+      final flagFinder = find.byKey(const Key('flag_stones_0'));
+      final stonesLineFinder = find.byKey(const Key('stones_line'));
 
-        expect(flagFinder, findsOneWidget);
-        expect(stonesLineFinder, findsOneWidget);
+      expect(flagFinder, findsOneWidget);
+      expect(stonesLineFinder, findsOneWidget);
 
-        // Verify flag is placed above stones line visually (y coordinate of flag < y coordinate of stones)
-        final flagY = tester.getTopLeft(flagFinder).dy;
-        final stonesY = tester.getTopLeft(stonesLineFinder).dy;
-        expect(flagY, lessThan(stonesY));
+      // Verify flag is placed above stones line visually (y coordinate of flag < y coordinate of stones)
+      final flagY = tester.getTopLeft(flagFinder).dy;
+      final stonesY = tester.getTopLeft(stonesLineFinder).dy;
+      expect(flagY, lessThan(stonesY));
 
-        expect(
-          find.text(
-            'Ping tracking was active for part of this week — some stays are listed as unknown origin.',
-          ),
-          findsOneWidget,
-        );
-      },
-    );
+      expect(
+        find.text('Ping tracking was active for part of this week — some stays are listed as unknown origin.'),
+        findsOneWidget,
+      );
+    });
 
-    testWidgets(
-      'steady fixture shows reanchor offer when reanchorOffered is true and not gentle',
-      (tester) async {
-        await tester.pumpWidget(wrapContent(steady));
+    testWidgets('steady fixture shows reanchor offer when reanchorOffered is true and not gentle', (tester) async {
+      await tester.pumpWidget(wrapContent(steady));
 
-        expect(find.byKey(const Key('reanchor_line')), findsOneWidget);
-        expect(find.byKey(const Key('steadiness_widget')), findsOneWidget);
-        expect(find.textContaining('Steady'), findsWidgets);
-      },
-    );
+      expect(find.byKey(const Key('reanchor_line')), findsOneWidget);
+      expect(find.byKey(const Key('steadiness_widget')), findsOneWidget);
+      expect(find.textContaining('Steady'), findsWidgets);
+    });
 
-    testWidgets('steadier fixture shows suggested study hours block', (
-      tester,
-    ) async {
+    testWidgets('steadier fixture shows suggested study hours block', (tester) async {
       await tester.pumpWidget(wrapContent(steadier));
 
       expect(find.byKey(const Key('study_hours_line')), findsOneWidget);
       expect(find.textContaining('09:00–12:00'), findsOneWidget);
     });
 
-    testWidgets(
-      'withVerdict fixture renders verdict card and comparison values',
-      (tester) async {
-        await tester.pumpWidget(wrapContent(withVerdict));
+    testWidgets('withVerdict fixture renders verdict card and comparison values', (tester) async {
+      await tester.pumpWidget(wrapContent(withVerdict));
 
-        expect(find.byKey(const Key('verdict_line')), findsOneWidget);
-        expect(
-          find.textContaining('This is correlation, not cause.'),
-          findsOneWidget,
-        );
-      },
-    );
+      expect(find.byKey(const Key('verdict_line')), findsOneWidget);
+      expect(find.textContaining('This is correlation, not cause.'), findsOneWidget);
+    });
 
-    testWidgets(
-      'wavering fixture renders suggestion card with action and dismiss buttons',
-      (tester) async {
-        await tester.pumpWidget(wrapContent(wavering));
+    testWidgets('wavering fixture renders suggestion card with action and dismiss buttons', (tester) async {
+      await tester.pumpWidget(wrapContent(wavering));
 
-        expect(find.byKey(const Key('suggestion_line')), findsOneWidget);
-        expect(
-          find.byKey(const Key('suggestion_action_button')),
-          findsOneWidget,
-        );
-        expect(
-          find.byKey(const Key('suggestion_dismiss_button')),
-          findsOneWidget,
-        );
-      },
-    );
+      expect(find.byKey(const Key('suggestion_line')), findsOneWidget);
+      expect(find.byKey(const Key('suggestion_action_button')), findsOneWidget);
+      expect(find.byKey(const Key('suggestion_dismiss_button')), findsOneWidget);
+    });
   });
 
   group('All 16 Mirror Fixtures Render without Error', () {
@@ -167,9 +137,7 @@ void main() {
   });
 
   group('MirrorScreen States', () {
-    testWidgets('renders loading state when provider is loading', (
-      tester,
-    ) async {
+    testWidgets('renders loading state when provider is loading', (tester) async {
       final completer = Completer<MirrorDto>();
 
       await tester.pumpWidget(
@@ -177,11 +145,11 @@ void main() {
           overrides: [
             hostClientProvider.overrideWithValue(FakeHost()),
             mirrorProvider(null).overrideWith((ref) => completer.future),
-            mirrorWeeksProvider.overrideWith(
-              (ref) => Future<List<WeekRefDto>>.value([]),
-            ),
+            mirrorWeeksProvider.overrideWith((ref) => Future<List<WeekRefDto>>.value([])),
           ],
-          child: const MaterialApp(home: MirrorScreen()),
+          child: const MaterialApp(
+            home: MirrorScreen(),
+          ),
         ),
       );
 
@@ -191,21 +159,17 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('renders error state and retry button when provider errors', (
-      tester,
-    ) async {
+    testWidgets('renders error state and retry button when provider errors', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             hostClientProvider.overrideWithValue(FakeHost()),
-            mirrorProvider(null).overrideWith(
-              (ref) => Future<MirrorDto>.error(Exception('Connection failure')),
-            ),
-            mirrorWeeksProvider.overrideWith(
-              (ref) => Future<List<WeekRefDto>>.value([]),
-            ),
+            mirrorProvider(null).overrideWith((ref) => Future<MirrorDto>.error(Exception('Connection failure'))),
+            mirrorWeeksProvider.overrideWith((ref) => Future<List<WeekRefDto>>.value([])),
           ],
-          child: const MaterialApp(home: MirrorScreen()),
+          child: const MaterialApp(
+            home: MirrorScreen(),
+          ),
         ),
       );
       await tester.pump();
@@ -226,13 +190,12 @@ void main() {
         ProviderScope(
           overrides: [
             hostClientProvider.overrideWithValue(FakeHost()),
-            mirrorProvider(null)
-                .overrideWith((ref) => Future<MirrorDto>.value(steady)),
-            mirrorWeeksProvider.overrideWith(
-              (ref) => Future<List<WeekRefDto>>.value(weekRefs),
-            ),
+            mirrorProvider(null).overrideWith((ref) => Future<MirrorDto>.value(steady)),
+            mirrorWeeksProvider.overrideWith((ref) => Future<List<WeekRefDto>>.value(weekRefs)),
           ],
-          child: const MaterialApp(home: MirrorScreen()),
+          child: const MaterialApp(
+            home: MirrorScreen(),
+          ),
         ),
       );
       await tester.pumpAndSettle();

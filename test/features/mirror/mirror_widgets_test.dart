@@ -11,28 +11,27 @@ import 'package:sakshi/host/fixtures/mirror_fixtures.dart';
 
 void main() {
   Widget wrap(Widget child) {
-    return MaterialApp(home: Scaffold(body: child));
+    return MaterialApp(
+      home: Scaffold(
+        body: child,
+      ),
+    );
   }
 
   group('PartsCard', () {
-    testWidgets(
-      'renders all four part rows and inset/quiet aside for typical parts',
-      (tester) async {
-        await tester.pumpWidget(wrap(PartsCard(parts: steady.parts)));
+    testWidgets('renders all four part rows and inset/quiet aside for typical parts', (tester) async {
+      await tester.pumpWidget(wrap(PartsCard(parts: steady.parts)));
 
-        expect(find.byKey(const Key('part_stretch')), findsOneWidget);
-        expect(find.byKey(const Key('part_stays')), findsOneWidget);
-        expect(find.byKey(const Key('part_return')), findsOneWidget);
-        expect(find.byKey(const Key('part_quiet')), findsOneWidget);
-        expect(find.byKey(const Key('part_inset_quiet')), findsOneWidget);
-        expect(find.textContaining('in work apps'), findsOneWidget);
-        expect(find.textContaining('quiet'), findsWidgets);
-      },
-    );
+      expect(find.byKey(const Key('part_stretch')), findsOneWidget);
+      expect(find.byKey(const Key('part_stays')), findsOneWidget);
+      expect(find.byKey(const Key('part_return')), findsOneWidget);
+      expect(find.byKey(const Key('part_quiet')), findsOneWidget);
+      expect(find.byKey(const Key('part_inset_quiet')), findsOneWidget);
+      expect(find.textContaining('in work apps'), findsOneWidget);
+      expect(find.textContaining('quiet'), findsWidgets);
+    });
 
-    testWidgets('renders nothing when parts is null (tooLittle fixture)', (
-      tester,
-    ) async {
+    testWidgets('renders nothing when parts is null (tooLittle fixture)', (tester) async {
       await tester.pumpWidget(wrap(PartsCard(parts: tooLittle.parts)));
 
       expect(find.byKey(const Key('part_stretch')), findsNothing);
@@ -43,22 +42,22 @@ void main() {
       expect(find.text('0'), findsNothing);
     });
 
-    testWidgets(
-      'provisional parts renders only stretch and stays, null lines omitted',
-      (tester) async {
-        await tester.pumpWidget(wrap(PartsCard(parts: firstLook.parts)));
+    testWidgets('provisional parts renders only stretch and stays, null lines omitted', (tester) async {
+      await tester.pumpWidget(wrap(PartsCard(parts: firstLook.parts)));
 
-        expect(find.byKey(const Key('part_stretch')), findsOneWidget);
-        expect(find.byKey(const Key('part_stays')), findsOneWidget);
-        expect(find.byKey(const Key('part_return')), findsNothing);
-        expect(find.byKey(const Key('part_quiet')), findsNothing);
-      },
-    );
+      expect(find.byKey(const Key('part_stretch')), findsOneWidget);
+      expect(find.byKey(const Key('part_stays')), findsOneWidget);
+      expect(find.byKey(const Key('part_return')), findsNothing);
+      expect(find.byKey(const Key('part_quiet')), findsNothing);
+    });
 
     testWidgets('extras lines toggle expands and collapses', (tester) async {
       final partsWithExtras = PartsDto(
         glances: 5,
-        lines: PartLinesDto(stretch: 'Stretch line.', stays: 'Stays line.'),
+        lines: PartLinesDto(
+          stretch: 'Stretch line.',
+          stays: 'Stays line.',
+        ),
         extrasLines: ['Extra line 1', 'Extra line 2'],
       );
 
@@ -119,9 +118,7 @@ void main() {
   });
 
   group('PatternsCard', () {
-    testWidgets('renders up to 4 patterns with evidence counts', (
-      tester,
-    ) async {
+    testWidgets('renders up to 4 patterns with evidence counts', (tester) async {
       await tester.pumpWidget(wrap(PatternsCard(patterns: steadier.patterns)));
 
       expect(find.byType(PatternsCard), findsOneWidget);
@@ -129,17 +126,13 @@ void main() {
       expect(find.textContaining('windows ·'), findsWidgets);
     });
 
-    testWidgets('renders SizedBox.shrink when patterns list is empty', (
-      tester,
-    ) async {
+    testWidgets('renders SizedBox.shrink when patterns list is empty', (tester) async {
       await tester.pumpWidget(wrap(const PatternsCard(patterns: [])));
 
       expect(find.byKey(const Key('pattern_row_0')), findsNothing);
     });
 
-    testWidgets('caps displayed patterns at 4 even if more are given', (
-      tester,
-    ) async {
+    testWidgets('caps displayed patterns at 4 even if more are given', (tester) async {
       final manyPatterns = List.generate(
         6,
         (i) => PatternLineDto(

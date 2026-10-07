@@ -10,7 +10,6 @@
 // Run: flutter test test/copy_rules_test.dart
 
 import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
