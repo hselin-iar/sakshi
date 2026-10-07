@@ -2,11 +2,17 @@
 
 Covers T1.1 to T1.13 and the T1.14 spikes. Nothing here has been run. Do it on the **iQOO Z7** and on the **Nothing Phone 3a**, and write the results into the table at the end (and into `docs/spikes.md` where a section asks for it).
 
-Builds are in the T1 worktree (`/Users/hselin/sakshi-t1`):
-- debug: `build/app/outputs/flutter-apk/app-debug.apk` (everything except S-H)
-- release: `build/app/outputs/flutter-apk/app-release.apk` (S-H only; no INTERNET, no debug receivers)
+Build from `main` (it contains all four tracks). Two entry points, both on the real Android host:
 
-Rebuild first if the code changed: `flutter build apk --debug` and `flutter build apk --release`.
+| What | Command | Use it for |
+|---|---|---|
+| The real app (setup flow, Mirror, Lake, Today, Shelf, Settings, What I see, Time Machine) | `flutter build apk --debug` (or `--release`) | Everything the user sees. On a phone `lib/main.dart` always uses the real host, in every build mode. |
+| The host debug screen (one button per host method, plus the debug-only broadcasts) | `flutter build apk --debug -t lib/main_debug.dart` | The checks below that press host methods or use `adb shell am broadcast ... DebugTools`. Debug builds only. |
+
+- The `adb shell am broadcast ... DebugTools` actions (DUMP_EVENTS, SET_LAKE_STATE, FORCE_WEEKLY_NOTE, RUN_INGEST_NOW) exist in **debug builds of either entry point**.
+- The signed release APK (S-H and T1.16) is `flutter build apk --release`; check it with `tools/audit_apk.sh` first. A copy of the last good one is in `~/sakshi-apks/`.
+- The engine is only partly real (Track 2 is mid-way), so the Mirror content on a phone comes from what the engine can compute so far; screens that need the rest show their honest "learning" states.
+- Every phone test needs `android/gradlew`, which Flutter's template git-ignores; `flutter build` recreates it, or copy it from another checkout.
 
 ## 0. Before you start the clock
 
