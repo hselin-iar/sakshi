@@ -6,6 +6,7 @@ import com.kleos.sakshi.engine.model.ForegroundInterval
 import com.kleos.sakshi.engine.model.Origin
 import com.kleos.sakshi.engine.model.Pkg
 import com.kleos.sakshi.engine.model.ScreenSpan
+import com.kleos.sakshi.engine.model.Stay
 import com.kleos.sakshi.engine.model.StudyDay
 import com.kleos.sakshi.engine.model.Window
 import com.kleos.sakshi.engine.model.WindowSource
@@ -41,7 +42,7 @@ class StayDetectorTest {
         val result = StayDetector.detect(w, intervals, classes, emptyList())
 
         assertEquals(1, result.glances)
-        assertEquals(emptyList(), result.stays)
+        assertEquals(emptyList<Stay>(), result.stays)
     }
 
     @Test
