@@ -75,6 +75,15 @@ class PatternEngineTest {
     }
 
     @Test
+    fun `allDetectors registers all seven P1-P5, CrossDay and Clustering detectors`() {
+        assertEquals(7, PatternEngine.allDetectors.size)
+        assertEquals(
+            setOf(Rhythm, Trend, Shift, WindowShape, BreakPoint, CrossDay, Clustering),
+            PatternEngine.allDetectors.toSet(),
+        )
+    }
+
+    @Test
     fun `isRetired is true only after 14 days without redetection`() {
         val p = pattern("cell:A", firstSeen = 0, lastSeen = 0)
         val thirteenDaysMs = 13L * 24 * 60 * 60 * 1_000

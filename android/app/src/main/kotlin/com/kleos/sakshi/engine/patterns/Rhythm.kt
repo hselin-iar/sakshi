@@ -87,7 +87,7 @@ object Rhythm : PatternDetector {
     private fun stretchMinutesOf(wd: WindowWithDetail): Double =
         (wd.window.end.value - wd.window.start.value) / 60_000.0
 
-    private fun cellKey(wd: WindowWithDetail, zone: ZoneId): String {
+    internal fun cellKey(wd: WindowWithDetail, zone: ZoneId): String {
         val hour = Instant.ofEpochMilli(wd.window.start.value).atZone(zone).hour
         return "${dayPartOf(hour)}-${weekPartOf(wd.window.day.epochDay)}"
     }

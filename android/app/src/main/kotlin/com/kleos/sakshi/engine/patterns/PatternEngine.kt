@@ -19,7 +19,10 @@ private const val RETIRE_AFTER_MS = 14L * 24 * 60 * 60 * 1_000
  * caller decides whether to still show it.
  */
 object PatternEngine {
-    fun run(ctx: PatternContext, detectors: List<PatternDetector>, existing: List<Pattern>): List<Pattern> {
+    /** All seven detectors (P1-P5, CrossDay, Clustering), in the order DOC 3 lists them. */
+    val allDetectors: List<PatternDetector> = listOf(Rhythm, Trend, Shift, WindowShape, BreakPoint, CrossDay, Clustering)
+
+    fun run(ctx: PatternContext, detectors: List<PatternDetector> = allDetectors, existing: List<Pattern>): List<Pattern> {
         val existingByKey = existing.associateBy { it.kind to it.key }
         val detected = detectors.flatMap { it.detect(ctx) }
         val detectedByKey = detected.associateBy { it.kind to it.key }

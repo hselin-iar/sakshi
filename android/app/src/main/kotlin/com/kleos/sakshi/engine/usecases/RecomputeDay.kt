@@ -74,12 +74,16 @@ object RecomputeDay {
             inSetMinutes = windowDetails.sumOf { wd -> wd.stretches.sumOf { it.inSetMinutes } },
             coverage = coverage,
             pickups = pickups,
-            // Not computed in T2.8 -- no DOC 3 formula or golden example for any of these (see T2.7's scope note).
+            // Not computed -- no DOC 3 formula or golden example for either (see T2.7's scope note).
             switchesPerHour = null,
             flinch = null,
             rampUpMin = null,
-            lastScreenOffTs = null,
-            firstStretchMin = null,
+            // T2.8 left these null for lack of a spec; T2.11's CrossDay (F-cross-day) finally defines
+            // both: lastScreenOffTs is the last screen-off within the day's own span (which already
+            // runs up to the next study day's 04:00, so no separate "before next 04:00" check is
+            // needed), firstStretchMin is the day's chronologically first stretch.
+            lastScreenOffTs = dayScreenOff.maxByOrNull { it.start.value }?.start,
+            firstStretchMin = windowDetails.flatMap { it.stretches }.minByOrNull { it.start.value }?.minutes,
             externalResumes = 0,
         )
 
