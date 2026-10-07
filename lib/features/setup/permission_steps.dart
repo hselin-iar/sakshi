@@ -136,8 +136,7 @@ class NotificationAccessStep extends ConsumerStatefulWidget {
       _NotificationAccessStepState();
 }
 
-class _NotificationAccessStepState
-    extends ConsumerState<NotificationAccessStep>
+class _NotificationAccessStepState extends ConsumerState<NotificationAccessStep>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -308,8 +307,7 @@ class _RestrictedSettingsHelp extends StatelessWidget {
           const SizedBox(height: 8),
           const _Step(
             number: '3',
-            text:
-                'Go back and tap "Open settings" to enable notification access.',
+            text: 'Go back and tap "Open settings" to enable notification access.',
           ),
         ],
       ),
@@ -332,8 +330,10 @@ class _Step extends StatelessWidget {
           radius: 12,
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          child: Text(number,
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
+          child: Text(
+            number,
+            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          ),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -383,8 +383,8 @@ class _StatusLine extends StatelessWidget {
         Text(
           granted ? '$label: granted' : '$label: not yet granted',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: granted ? colorScheme.primary : colorScheme.onSurface,
-              ),
+            color: granted ? colorScheme.primary : colorScheme.onSurface,
+          ),
         ),
       ],
     );

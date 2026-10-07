@@ -20,7 +20,7 @@ final hostClientProvider = Provider<HostClient>((ref) {
 final setupStateProvider = FutureProvider<SetupStateDto>((ref) async {
   final client = ref.watch(hostClientProvider);
   return client.getSetupState();
-});
+}, retry: noAutoRetry);
 
 // --- syncProvider ---------------------------------------------------------
 // Calls syncNow(), then invalidates setupStateProvider (and any others that
@@ -31,4 +31,8 @@ final syncProvider = FutureProvider.autoDispose<SyncStatusDto>((ref) async {
   final status = await client.syncNow();
   ref.invalidate(setupStateProvider);
   return status;
-});
+}, retry: noAutoRetry);
+
+/// Riverpod 3 retries a failed provider on its own, with backoff, so an error (and its Retry button) would only appear after
+/// many seconds. Every screen already shows its error at once with an explicit Retry, so providers that call the host opt out.
+Duration? noAutoRetry(int retryCount, Object error) => null;

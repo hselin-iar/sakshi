@@ -1,4 +1,14 @@
-import 'package:go_router/go_router.dart';
+// lib/features/demo/demo_routes.dart
+// T4.6 — Route definition for the Time Machine demo.
 
-// Stub — screens are added in T4.6 / T4.7.
-final demoRoutes = <RouteBase>[];
+import 'package:go_router/go_router.dart';
+import 'package:sakshi/features/demo/demo_screen.dart';
+
+/// The route definition for the Time Machine demo screen.
+final demoRoutes = <RouteBase>[
+  GoRoute(
+    path: '/demo',
+    name: 'demo',
+    builder: (context, state) => const DemoScreen(),
+  ),
+];

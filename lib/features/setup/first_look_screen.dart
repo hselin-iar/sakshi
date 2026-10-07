@@ -73,8 +73,8 @@ class _FirstLookScreenState extends ConsumerState<FirstLookScreen> {
         child: _syncing
             ? _SyncProgress()
             : _error != null
-                ? _ErrorBody(message: _error!, onRetry: _sync)
-                : _MirrorBody(mirror: _mirror!),
+            ? _ErrorBody(message: _error!, onRetry: _sync)
+            : _MirrorBody(mirror: _mirror!),
       ),
       bottomNavigationBar: !_syncing && _error == null
           ? SafeArea(
@@ -180,9 +180,8 @@ class _PartsCardStub extends StatelessWidget {
       ),
       child: Text(
         'Parts card — Track 4 (T4.2)',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+        style: Theme.of(context).textTheme.bodySmall
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );
   }

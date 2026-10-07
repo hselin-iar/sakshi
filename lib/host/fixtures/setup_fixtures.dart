@@ -16,100 +16,98 @@ import '../host_client.dart';
 
 abstract final class SetupFixtures {
   static CollectionHealthDto get _healthOk => CollectionHealthDto(
-        workerRuns7d: 7,
-        paused: false,
-        listenerCoverage7d: 0.95,
-      );
+    workerRuns7d: 7,
+    paused: false,
+    listenerCoverage7d: 0.95,
+  );
 
-  static CollectionHealthDto get _healthFresh => CollectionHealthDto(
-        workerRuns7d: 0,
-        paused: false,
-      );
+  static CollectionHealthDto get _healthFresh =>
+      CollectionHealthDto(workerRuns7d: 0, paused: false);
 
   // Nothing granted — fresh install.
   static SetupStateDto get nothingGranted => SetupStateDto(
-        usageAccessGranted: false,
-        notificationAccessGranted: false,
-        restrictedSettingsSuspected: false,
-        workSetSaved: false,
-        studyHoursSaved: false,
-        batteryHelperShown: false,
-        weeklyNoteEnabled: false,
-        gentleMode: false,
-        isDemo: false,
-        health: _healthFresh,
-      );
+    usageAccessGranted: false,
+    notificationAccessGranted: false,
+    restrictedSettingsSuspected: false,
+    workSetSaved: false,
+    studyHoursSaved: false,
+    batteryHelperShown: false,
+    weeklyNoteEnabled: false,
+    gentleMode: false,
+    isDemo: false,
+    health: _healthFresh,
+  );
 
   // Usage access granted; notification not yet.
   static SetupStateDto get usageGranted => SetupStateDto(
-        usageAccessGranted: true,
-        notificationAccessGranted: false,
-        restrictedSettingsSuspected: false,
-        workSetSaved: false,
-        studyHoursSaved: false,
-        batteryHelperShown: false,
-        weeklyNoteEnabled: false,
-        gentleMode: false,
-        isDemo: false,
-        health: _healthFresh,
-      );
+    usageAccessGranted: true,
+    notificationAccessGranted: false,
+    restrictedSettingsSuspected: false,
+    workSetSaved: false,
+    studyHoursSaved: false,
+    batteryHelperShown: false,
+    weeklyNoteEnabled: false,
+    gentleMode: false,
+    isDemo: false,
+    health: _healthFresh,
+  );
 
   // Both permissions granted; setup steps not yet completed.
   static SetupStateDto get bothGranted => SetupStateDto(
-        usageAccessGranted: true,
-        notificationAccessGranted: true,
-        restrictedSettingsSuspected: false,
-        workSetSaved: false,
-        studyHoursSaved: false,
-        batteryHelperShown: false,
-        weeklyNoteEnabled: false,
-        gentleMode: false,
-        isDemo: false,
-        health: _healthFresh,
-      );
+    usageAccessGranted: true,
+    notificationAccessGranted: true,
+    restrictedSettingsSuspected: false,
+    workSetSaved: false,
+    studyHoursSaved: false,
+    batteryHelperShown: false,
+    weeklyNoteEnabled: false,
+    gentleMode: false,
+    isDemo: false,
+    health: _healthFresh,
+  );
 
   // Restricted settings suspected — user returned from settings but
   // notification access was not granted (sideloaded APK on Android 13+).
   static SetupStateDto get restrictedSuspected => SetupStateDto(
-        usageAccessGranted: true,
-        notificationAccessGranted: false,
-        restrictedSettingsSuspected: true,
-        workSetSaved: false,
-        studyHoursSaved: false,
-        batteryHelperShown: false,
-        weeklyNoteEnabled: false,
-        gentleMode: false,
-        isDemo: false,
-        health: _healthFresh,
-      );
+    usageAccessGranted: true,
+    notificationAccessGranted: false,
+    restrictedSettingsSuspected: true,
+    workSetSaved: false,
+    studyHoursSaved: false,
+    batteryHelperShown: false,
+    weeklyNoteEnabled: false,
+    gentleMode: false,
+    isDemo: false,
+    health: _healthFresh,
+  );
 
   // Fully set up — normal use, no demo.
   static SetupStateDto get allDone => SetupStateDto(
-        usageAccessGranted: true,
-        notificationAccessGranted: true,
-        restrictedSettingsSuspected: false,
-        workSetSaved: true,
-        studyHoursSaved: true,
-        batteryHelperShown: true,
-        weeklyNoteEnabled: true,
-        gentleMode: false,
-        isDemo: false,
-        health: _healthOk,
-      );
+    usageAccessGranted: true,
+    notificationAccessGranted: true,
+    restrictedSettingsSuspected: false,
+    workSetSaved: true,
+    studyHoursSaved: true,
+    batteryHelperShown: true,
+    weeklyNoteEnabled: true,
+    gentleMode: false,
+    isDemo: false,
+    health: _healthOk,
+  );
 
   // Demo active — permanent banner shown.
   static SetupStateDto get demoActive => SetupStateDto(
-        usageAccessGranted: true,
-        notificationAccessGranted: true,
-        restrictedSettingsSuspected: false,
-        workSetSaved: true,
-        studyHoursSaved: true,
-        batteryHelperShown: true,
-        weeklyNoteEnabled: false,
-        gentleMode: false,
-        isDemo: true,
-        health: _healthOk,
-      );
+    usageAccessGranted: true,
+    notificationAccessGranted: true,
+    restrictedSettingsSuspected: false,
+    workSetSaved: true,
+    studyHoursSaved: true,
+    batteryHelperShown: true,
+    weeklyNoteEnabled: false,
+    gentleMode: false,
+    isDemo: true,
+    health: _healthOk,
+  );
 
   // ---------------------------------------------------------------------------
   // App list — ~20 representative launcher apps for the work-set screen.
@@ -119,25 +117,125 @@ abstract final class SetupFixtures {
   // ---------------------------------------------------------------------------
 
   static List<AppDto> get appList => [
-        AppDto(pkg: 'com.google.android.youtube',       label: 'YouTube',        suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.instagram.android',            label: 'Instagram',      suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.whatsapp',                     label: 'WhatsApp',       suggestedInSet: false, suggestedDepends: true),
-        AppDto(pkg: 'org.telegram.messenger',           label: 'Telegram',       suggestedInSet: false, suggestedDepends: true),
-        AppDto(pkg: 'com.twitter.android',              label: 'X (Twitter)',    suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.snapchat.android',             label: 'Snapchat',       suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.zhiliaoapp.musically',         label: 'TikTok',         suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.reddit.frontpage',             label: 'Reddit',         suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.linkedin.android',             label: 'LinkedIn',       suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.google.android.apps.maps',     label: 'Maps',           suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.amazon.mShop.android.shopping',label: 'Amazon',         suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.flipkart.android',             label: 'Flipkart',       suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.netflix.mediaclient',          label: 'Netflix',        suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.spotify.music',                label: 'Spotify',        suggestedInSet: false, suggestedDepends: true),
-        AppDto(pkg: 'com.discord',                      label: 'Discord',        suggestedInSet: true,  suggestedDepends: false),
-        AppDto(pkg: 'com.google.android.gm',            label: 'Gmail',          suggestedInSet: false, suggestedDepends: true),
-        AppDto(pkg: 'com.microsoft.launcher',           label: 'Edge',           suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.android.chrome',               label: 'Chrome',         suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.duolingo',                     label: 'Duolingo',       suggestedInSet: false, suggestedDepends: false),
-        AppDto(pkg: 'com.byju.s',                       label: 'BYJU\'S',        suggestedInSet: false, suggestedDepends: false),
-      ];
+    AppDto(
+      pkg: 'com.google.android.youtube',
+      label: 'YouTube',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.instagram.android',
+      label: 'Instagram',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.whatsapp',
+      label: 'WhatsApp',
+      suggestedInSet: false,
+      suggestedDepends: true,
+    ),
+    AppDto(
+      pkg: 'org.telegram.messenger',
+      label: 'Telegram',
+      suggestedInSet: false,
+      suggestedDepends: true,
+    ),
+    AppDto(
+      pkg: 'com.twitter.android',
+      label: 'X (Twitter)',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.snapchat.android',
+      label: 'Snapchat',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.zhiliaoapp.musically',
+      label: 'TikTok',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.reddit.frontpage',
+      label: 'Reddit',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.linkedin.android',
+      label: 'LinkedIn',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.google.android.apps.maps',
+      label: 'Maps',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.amazon.mShop.android.shopping',
+      label: 'Amazon',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.flipkart.android',
+      label: 'Flipkart',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.netflix.mediaclient',
+      label: 'Netflix',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.spotify.music',
+      label: 'Spotify',
+      suggestedInSet: false,
+      suggestedDepends: true,
+    ),
+    AppDto(
+      pkg: 'com.discord',
+      label: 'Discord',
+      suggestedInSet: true,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.google.android.gm',
+      label: 'Gmail',
+      suggestedInSet: false,
+      suggestedDepends: true,
+    ),
+    AppDto(
+      pkg: 'com.microsoft.launcher',
+      label: 'Edge',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.android.chrome',
+      label: 'Chrome',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.duolingo',
+      label: 'Duolingo',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+    AppDto(
+      pkg: 'com.byju.s',
+      label: 'BYJU\'S',
+      suggestedInSet: false,
+      suggestedDepends: false,
+    ),
+  ];
 }

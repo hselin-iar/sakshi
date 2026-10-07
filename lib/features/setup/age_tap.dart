@@ -81,8 +81,7 @@ class _AgeTapState extends ConsumerState<AgeTap> {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed:
-                      _saving ? null : () => context.go(_nextPath),
+                  onPressed: _saving ? null : () => context.go(_nextPath),
                   child: const Text('Skip'),
                 ),
               ),

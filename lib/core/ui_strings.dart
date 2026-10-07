@@ -20,8 +20,7 @@ const firstScreenLine2 =
 const firstScreenLine3 =
     'Nothing leaves your device. No account, no internet, no cloud.';
 
-const firstScreenLine4 =
-    'It shows you patterns in your own data, once a week.';
+const firstScreenLine4 = 'It shows you patterns in your own data, once a week.';
 
 // ---------------------------------------------------------------------------
 // Screen titles
@@ -121,5 +120,4 @@ const whatISeePauseLabel = 'Pause collection';
 const whatISeeDeleteLabel = 'Delete everything';
 const whatISeeDeleteConfirm1 =
     'This will delete all your data on this device. Are you sure?';
-const whatISeeDeleteConfirm2 =
-    'This cannot be undone. Tap again to confirm.';
+const whatISeeDeleteConfirm2 = 'This cannot be undone. Tap again to confirm.';

@@ -40,14 +40,8 @@ const _pathFirstLook = '/setup/first-look';
 
 /// Routes exported to router.dart.
 final setupRoutes = <RouteBase>[
-  GoRoute(
-    path: _pathRoot,
-    builder: (context, state) => const SetupGate(),
-  ),
-  GoRoute(
-    path: _pathFirst,
-    builder: (context, state) => const FirstScreen(),
-  ),
+  GoRoute(path: _pathRoot, builder: (context, state) => const SetupGate()),
+  GoRoute(path: _pathFirst, builder: (context, state) => const FirstScreen()),
   GoRoute(
     path: _pathUsage,
     builder: (context, state) => const UsageAccessStep(),
@@ -64,10 +58,7 @@ final setupRoutes = <RouteBase>[
     path: _pathStudyHours,
     builder: (context, state) => const StudyHoursScreen(),
   ),
-  GoRoute(
-    path: _pathAge,
-    builder: (context, state) => const AgeTap(),
-  ),
+  GoRoute(path: _pathAge, builder: (context, state) => const AgeTap()),
   GoRoute(
     path: _pathBattery,
     builder: (context, state) => const BatteryHelperScreen(),
@@ -91,9 +82,8 @@ class SetupGate extends ConsumerWidget {
     final setupAsync = ref.watch(setupStateProvider);
 
     return setupAsync.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => _ErrorView(
         message: e is HostException ? e.userMessage : 'Something went wrong.',
         onRetry: () => ref.invalidate(setupStateProvider),
@@ -104,9 +94,7 @@ class SetupGate extends ConsumerWidget {
           if (!context.mounted) return;
           _redirect(context, s);
         });
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }

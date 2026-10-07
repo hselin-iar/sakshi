@@ -147,56 +147,53 @@ class FakeHost implements HostClient {
   /// Returns a placeholder MirrorDto until Track 4 provides mirror_fixtures.
   @override
   Future<MirrorDto> getMirror(int? weekStartEpochMs) async => MirrorDto(
-        isDemo: _state.isDemo,
-        provisional: true,
-        gentle: _state.gentleMode,
-        weekStartEpochMs: weekStartEpochMs ?? 0,
-        weekLabel: 'Placeholder week',
-        dataState: DataStateDto.learningBaseline,
-        dataFlags: const [],
-        dataLines: const ['Waiting for Track 4 mirror fixtures'],
-        headline: '',
-        patterns: const [],
-        nothingToFix: true,
-        goalTap: GoalTapDto(offered: false),
-        reanchorOffered: false,
-      );
+    isDemo: _state.isDemo,
+    provisional: true,
+    gentle: _state.gentleMode,
+    weekStartEpochMs: weekStartEpochMs ?? 0,
+    weekLabel: 'Placeholder week',
+    dataState: DataStateDto.learningBaseline,
+    dataFlags: const [],
+    dataLines: const ['Waiting for Track 4 mirror fixtures'],
+    headline: '',
+    patterns: const [],
+    nothingToFix: true,
+    goalTap: GoalTapDto(offered: false),
+    reanchorOffered: false,
+  );
 
   @override
   Future<List<WeekRefDto>> listMirrorWeeks() async => const [];
 
   @override
   Future<TodayDto> getTodaySoFar() async => TodayDto(
-        isDemo: _state.isDemo,
-        windows: const [],
-        line: '',
-        dataFlags: const [],
-        dataLines: const [],
-      );
+    isDemo: _state.isDemo,
+    windows: const [],
+    line: '',
+    dataFlags: const [],
+    dataLines: const [],
+  );
 
   @override
   Future<WhatISeeDto> getWhatISee() async => WhatISeeDto(
-        isDemo: _state.isDemo,
-        usageAccessGranted: _state.usageAccessGranted,
-        notificationAccessGranted: _state.notificationAccessGranted,
-        rawEventCount: 0,
-        notifEventCount: 0,
-        derivedDays: 0,
-        workerRuns7d: _state.health.workerRuns7d,
-        paused: _state.health.paused,
-        oddEventPairs: 0,
-        lines: const [],
-      );
+    isDemo: _state.isDemo,
+    usageAccessGranted: _state.usageAccessGranted,
+    notificationAccessGranted: _state.notificationAccessGranted,
+    rawEventCount: 0,
+    notifEventCount: 0,
+    derivedDays: 0,
+    workerRuns7d: _state.health.workerRuns7d,
+    paused: _state.health.paused,
+    oddEventPairs: 0,
+    lines: const [],
+  );
 
   @override
   Future<List<SayingDto>> getSayingChoices() async => const [];
 
   @override
-  Future<LakeDto> getLake() async => LakeDto(
-        state: LakeStateDto.noData,
-        phrase: '',
-        isDemo: _state.isDemo,
-      );
+  Future<LakeDto> getLake() async =>
+      LakeDto(state: LakeStateDto.noData, phrase: '', isDemo: _state.isDemo);
 
   // ---- write ---------------------------------------------------------------
 

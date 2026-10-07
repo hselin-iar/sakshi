@@ -60,8 +60,7 @@ class _BatteryHelperScreenState extends ConsumerState<BatteryHelperScreen> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,8 +100,7 @@ class _BatteryHelperScreenState extends ConsumerState<BatteryHelperScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed:
-                        _leaving ? null : () => _openAndLeave(context),
+                    onPressed: _leaving ? null : () => _openAndLeave(context),
                     child: const Text('Open battery settings'),
                   ),
                 ),
@@ -138,9 +136,8 @@ class _OemSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+            style: Theme.of(context).textTheme.titleSmall
+                ?.copyWith(color: Theme.of(context).colorScheme.primary),
           ),
           const SizedBox(height: 6),
           Text(steps, style: Theme.of(context).textTheme.bodyMedium),

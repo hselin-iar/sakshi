@@ -33,9 +33,14 @@ class SakshiApp extends ConsumerWidget {
       darkTheme: sakshiDark(),
       themeMode: ThemeMode.system,
       routerConfig: appRouter,
-      // builder wraps every page in DemoBanner when isDemo is true.
+      // The permanent "Demo data" banner sits above every page whenever isDemo is true.
       builder: isDemo
-          ? (context, child) => DemoBanner(child: child ?? const SizedBox())
+          ? (context, child) => Column(
+              children: [
+                const DemoBanner(),
+                Expanded(child: child ?? const SizedBox()),
+              ],
+            )
           : null,
     );
   }

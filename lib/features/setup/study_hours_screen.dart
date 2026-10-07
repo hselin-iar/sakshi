@@ -45,10 +45,7 @@ class _StudyHoursScreenState extends ConsumerState<StudyHoursScreen> {
       startMinute: _startMinute,
       endMinute: _endMinute,
     );
-    final dto = StudyHoursDto(
-      blocks: [block],
-      learnForMe: _learnForMe,
-    );
+    final dto = StudyHoursDto(blocks: [block], learnForMe: _learnForMe);
     try {
       await ref.read(hostClientProvider).saveStudyHours(dto);
       if (!mounted) return;
@@ -65,10 +62,7 @@ class _StudyHoursScreenState extends ConsumerState<StudyHoursScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(titleStudyHours),
-        centerTitle: false,
-      ),
+      appBar: AppBar(title: const Text(titleStudyHours), centerTitle: false),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -104,7 +98,9 @@ class _StudyHoursScreenState extends ConsumerState<StudyHoursScreen> {
               if (_crossesMidnight)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6),
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(8),
@@ -140,8 +136,7 @@ class _StudyHoursScreenState extends ConsumerState<StudyHoursScreen> {
                       ? const SizedBox(
                           height: 18,
                           width: 18,
-                          child:
-                              CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Text('Save and continue'),
                 ),
@@ -186,9 +181,8 @@ class _SliderSection extends StatelessWidget {
             Text(label, style: Theme.of(context).textTheme.titleSmall),
             Text(
               timeLabel,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+              style: Theme.of(context).textTheme.titleSmall
+                  ?.copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),

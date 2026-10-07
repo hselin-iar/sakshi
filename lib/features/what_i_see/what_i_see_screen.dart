@@ -57,8 +57,7 @@ class _WhatISeeScreenState extends ConsumerState<WhatISeeScreen> {
       _exportResult = null;
     });
     try {
-      final result =
-          await ref.read(hostClientProvider).exportData(_includeRaw);
+      final result = await ref.read(hostClientProvider).exportData(_includeRaw);
       if (!mounted) return;
       setState(() => _exportResult = result.fileName);
     } catch (e) {
@@ -89,11 +88,8 @@ class _WhatISeeScreenState extends ConsumerState<WhatISeeScreen> {
   }
 
   void _showError(Object e) {
-    final msg = e is HostException
-        ? e.userMessage
-        : 'Something went wrong.';
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
+    final msg = e is HostException ? e.userMessage : 'Something went wrong.';
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -105,9 +101,7 @@ class _WhatISeeScreenState extends ConsumerState<WhatISeeScreen> {
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => _ErrorBody(
-          message: e is HostException
-              ? e.userMessage
-              : 'Something went wrong.',
+          message: e is HostException ? e.userMessage : 'Something went wrong.',
           onRetry: () => ref.invalidate(_whatISeeProvider),
         ),
         data: (dto) => _Body(
@@ -137,6 +131,7 @@ class _WhatISeeScreenState extends ConsumerState<WhatISeeScreen> {
 
 final _whatISeeProvider = FutureProvider.autoDispose<WhatISeeDto>(
   (ref) => ref.read(hostClientProvider).getWhatISee(),
+  retry: noAutoRetry,
 );
 
 // ---------------------------------------------------------------------------
@@ -192,13 +187,14 @@ class _Body extends StatelessWidget {
         _CountRow('Worker runs (7 d)', dto.workerRuns7d),
         _CountRow('Odd event pairs', dto.oddEventPairs),
         if (dto.listenerCoverage7d != null)
-          Builder(builder: (context) {
-            final coveragePct =
-                (dto.listenerCoverage7d! * 100).toStringAsFixed(0);
-            return _TextRow('Listener coverage (7 d)', '$coveragePct%');
-          }),
-        if (dto.lastError != null)
-          _TextRow('Last error', dto.lastError ?? ''),
+          Builder(
+            builder: (context) {
+              final coveragePct = (dto.listenerCoverage7d! * 100)
+                  .toStringAsFixed(0);
+              return _TextRow('Listener coverage (7 d)', '$coveragePct%');
+            },
+          ),
+        if (dto.lastError != null) _TextRow('Last error', dto.lastError ?? ''),
 
         const SizedBox(height: 16),
         const Divider(),
@@ -256,8 +252,7 @@ class _Body extends StatelessWidget {
               onPressed: onDeleteTap,
               style: OutlinedButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
-                side: BorderSide(
-                    color: Theme.of(context).colorScheme.error),
+                side: BorderSide(color: Theme.of(context).colorScheme.error),
               ),
               child: const Text(whatISeeDeleteLabel),
             ),
@@ -265,9 +260,8 @@ class _Body extends StatelessWidget {
         if (deleteStep == 1) ...[
           Text(
             whatISeeDeleteConfirm1,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.error,
-                ),
+            style: Theme.of(context).textTheme.bodyMedium
+                ?.copyWith(color: Theme.of(context).colorScheme.error),
           ),
           const SizedBox(height: 12),
           Row(
@@ -283,8 +277,7 @@ class _Body extends StatelessWidget {
                 child: FilledButton(
                   onPressed: onDeleteTap,
                   style: FilledButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.error,
+                    backgroundColor: Theme.of(context).colorScheme.error,
                   ),
                   child: const Text(whatISeeDeleteConfirm2),
                 ),
@@ -292,8 +285,7 @@ class _Body extends StatelessWidget {
             ],
           ),
         ],
-        if (deleteStep == 2)
-          const Center(child: CircularProgressIndicator()),
+        if (deleteStep == 2) const Center(child: CircularProgressIndicator()),
 
         const SizedBox(height: 32),
       ],
@@ -321,9 +313,8 @@ class _CountRow extends StatelessWidget {
           Text(label, style: Theme.of(context).textTheme.bodySmall),
           Text(
             count.toString(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontFeatures: const [FontFeature.tabularFigures()],
-                ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
           ),
         ],
       ),

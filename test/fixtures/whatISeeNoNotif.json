@@ -1,0 +1,20 @@
+{
+  "isDemo": false,
+  "usageAccessGranted": true,
+  "notificationAccessGranted": false,
+  "rawEventCount": 2200,
+  "notifEventCount": 0,
+  "derivedDays": 8,
+  "workerRuns7d": 55,
+  "paused": false,
+  "oddEventPairs": 0,
+  "lines": [
+    "Usage access: on.",
+    "Ping tracking: off.",
+    "Raw events kept: 2 200 (8 days).",
+    "Background runs in the last 7 days: 55.",
+    "Last background run: 5 minutes ago."
+  ],
+  "oldestRawEpochMs": 1759003200000,
+  "lastWorkerRunEpochMs": 1759699500000
+}

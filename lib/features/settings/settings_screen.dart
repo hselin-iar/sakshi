@@ -76,8 +76,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       body: setupAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => _ErrorBody(
-          message:
-              e is HostException ? e.userMessage : 'Something went wrong.',
+          message: e is HostException ? e.userMessage : 'Something went wrong.',
           onRetry: () => ref.invalidate(setupStateProvider),
         ),
         data: (s) => ListView(
@@ -94,9 +93,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             // Weekly note.
             SwitchListTile(
               title: const Text(settingsWeeklyNoteLabel),
-              subtitle: Text(
-                _noteOffLine ?? settingsWeeklyNoteSubtitle,
-              ),
+              subtitle: Text(_noteOffLine ?? settingsWeeklyNoteSubtitle),
               value: s.weeklyNoteEnabled,
               onChanged: _togglingNote ? null : _setWeeklyNote,
             ),

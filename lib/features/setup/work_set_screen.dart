@@ -63,8 +63,7 @@ class _WorkSetScreenState extends ConsumerState<WorkSetScreen> {
     }
   }
 
-  int get _selectedCount =>
-      _selection.values.where((v) => v != null).length;
+  int get _selectedCount => _selection.values.where((v) => v != null).length;
 
   bool get _overCap => _selectedCount > 12;
 
@@ -75,8 +74,7 @@ class _WorkSetScreenState extends ConsumerState<WorkSetScreen> {
         .map((e) => WorkSetEntryDto(pkg: e.key, userClass: e.value!))
         .toList();
     try {
-      final result =
-          await ref.read(hostClientProvider).saveWorkSet(entries);
+      final result = await ref.read(hostClientProvider).saveWorkSet(entries);
       if (!mounted) return;
       if (result.ok) {
         ref.invalidate(setupStateProvider);
@@ -90,8 +88,7 @@ class _WorkSetScreenState extends ConsumerState<WorkSetScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorMessage =
-            e is HostException ? e.userMessage : 'Could not save.';
+        _errorMessage = e is HostException ? e.userMessage : 'Could not save.';
         _saving = false;
       });
     }
@@ -104,17 +101,17 @@ class _WorkSetScreenState extends ConsumerState<WorkSetScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null && _apps == null
-              ? _ErrorBody(
-                  message: _errorMessage!,
-                  onRetry: () {
-                    setState(() {
-                      _errorMessage = null;
-                      _loading = true;
-                    });
-                    _loadApps();
-                  },
-                )
-              : _buildList(),
+          ? _ErrorBody(
+              message: _errorMessage!,
+              onRetry: () {
+                setState(() {
+                  _errorMessage = null;
+                  _loading = true;
+                });
+                _loadApps();
+              },
+            )
+          : _buildList(),
       bottomNavigationBar: _loading || _apps == null
           ? null
           : _BottomBar(
@@ -239,17 +236,16 @@ class _BottomBar extends StatelessWidget {
                 Text(
                   '$count of 12',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: overCap
-                            ? Theme.of(context).colorScheme.error
-                            : Theme.of(context).colorScheme.onSurface,
-                      ),
+                    color: overCap
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 if (overCap)
                   Text(
                     'Pick up to 12. Fewer is better.',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: Theme.of(context).colorScheme.error),
                   ),
               ],
             ),
@@ -257,9 +253,8 @@ class _BottomBar extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 errorMessage!,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: Theme.of(context).colorScheme.error),
               ),
             ],
             const SizedBox(height: 8),
@@ -273,10 +268,7 @@ class _BottomBar extends StatelessWidget {
                     )
                   : const Text('Save and continue'),
             ),
-            TextButton(
-              onPressed: onSkip,
-              child: const Text('Skip for now'),
-            ),
+            TextButton(onPressed: onSkip, child: const Text('Skip for now')),
           ],
         ),
       ),

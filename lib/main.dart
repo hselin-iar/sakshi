@@ -18,24 +18,22 @@ const bool _debugIsDemo = false;
 class _DebugFakeHost implements HostClient {
   const _DebugFakeHost();
 
-  static CollectionHealthDto get _health => CollectionHealthDto(
-        workerRuns7d: 0,
-        paused: false,
-      );
+  static CollectionHealthDto get _health =>
+      CollectionHealthDto(workerRuns7d: 0, paused: false);
 
   @override
   Future<SetupStateDto> getSetupState() async => SetupStateDto(
-        usageAccessGranted: true,
-        notificationAccessGranted: true,
-        restrictedSettingsSuspected: false,
-        workSetSaved: true,
-        studyHoursSaved: true,
-        batteryHelperShown: true,
-        weeklyNoteEnabled: false,
-        gentleMode: false,
-        isDemo: _debugIsDemo,
-        health: _health,
-      );
+    usageAccessGranted: true,
+    notificationAccessGranted: true,
+    restrictedSettingsSuspected: false,
+    workSetSaved: true,
+    studyHoursSaved: true,
+    batteryHelperShown: true,
+    weeklyNoteEnabled: false,
+    gentleMode: false,
+    isDemo: _debugIsDemo,
+    health: _health,
+  );
 
   @override
   Future<void> openUsageAccessSettings() async {}
@@ -65,51 +63,48 @@ class _DebugFakeHost implements HostClient {
       SyncStatusDto(state: SyncStateDto.ok);
   @override
   Future<MirrorDto> getMirror(int? weekStartEpochMs) async => MirrorDto(
-        isDemo: _debugIsDemo,
-        provisional: true,
-        gentle: false,
-        weekStartEpochMs: 0,
-        weekLabel: '',
-        dataState: DataStateDto.learningBaseline,
-        dataFlags: const [],
-        dataLines: const [],
-        headline: '',
-        patterns: const [],
-        nothingToFix: true,
-        goalTap: GoalTapDto(offered: false),
-        reanchorOffered: false,
-      );
+    isDemo: _debugIsDemo,
+    provisional: true,
+    gentle: false,
+    weekStartEpochMs: 0,
+    weekLabel: '',
+    dataState: DataStateDto.learningBaseline,
+    dataFlags: const [],
+    dataLines: const [],
+    headline: '',
+    patterns: const [],
+    nothingToFix: true,
+    goalTap: GoalTapDto(offered: false),
+    reanchorOffered: false,
+  );
   @override
   Future<List<WeekRefDto>> listMirrorWeeks() async => const [];
   @override
   Future<TodayDto> getTodaySoFar() async => TodayDto(
-        isDemo: _debugIsDemo,
-        windows: const [],
-        line: '',
-        dataFlags: const [],
-        dataLines: const [],
-      );
+    isDemo: _debugIsDemo,
+    windows: const [],
+    line: '',
+    dataFlags: const [],
+    dataLines: const [],
+  );
   @override
   Future<WhatISeeDto> getWhatISee() async => WhatISeeDto(
-        isDemo: _debugIsDemo,
-        usageAccessGranted: true,
-        notificationAccessGranted: true,
-        rawEventCount: 0,
-        notifEventCount: 0,
-        derivedDays: 0,
-        workerRuns7d: 0,
-        paused: false,
-        oddEventPairs: 0,
-        lines: const [],
-      );
+    isDemo: _debugIsDemo,
+    usageAccessGranted: true,
+    notificationAccessGranted: true,
+    rawEventCount: 0,
+    notifEventCount: 0,
+    derivedDays: 0,
+    workerRuns7d: 0,
+    paused: false,
+    oddEventPairs: 0,
+    lines: const [],
+  );
   @override
   Future<List<SayingDto>> getSayingChoices() async => const [];
   @override
-  Future<LakeDto> getLake() async => LakeDto(
-        state: LakeStateDto.noData,
-        phrase: '',
-        isDemo: _debugIsDemo,
-      );
+  Future<LakeDto> getLake() async =>
+      LakeDto(state: LakeStateDto.noData, phrase: '', isDemo: _debugIsDemo);
   @override
   Future<void> pickSaying(String sayingId) async {}
   @override
