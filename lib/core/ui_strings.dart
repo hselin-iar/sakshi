@@ -121,3 +121,38 @@ const whatISeeDeleteLabel = 'Delete everything';
 const whatISeeDeleteConfirm1 =
     'This will delete all your data on this device. Are you sure?';
 const whatISeeDeleteConfirm2 = 'This cannot be undone. Tap again to confirm.';
+
+// ---------------------------------------------------------------------------
+// Home (the dashboard every launch lands on)
+// ---------------------------------------------------------------------------
+
+const titleHome = 'Sakshi';
+const homeGreetingMorning = 'Good morning';
+const homeGreetingAfternoon = 'Good afternoon';
+const homeGreetingEvening = 'Good evening';
+const homeSubtitle = 'Here is how things stand.';
+const homeSyncing = 'Reading what Android has recorded…';
+const homeSyncNow = 'Read now';
+const homeSetupHeading = 'Your setup';
+const homeExploreHeading = 'Look around';
+const homeWorkSetNeededTitle = 'Choose the apps you work in';
+const homeWorkSetNeededBody =
+    'Sakshi finds your study windows from the apps you pick. Pick up to 12; fewer is better.';
+const homeWorkSetNeededButton = 'Choose apps';
+const homeWorkSetTitle = 'Work set';
+const homeWorkSetBody = 'Change the apps that count as work.';
+const homeStudyHoursTitle = 'Study hours';
+const homeStudyHoursBody = 'Optional. Tell Sakshi when you usually study.';
+const homeNotifTitle = 'Notification access';
+const homeNotifBody = 'Optional. Lets Sakshi note when an app pings, never the words.';
+const homeBatteryTitle = 'Keep Sakshi reading';
+const homeBatteryBody = 'A quick look at your phone\'s battery settings.';
+const homeMirrorTitle = 'Your Mirror';
+const homeTodayTitle = 'Today so far';
+const homeLakeTitle = 'The Lake';
+const homeWhatISeeTitle = 'What Sakshi sees';
+const homeWhatISeeBody = 'Exactly what is read, with pause, export and delete.';
+const homeDemoTitle = 'Time Machine';
+const homeDemoBody = 'Try Sakshi on made-up history.';
+const homeSettingsTitle = 'Settings';
+const homeErrorRetry = 'Try again';

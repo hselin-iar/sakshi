@@ -24,8 +24,9 @@ import 'work_set_screen.dart';
 //   '/setup/study-hours' → StudyHoursScreen
 //   '/setup/age'         → AgeTap
 //
-// After all setup is done, SetupGate pushes to '/mirror' (Track 4, T4.3).
-// Battery helper route is added in T3.5.
+// Onboarding is first -> usage -> notification (skippable) -> one question -> '/home'.
+// '/home' is the dashboard every later launch lands on. The work set, study hours and
+// the battery note are cards on Home, not steps in a flow.
 // ---------------------------------------------------------------------------
 
 const _pathRoot = '/';
@@ -37,6 +38,7 @@ const _pathStudyHours = '/setup/study-hours';
 const _pathAge = '/setup/age';
 const _pathBattery = '/setup/battery';
 const _pathFirstLook = '/setup/first-look';
+const _pathHome = '/home';
 
 /// Routes exported to router.dart.
 final setupRoutes = <RouteBase>[
@@ -99,33 +101,10 @@ class SetupGate extends ConsumerWidget {
     );
   }
 
+  /// Usage access is the only thing the app cannot do without. Everything else (notification access, the work set, study hours,
+  /// the battery note) is offered on Home and never forced, so there is nothing for the gate to loop on.
   static void _redirect(BuildContext context, SetupStateDto s) {
-    if (!s.usageAccessGranted) {
-      context.go(_pathFirst);
-      return;
-    }
-    // First Look is between usage access and notification access (F1, T3.7).
-    if (!s.notificationAccessGranted) {
-      // If usage was just granted we show First Look before notif step.
-      // SetupGate cannot distinguish "never seen" from "already seen"; First
-      // Look is idempotent (re-running syncNow is harmless).
-      context.go(_pathFirstLook);
-      return;
-    }
-    if (!s.workSetSaved) {
-      context.go(_pathWorkSet);
-      return;
-    }
-    if (!s.studyHoursSaved) {
-      context.go(_pathStudyHours);
-      return;
-    }
-    if (!s.batteryHelperShown) {
-      context.go(_pathBattery);
-      return;
-    }
-    // Mirror route added in T4.3; placeholder loops to usage.
-    context.go(_pathUsage);
+    context.go(s.usageAccessGranted ? _pathHome : _pathFirst);
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../core/nav.dart';
 import '../../core/providers.dart';
 import '../../core/ui_strings.dart';
 import '../../host/host_client.dart';
@@ -78,7 +78,7 @@ class _WorkSetScreenState extends ConsumerState<WorkSetScreen> {
       if (!mounted) return;
       if (result.ok) {
         ref.invalidate(setupStateProvider);
-        context.go('/setup/study-hours');
+        leaveToWhereYouCameFrom(context);
       } else {
         setState(() {
           _errorMessage = result.userMessage ?? 'Could not save.';
@@ -120,7 +120,7 @@ class _WorkSetScreenState extends ConsumerState<WorkSetScreen> {
               saving: _saving,
               errorMessage: _overCap ? null : _errorMessage,
               onSave: _overCap || _saving ? null : _save,
-              onSkip: () => context.go('/setup/study-hours'),
+              onSkip: () => leaveToWhereYouCameFrom(context),
             ),
     );
   }

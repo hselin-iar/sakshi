@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../core/nav.dart';
 import '../../core/providers.dart';
 import '../../core/ui_strings.dart';
 import '../../host/host_client.dart';
@@ -50,7 +50,7 @@ class _StudyHoursScreenState extends ConsumerState<StudyHoursScreen> {
       await ref.read(hostClientProvider).saveStudyHours(dto);
       if (!mounted) return;
       ref.invalidate(setupStateProvider);
-      context.go('/setup/age');
+      leaveToWhereYouCameFrom(context);
     } catch (e) {
       if (!mounted) return;
       setState(() => _saving = false);
@@ -145,7 +145,7 @@ class _StudyHoursScreenState extends ConsumerState<StudyHoursScreen> {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () => context.go('/setup/age'),
+                  onPressed: () => leaveToWhereYouCameFrom(context),
                   child: const Text('Skip for now'),
                 ),
               ),

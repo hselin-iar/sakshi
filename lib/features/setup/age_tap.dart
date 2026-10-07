@@ -23,8 +23,8 @@ class AgeTap extends ConsumerStatefulWidget {
 class _AgeTapState extends ConsumerState<AgeTap> {
   bool _saving = false;
 
-  // Next step after age: battery helper (T3.5).
-  static const _nextPath = '/setup/battery';
+  // The last step of onboarding: Home.
+  static const _nextPath = '/home';
 
   Future<void> _answer(bool under18) async {
     setState(() => _saving = true);

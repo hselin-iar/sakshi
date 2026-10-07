@@ -193,8 +193,8 @@ class _NotifContent extends ConsumerWidget {
   final bool granted;
   final bool restrictedSuspected;
 
-  // Next step after notification: work-set (T3.4).
-  static const _nextPath = '/setup/work-set';
+  // Next step after notification: one question, then Home.
+  static const _nextPath = '/setup/age';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

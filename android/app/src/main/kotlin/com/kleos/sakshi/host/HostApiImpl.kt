@@ -62,8 +62,15 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     override suspend fun openBatterySettings() = call { BatterySetup(appContext).open(); Unit }
     override suspend fun markBatteryHelperShown() = call { engine.markBatteryHelperShown() }
     override suspend fun listLauncherApps(): List<AppDto> = call {
-        // Pre-ticking is the engine's (F2 suggestPreticks); it is not part of the façade yet, so nothing is suggested.
-        container.catalog.launcherApps().map { AppDto(pkg = it.pkg.value, label = it.label, suggestedInSet = false, suggestedDepends = false) }
+        // "Suggested" here is what is already chosen, so changing the work set starts from the current one rather than from nothing.
+        // Smarter pre-ticking for a first choice is the engine's (F2) and is not in the façade yet.
+        val saved = container.state.apps().associate { it.pkg.value to it.userClass }
+        container.catalog.launcherApps().map {
+            AppDto(
+                pkg = it.pkg.value, label = it.label,
+                suggestedInSet = saved[it.pkg.value] == com.kleos.sakshi.engine.model.UserClass.IN_SET,
+                suggestedDepends = saved[it.pkg.value] == com.kleos.sakshi.engine.model.UserClass.DEPENDS)
+        }
     }
     override suspend fun saveWorkSet(entries: List<WorkSetEntryDto>): SaveResultDto = call { engine.saveWorkSet(entries.map { it.toModel() }).toDto() }
     override suspend fun saveStudyHours(hours: StudyHoursDto) = call { engine.saveStudyHours(hours.toModel()) }
