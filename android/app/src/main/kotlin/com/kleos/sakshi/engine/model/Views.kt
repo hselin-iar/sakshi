@@ -61,7 +61,16 @@ data class HostFacts(
 data class WorkSetEntry(val pkg: Pkg, val userClass: UserClass)
 data class StudyHours(val blocks: List<StudyBlock>, val learnForMe: Boolean)
 data class SaveResult(val ok: Boolean, val savedCount: Int, val userMessage: String?)
-data class ProcessReport(val lakeChanged: Boolean)
+// ProcessReport extended per F1's named shape (DEFINITION, daysRecomputed/newWindows/baselineFrozen/
+// noteDecision): T2.8 needs to actually report these. lakeChanged stays false and noteDecision stays
+// null until BuildLake/DecideWeeklyNote exist (T2.15+) -- this step's own pipeline stops at UpdateBaseline.
+data class ProcessReport(
+    val daysRecomputed: Int = 0,
+    val newWindows: Int = 0,
+    val baselineFrozen: Boolean = false,
+    val lakeChanged: Boolean = false,
+    val noteDecision: NoteDecision? = null,
+)
 data class TapResult(val ok: Boolean, val reason: String?)
 data class ReanchorResult(val ok: Boolean, val reason: String?)
 data class ExportDocument(val exportVersion: Int, val exportedAt: EpochMs, val includeRaw: Boolean)

@@ -2,6 +2,7 @@ package com.kleos.sakshi.engine.model
 
 import com.kleos.sakshi.engine.tuning.Tuning
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 
 @JvmInline value class Pkg(val value: String)                 // Android package name, never empty
@@ -20,6 +21,16 @@ import java.time.ZoneId
             return StudyDay(localDate.toEpochDay())
         }
     }
+
+    // The inverse of of(): this study day's own 04:00-to-next-04:00 span, in absolute time.
+    fun startEpochMs(zone: ZoneId): EpochMs {
+        val localStart = LocalDate.ofEpochDay(epochDay)
+            .atStartOfDay(zone)
+            .plusHours(Tuning.STUDY_DAY_START_HOUR.toLong())
+        return EpochMs(localStart.toInstant().toEpochMilli())
+    }
+
+    fun endEpochMs(zone: ZoneId): EpochMs = EpochMs(startEpochMs(zone).value + 24L * 60 * 60 * 1_000)
 }
 
 @JvmInline value class WeekStart(val studyDay: StudyDay)      // Monday study day
