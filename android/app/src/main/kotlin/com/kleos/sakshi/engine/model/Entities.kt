@@ -115,3 +115,6 @@ data class Reconstruction(
 
 // ---- T2.3: App Classification (engine-internal; not part of LC-1/LC-2) ----
 enum class AppClass { IN_SET, DEPENDS, NEUTRAL, OFF_SET }         // four classes only
+
+// ---- T2.9: Lapse (engine-internal; not part of LC-1/LC-2) ----
+data class LapseInfo(val days: Int, val endedAt: StudyDay)
