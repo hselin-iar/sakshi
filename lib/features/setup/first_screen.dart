@@ -57,61 +57,63 @@ class _FirstScreenState extends ConsumerState<FirstScreen> {
               builder: (context, box) => SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: box.maxHeight),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
-                      vertical: 24,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 36),
-                        const Wordmark(size: 72, latin: true),
-                        const SizedBox(height: 14),
-                        const Text(
-                          firstScreenTagline,
-                          style: TextStyle(
-                            fontFamily: 'serif',
-                            fontSize: 20,
-                            height: 1.35,
-                            color: SakshiColors.paleGold,
-                          ),
-                        ),
-                        const SizedBox(height: 48),
-                        const _Line(firstScreenLine1),
-                        const SizedBox(height: 16),
-                        const _Line(firstScreenLine2),
-                        const SizedBox(height: 16),
-                        const _Line(firstScreenLine3),
-                        const SizedBox(height: 16),
-                        const _Line(firstScreenLine4),
-                        const SizedBox(height: 32),
-                        SizedBox(
-                          width: double.infinity,
-                          child: FilledButton(
-                            style: FilledButton.styleFrom(
-                              backgroundColor: SakshiColors.cream,
-                              foregroundColor: SakshiColors.deepBrown,
-                            ),
-                            onPressed: () => context.go('/setup/usage'),
-                            child: const Text('Continue'),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextButton(
-                            key: const Key('first_try_demo'),
-                            style: TextButton.styleFrom(
-                              foregroundColor: SakshiColors.cream,
-                            ),
-                            onPressed: _starting ? null : _tryDemo,
-                            child: Text(
-                              _starting ? demoStarting : demoTryFirstButton,
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 24,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 36),
+                          const Wordmark(size: 72, latin: true),
+                          const SizedBox(height: 14),
+                          const Text(
+                            firstScreenTagline,
+                            style: TextStyle(
+                              fontFamily: 'serif',
+                              fontSize: 20,
+                              height: 1.35,
+                              color: SakshiColors.paleGold,
                             ),
                           ),
-                        ),
-                      ],
+                          const Spacer(),
+                          const _Line(firstScreenLine1),
+                          const SizedBox(height: 16),
+                          const _Line(firstScreenLine2),
+                          const SizedBox(height: 16),
+                          const _Line(firstScreenLine3),
+                          const SizedBox(height: 16),
+                          const _Line(firstScreenLine4),
+                          const SizedBox(height: 32),
+                          SizedBox(
+                            width: double.infinity,
+                            child: FilledButton(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: SakshiColors.cream,
+                                foregroundColor: SakshiColors.deepBrown,
+                              ),
+                              onPressed: () => context.go('/setup/usage'),
+                              child: const Text('Continue'),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton(
+                              key: const Key('first_try_demo'),
+                              style: TextButton.styleFrom(
+                                foregroundColor: SakshiColors.cream,
+                              ),
+                              onPressed: _starting ? null : _tryDemo,
+                              child: Text(
+                                _starting ? demoStarting : demoTryFirstButton,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

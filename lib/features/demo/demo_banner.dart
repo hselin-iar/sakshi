@@ -5,6 +5,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../core/palette.dart';
+
 /// Permanent banner indicating synthetic demo data is in use.
 class DemoBanner extends StatelessWidget {
   const DemoBanner({super.key});
@@ -12,18 +14,18 @@ class DemoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cs = theme.colorScheme;
 
     return Container(
       key: const Key('demo_banner'),
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-      color: cs.tertiaryContainer,
+      // Solid maroon with cream text: the status bar's white icons sit on it, and it reads as a label in light and dark alike.
+      color: SakshiColors.maroon,
       child: Center(
         child: Text(
           'Demo data',
           style: theme.textTheme.labelSmall?.copyWith(
-            color: cs.onTertiaryContainer,
+            color: SakshiColors.cream,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.6,
           ),
