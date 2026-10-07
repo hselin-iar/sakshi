@@ -61,6 +61,12 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     override suspend fun openNotificationAccessSettings() = call { permissions.openNotificationAccessSettings() }
     override suspend fun openAppInfoForRestrictedSettings() = call { permissions.openAppInfo() }
     override suspend fun openBatterySettings() = call { BatterySetup(appContext).open(); Unit }
+    override suspend fun requestLakeWidget(): Boolean = call {
+        val manager = android.appwidget.AppWidgetManager.getInstance(appContext)
+        // Not every launcher can pin; the screen then says how to add it by hand.
+        manager.isRequestPinAppWidgetSupported &&
+            manager.requestPinAppWidget(android.content.ComponentName(appContext, LakeWidget::class.java), null, null)
+    }
     override suspend fun markBatteryHelperShown() = call { engine.markBatteryHelperShown() }
     override suspend fun listLauncherApps(): List<AppDto> = call {
         // "Suggested" here is what is already chosen, so changing the work set starts from the current one rather than from nothing.
@@ -75,8 +81,8 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     }
     override suspend fun saveWorkSet(entries: List<WorkSetEntryDto>): SaveResultDto = call { engine.saveWorkSet(entries.map { it.toModel() }).toDto() }
     override suspend fun saveStudyHours(hours: StudyHoursDto) = call { engine.saveStudyHours(hours.toModel()) }
-    override suspend fun setGentleMode(on: Boolean) = call { engine.setGentle(on) }
-    override suspend fun setUnder18(on: Boolean) = call { engine.setUnder18(on) }
+    override suspend fun setGentleMode(on: Boolean) = call { engine.setGentle(on); LakeWidget.refresh(appContext) }
+    override suspend fun setUnder18(on: Boolean) = call { engine.setUnder18(on); LakeWidget.refresh(appContext) }
     override suspend fun setWeeklyNote(enabled: Boolean): Boolean = call {
         val allowed = permissions.canPostNotifications()
         // Asking needs the Activity. With none (cold start, worker) the request cannot be made, so it is a bad request.

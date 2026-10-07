@@ -52,6 +52,7 @@
         </provider>
         <receiver
             android:name=".host.LakeWidget"
+            android:label="@string/lake_widget_label"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

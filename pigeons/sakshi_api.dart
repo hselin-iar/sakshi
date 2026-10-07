@@ -99,6 +99,7 @@ abstract class SakshiHostApi {
   @async void openNotificationAccessSettings();
   @async void openAppInfoForRestrictedSettings();
   @async void openBatterySettings();                       // opens Android's own page; never requests the exemption
+  @async bool requestLakeWidget();                         // Contract Change (31st method): asks the launcher to pin the Lake widget; false when it cannot
   @async void markBatteryHelperShown();
   @async List<AppDto> listLauncherApps();
   @async SaveResultDto saveWorkSet(List<WorkSetEntryDto> entries);

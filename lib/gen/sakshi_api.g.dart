@@ -10,9 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
 Object? _extractReplyValueOrThrow(
-  List<Object?>? replyList,
-  String channelName, {
-  required bool isNullValid,
+    List<Object?>? replyList,
+    String channelName, {
+    required bool isNullValid,
 }) {
   if (replyList == null) {
     throw PlatformException(
@@ -46,9 +46,8 @@ bool _deepEquals(Object? a, Object? b) {
   }
   if (a is List && b is List) {
     return a.length == b.length &&
-        a.indexed.every(
-          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
-        );
+        a.indexed
+            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) {
@@ -97,11 +96,25 @@ int _deepHash(Object? value) {
   return value.hashCode;
 }
 
-enum UserClassDto { inSet, depends }
 
-enum SyncStateDto { ok, partialPingAwareness, gapNotSeen, paused, noPermission }
+enum UserClassDto {
+  inSet,
+  depends;
+}
 
-enum DataStateDto { ok, learningBaseline, tooLittleData }
+enum SyncStateDto {
+  ok,
+  partialPingAwareness,
+  gapNotSeen,
+  paused,
+  noPermission;
+}
+
+enum DataStateDto {
+  ok,
+  learningBaseline,
+  tooLittleData;
+}
 
 enum DataFlagDto {
   pingOff,
@@ -111,12 +124,22 @@ enum DataFlagDto {
   tooLittleData,
   unusualWeek,
   internalPartial,
-  firstLook,
+  firstLook;
 }
 
-enum LakeStateDto { learning, noData, still, rippled, choppy }
+enum LakeStateDto {
+  learning,
+  noData,
+  still,
+  rippled,
+  choppy;
+}
 
-enum GoalAnswerDto { yes, partly, notYet }
+enum GoalAnswerDto {
+  yes,
+  partly,
+  notYet;
+}
 
 class CollectionHealthDto {
   CollectionHealthDto({
@@ -148,8 +171,7 @@ class CollectionHealthDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static CollectionHealthDto decode(Object result) {
     result as List<Object?>;
@@ -171,11 +193,7 @@ class CollectionHealthDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(workerRuns7d, other.workerRuns7d) &&
-        _deepEquals(paused, other.paused) &&
-        _deepEquals(lastWorkerRunEpochMs, other.lastWorkerRunEpochMs) &&
-        _deepEquals(listenerCoverage7d, other.listenerCoverage7d) &&
-        _deepEquals(lastError, other.lastError);
+    return _deepEquals(workerRuns7d, other.workerRuns7d) && _deepEquals(paused, other.paused) && _deepEquals(lastWorkerRunEpochMs, other.lastWorkerRunEpochMs) && _deepEquals(listenerCoverage7d, other.listenerCoverage7d) && _deepEquals(lastError, other.lastError);
   }
 
   @override
@@ -238,8 +256,7 @@ class SetupStateDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static SetupStateDto decode(Object result) {
     result as List<Object?>;
@@ -266,22 +283,7 @@ class SetupStateDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(usageAccessGranted, other.usageAccessGranted) &&
-        _deepEquals(
-          notificationAccessGranted,
-          other.notificationAccessGranted,
-        ) &&
-        _deepEquals(
-          restrictedSettingsSuspected,
-          other.restrictedSettingsSuspected,
-        ) &&
-        _deepEquals(workSetSaved, other.workSetSaved) &&
-        _deepEquals(studyHoursSaved, other.studyHoursSaved) &&
-        _deepEquals(batteryHelperShown, other.batteryHelperShown) &&
-        _deepEquals(weeklyNoteEnabled, other.weeklyNoteEnabled) &&
-        _deepEquals(gentleMode, other.gentleMode) &&
-        _deepEquals(isDemo, other.isDemo) &&
-        _deepEquals(health, other.health);
+    return _deepEquals(usageAccessGranted, other.usageAccessGranted) && _deepEquals(notificationAccessGranted, other.notificationAccessGranted) && _deepEquals(restrictedSettingsSuspected, other.restrictedSettingsSuspected) && _deepEquals(workSetSaved, other.workSetSaved) && _deepEquals(studyHoursSaved, other.studyHoursSaved) && _deepEquals(batteryHelperShown, other.batteryHelperShown) && _deepEquals(weeklyNoteEnabled, other.weeklyNoteEnabled) && _deepEquals(gentleMode, other.gentleMode) && _deepEquals(isDemo, other.isDemo) && _deepEquals(health, other.health);
   }
 
   @override
@@ -311,12 +313,16 @@ class AppDto {
   bool suggestedDepends;
 
   List<Object?> _toList() {
-    return <Object?>[pkg, label, suggestedInSet, suggestedDepends];
+    return <Object?>[
+      pkg,
+      label,
+      suggestedInSet,
+      suggestedDepends,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static AppDto decode(Object result) {
     result as List<Object?>;
@@ -337,10 +343,7 @@ class AppDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(pkg, other.pkg) &&
-        _deepEquals(label, other.label) &&
-        _deepEquals(suggestedInSet, other.suggestedInSet) &&
-        _deepEquals(suggestedDepends, other.suggestedDepends);
+    return _deepEquals(pkg, other.pkg) && _deepEquals(label, other.label) && _deepEquals(suggestedInSet, other.suggestedInSet) && _deepEquals(suggestedDepends, other.suggestedDepends);
   }
 
   @override
@@ -354,19 +357,24 @@ class AppDto {
 }
 
 class WorkSetEntryDto {
-  WorkSetEntryDto({required this.pkg, required this.userClass});
+  WorkSetEntryDto({
+    required this.pkg,
+    required this.userClass,
+  });
 
   String pkg;
 
   UserClassDto userClass;
 
   List<Object?> _toList() {
-    return <Object?>[pkg, userClass];
+    return <Object?>[
+      pkg,
+      userClass,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static WorkSetEntryDto decode(Object result) {
     result as List<Object?>;
@@ -385,8 +393,7 @@ class WorkSetEntryDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(pkg, other.pkg) &&
-        _deepEquals(userClass, other.userClass);
+    return _deepEquals(pkg, other.pkg) && _deepEquals(userClass, other.userClass);
   }
 
   @override
@@ -400,7 +407,11 @@ class WorkSetEntryDto {
 }
 
 class SaveResultDto {
-  SaveResultDto({required this.ok, required this.savedCount, this.userMessage});
+  SaveResultDto({
+    required this.ok,
+    required this.savedCount,
+    this.userMessage,
+  });
 
   bool ok;
 
@@ -409,12 +420,15 @@ class SaveResultDto {
   String? userMessage;
 
   List<Object?> _toList() {
-    return <Object?>[ok, savedCount, userMessage];
+    return <Object?>[
+      ok,
+      savedCount,
+      userMessage,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static SaveResultDto decode(Object result) {
     result as List<Object?>;
@@ -434,9 +448,7 @@ class SaveResultDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(ok, other.ok) &&
-        _deepEquals(savedCount, other.savedCount) &&
-        _deepEquals(userMessage, other.userMessage);
+    return _deepEquals(ok, other.ok) && _deepEquals(savedCount, other.savedCount) && _deepEquals(userMessage, other.userMessage);
   }
 
   @override
@@ -450,19 +462,24 @@ class SaveResultDto {
 }
 
 class StudyBlockDto {
-  StudyBlockDto({required this.startMinute, required this.endMinute});
+  StudyBlockDto({
+    required this.startMinute,
+    required this.endMinute,
+  });
 
   int startMinute;
 
   int endMinute;
 
   List<Object?> _toList() {
-    return <Object?>[startMinute, endMinute];
+    return <Object?>[
+      startMinute,
+      endMinute,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static StudyBlockDto decode(Object result) {
     result as List<Object?>;
@@ -481,8 +498,7 @@ class StudyBlockDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(startMinute, other.startMinute) &&
-        _deepEquals(endMinute, other.endMinute);
+    return _deepEquals(startMinute, other.startMinute) && _deepEquals(endMinute, other.endMinute);
   }
 
   @override
@@ -496,19 +512,24 @@ class StudyBlockDto {
 }
 
 class StudyHoursDto {
-  StudyHoursDto({required this.blocks, required this.learnForMe});
+  StudyHoursDto({
+    required this.blocks,
+    required this.learnForMe,
+  });
 
   List<StudyBlockDto> blocks;
 
   bool learnForMe;
 
   List<Object?> _toList() {
-    return <Object?>[blocks, learnForMe];
+    return <Object?>[
+      blocks,
+      learnForMe,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static StudyHoursDto decode(Object result) {
     result as List<Object?>;
@@ -527,8 +548,7 @@ class StudyHoursDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(blocks, other.blocks) &&
-        _deepEquals(learnForMe, other.learnForMe);
+    return _deepEquals(blocks, other.blocks) && _deepEquals(learnForMe, other.learnForMe);
   }
 
   @override
@@ -542,7 +562,11 @@ class StudyHoursDto {
 }
 
 class SyncStatusDto {
-  SyncStatusDto({required this.state, this.lastSyncEpochMs, this.message});
+  SyncStatusDto({
+    required this.state,
+    this.lastSyncEpochMs,
+    this.message,
+  });
 
   SyncStateDto state;
 
@@ -551,12 +575,15 @@ class SyncStatusDto {
   String? message;
 
   List<Object?> _toList() {
-    return <Object?>[state, lastSyncEpochMs, message];
+    return <Object?>[
+      state,
+      lastSyncEpochMs,
+      message,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static SyncStatusDto decode(Object result) {
     result as List<Object?>;
@@ -576,9 +603,7 @@ class SyncStatusDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(state, other.state) &&
-        _deepEquals(lastSyncEpochMs, other.lastSyncEpochMs) &&
-        _deepEquals(message, other.message);
+    return _deepEquals(state, other.state) && _deepEquals(lastSyncEpochMs, other.lastSyncEpochMs) && _deepEquals(message, other.message);
   }
 
   @override
@@ -592,7 +617,12 @@ class SyncStatusDto {
 }
 
 class PartLinesDto {
-  PartLinesDto({this.stretch, this.stays, this.ret, this.quiet});
+  PartLinesDto({
+    this.stretch,
+    this.stays,
+    this.ret,
+    this.quiet,
+  });
 
   String? stretch;
 
@@ -603,12 +633,16 @@ class PartLinesDto {
   String? quiet;
 
   List<Object?> _toList() {
-    return <Object?>[stretch, stays, ret, quiet];
+    return <Object?>[
+      stretch,
+      stays,
+      ret,
+      quiet,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static PartLinesDto decode(Object result) {
     result as List<Object?>;
@@ -629,10 +663,7 @@ class PartLinesDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(stretch, other.stretch) &&
-        _deepEquals(stays, other.stays) &&
-        _deepEquals(ret, other.ret) &&
-        _deepEquals(quiet, other.quiet);
+    return _deepEquals(stretch, other.stretch) && _deepEquals(stays, other.stays) && _deepEquals(ret, other.ret) && _deepEquals(quiet, other.quiet);
   }
 
   @override
@@ -691,8 +722,7 @@ class PartsDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static PartsDto decode(Object result) {
     result as List<Object?>;
@@ -718,15 +748,7 @@ class PartsDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(stretchMin, other.stretchMin) &&
-        _deepEquals(longestStretchMin, other.longestStretchMin) &&
-        _deepEquals(inSetShare, other.inSetShare) &&
-        _deepEquals(quietShare, other.quietShare) &&
-        _deepEquals(staysPerHour, other.staysPerHour) &&
-        _deepEquals(glances, other.glances) &&
-        _deepEquals(returnMin, other.returnMin) &&
-        _deepEquals(lines, other.lines) &&
-        _deepEquals(extrasLines, other.extrasLines);
+    return _deepEquals(stretchMin, other.stretchMin) && _deepEquals(longestStretchMin, other.longestStretchMin) && _deepEquals(inSetShare, other.inSetShare) && _deepEquals(quietShare, other.quietShare) && _deepEquals(staysPerHour, other.staysPerHour) && _deepEquals(glances, other.glances) && _deepEquals(returnMin, other.returnMin) && _deepEquals(lines, other.lines) && _deepEquals(extrasLines, other.extrasLines);
   }
 
   @override
@@ -740,23 +762,31 @@ class PartsDto {
 }
 
 class SteadinessDto {
-  SteadinessDto({required this.value, required this.word});
+  SteadinessDto({
+    required this.value,
+    required this.word,
+  });
 
   int value;
 
   String word;
 
   List<Object?> _toList() {
-    return <Object?>[value, word];
+    return <Object?>[
+      value,
+      word,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static SteadinessDto decode(Object result) {
     result as List<Object?>;
-    return SteadinessDto(value: result[0]! as int, word: result[1]! as String);
+    return SteadinessDto(
+      value: result[0]! as int,
+      word: result[1]! as String,
+    );
   }
 
   @override
@@ -819,8 +849,7 @@ class StonesDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static StonesDto decode(Object result) {
     result as List<Object?>;
@@ -844,13 +873,7 @@ class StonesDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(totalStays, other.totalStays) &&
-        _deepEquals(stoneCount, other.stoneCount) &&
-        _deepEquals(selfStartedCount, other.selfStartedCount) &&
-        _deepEquals(unknownCount, other.unknownCount) &&
-        _deepEquals(topStoneLabel, other.topStoneLabel) &&
-        _deepEquals(noRippleRate, other.noRippleRate) &&
-        _deepEquals(line, other.line);
+    return _deepEquals(totalStays, other.totalStays) && _deepEquals(stoneCount, other.stoneCount) && _deepEquals(selfStartedCount, other.selfStartedCount) && _deepEquals(unknownCount, other.unknownCount) && _deepEquals(topStoneLabel, other.topStoneLabel) && _deepEquals(noRippleRate, other.noRippleRate) && _deepEquals(line, other.line);
   }
 
   @override
@@ -880,12 +903,16 @@ class ClearHourDto {
   String line;
 
   List<Object?> _toList() {
-    return <Object?>[startHour, endHour, stretchMin, line];
+    return <Object?>[
+      startHour,
+      endHour,
+      stretchMin,
+      line,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static ClearHourDto decode(Object result) {
     result as List<Object?>;
@@ -906,10 +933,7 @@ class ClearHourDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(startHour, other.startHour) &&
-        _deepEquals(endHour, other.endHour) &&
-        _deepEquals(stretchMin, other.stretchMin) &&
-        _deepEquals(line, other.line);
+    return _deepEquals(startHour, other.startHour) && _deepEquals(endHour, other.endHour) && _deepEquals(stretchMin, other.stretchMin) && _deepEquals(line, other.line);
   }
 
   @override
@@ -939,12 +963,16 @@ class PatternLineDto {
   int evidenceDays;
 
   List<Object?> _toList() {
-    return <Object?>[kindId, line, evidenceWindows, evidenceDays];
+    return <Object?>[
+      kindId,
+      line,
+      evidenceWindows,
+      evidenceDays,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static PatternLineDto decode(Object result) {
     result as List<Object?>;
@@ -965,10 +993,7 @@ class PatternLineDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(kindId, other.kindId) &&
-        _deepEquals(line, other.line) &&
-        _deepEquals(evidenceWindows, other.evidenceWindows) &&
-        _deepEquals(evidenceDays, other.evidenceDays);
+    return _deepEquals(kindId, other.kindId) && _deepEquals(line, other.line) && _deepEquals(evidenceWindows, other.evidenceWindows) && _deepEquals(evidenceDays, other.evidenceDays);
   }
 
   @override
@@ -1015,8 +1040,7 @@ class SuggestionDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static SuggestionDto decode(Object result) {
     result as List<Object?>;
@@ -1039,12 +1063,7 @@ class SuggestionDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(kindId, other.kindId) &&
-        _deepEquals(line, other.line) &&
-        _deepEquals(actionLabel, other.actionLabel) &&
-        _deepEquals(actionType, other.actionType) &&
-        _deepEquals(opensSettings, other.opensSettings) &&
-        _deepEquals(subjectKey, other.subjectKey);
+    return _deepEquals(kindId, other.kindId) && _deepEquals(line, other.line) && _deepEquals(actionLabel, other.actionLabel) && _deepEquals(actionType, other.actionType) && _deepEquals(opensSettings, other.opensSettings) && _deepEquals(subjectKey, other.subjectKey);
   }
 
   @override
@@ -1058,19 +1077,24 @@ class SuggestionDto {
 }
 
 class ObservationDto {
-  ObservationDto({required this.kindId, required this.line});
+  ObservationDto({
+    required this.kindId,
+    required this.line,
+  });
 
   String kindId;
 
   String line;
 
   List<Object?> _toList() {
-    return <Object?>[kindId, line];
+    return <Object?>[
+      kindId,
+      line,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static ObservationDto decode(Object result) {
     result as List<Object?>;
@@ -1122,12 +1146,17 @@ class VerdictDto {
   double? afterValue;
 
   List<Object?> _toList() {
-    return <Object?>[verdict, line, approxMix, beforeValue, afterValue];
+    return <Object?>[
+      verdict,
+      line,
+      approxMix,
+      beforeValue,
+      afterValue,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static VerdictDto decode(Object result) {
     result as List<Object?>;
@@ -1149,11 +1178,7 @@ class VerdictDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(verdict, other.verdict) &&
-        _deepEquals(line, other.line) &&
-        _deepEquals(approxMix, other.approxMix) &&
-        _deepEquals(beforeValue, other.beforeValue) &&
-        _deepEquals(afterValue, other.afterValue);
+    return _deepEquals(verdict, other.verdict) && _deepEquals(line, other.line) && _deepEquals(approxMix, other.approxMix) && _deepEquals(beforeValue, other.beforeValue) && _deepEquals(afterValue, other.afterValue);
   }
 
   @override
@@ -1167,19 +1192,24 @@ class VerdictDto {
 }
 
 class GoalTapDto {
-  GoalTapDto({required this.offered, this.answer});
+  GoalTapDto({
+    required this.offered,
+    this.answer,
+  });
 
   bool offered;
 
   GoalAnswerDto? answer;
 
   List<Object?> _toList() {
-    return <Object?>[offered, answer];
+    return <Object?>[
+      offered,
+      answer,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static GoalTapDto decode(Object result) {
     result as List<Object?>;
@@ -1198,8 +1228,7 @@ class GoalTapDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(offered, other.offered) &&
-        _deepEquals(answer, other.answer);
+    return _deepEquals(offered, other.offered) && _deepEquals(answer, other.answer);
   }
 
   @override
@@ -1229,12 +1258,16 @@ class TeacherDto {
   int? opensPrevWeek;
 
   List<Object?> _toList() {
-    return <Object?>[opensThisWeek, minutesThisWeek, line, opensPrevWeek];
+    return <Object?>[
+      opensThisWeek,
+      minutesThisWeek,
+      line,
+      opensPrevWeek,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static TeacherDto decode(Object result) {
     result as List<Object?>;
@@ -1255,10 +1288,7 @@ class TeacherDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(opensThisWeek, other.opensThisWeek) &&
-        _deepEquals(minutesThisWeek, other.minutesThisWeek) &&
-        _deepEquals(line, other.line) &&
-        _deepEquals(opensPrevWeek, other.opensPrevWeek);
+    return _deepEquals(opensThisWeek, other.opensThisWeek) && _deepEquals(minutesThisWeek, other.minutesThisWeek) && _deepEquals(line, other.line) && _deepEquals(opensPrevWeek, other.opensPrevWeek);
   }
 
   @override
@@ -1291,12 +1321,17 @@ class SayingDto {
   int question;
 
   List<Object?> _toList() {
-    return <Object?>[id, text, source, tierLabel, question];
+    return <Object?>[
+      id,
+      text,
+      source,
+      tierLabel,
+      question,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static SayingDto decode(Object result) {
     result as List<Object?>;
@@ -1318,11 +1353,7 @@ class SayingDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(id, other.id) &&
-        _deepEquals(text, other.text) &&
-        _deepEquals(source, other.source) &&
-        _deepEquals(tierLabel, other.tierLabel) &&
-        _deepEquals(question, other.question);
+    return _deepEquals(id, other.id) && _deepEquals(text, other.text) && _deepEquals(source, other.source) && _deepEquals(tierLabel, other.tierLabel) && _deepEquals(question, other.question);
   }
 
   @override
@@ -1445,8 +1476,7 @@ class MirrorDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static MirrorDto decode(Object result) {
     result as List<Object?>;
@@ -1488,31 +1518,7 @@ class MirrorDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(isDemo, other.isDemo) &&
-        _deepEquals(provisional, other.provisional) &&
-        _deepEquals(gentle, other.gentle) &&
-        _deepEquals(weekStartEpochMs, other.weekStartEpochMs) &&
-        _deepEquals(weekLabel, other.weekLabel) &&
-        _deepEquals(dataState, other.dataState) &&
-        _deepEquals(dataFlags, other.dataFlags) &&
-        _deepEquals(dataLines, other.dataLines) &&
-        _deepEquals(headline, other.headline) &&
-        _deepEquals(parts, other.parts) &&
-        _deepEquals(steadiness, other.steadiness) &&
-        _deepEquals(stones, other.stones) &&
-        _deepEquals(clearHour, other.clearHour) &&
-        _deepEquals(patterns, other.patterns) &&
-        _deepEquals(suggestion, other.suggestion) &&
-        _deepEquals(observation, other.observation) &&
-        _deepEquals(nothingToFix, other.nothingToFix) &&
-        _deepEquals(verdict, other.verdict) &&
-        _deepEquals(goalTap, other.goalTap) &&
-        _deepEquals(teacher, other.teacher) &&
-        _deepEquals(lapseLine, other.lapseLine) &&
-        _deepEquals(saying, other.saying) &&
-        _deepEquals(returnLine, other.returnLine) &&
-        _deepEquals(reanchorOffered, other.reanchorOffered) &&
-        _deepEquals(suggestedStudyBlock, other.suggestedStudyBlock);
+    return _deepEquals(isDemo, other.isDemo) && _deepEquals(provisional, other.provisional) && _deepEquals(gentle, other.gentle) && _deepEquals(weekStartEpochMs, other.weekStartEpochMs) && _deepEquals(weekLabel, other.weekLabel) && _deepEquals(dataState, other.dataState) && _deepEquals(dataFlags, other.dataFlags) && _deepEquals(dataLines, other.dataLines) && _deepEquals(headline, other.headline) && _deepEquals(parts, other.parts) && _deepEquals(steadiness, other.steadiness) && _deepEquals(stones, other.stones) && _deepEquals(clearHour, other.clearHour) && _deepEquals(patterns, other.patterns) && _deepEquals(suggestion, other.suggestion) && _deepEquals(observation, other.observation) && _deepEquals(nothingToFix, other.nothingToFix) && _deepEquals(verdict, other.verdict) && _deepEquals(goalTap, other.goalTap) && _deepEquals(teacher, other.teacher) && _deepEquals(lapseLine, other.lapseLine) && _deepEquals(saying, other.saying) && _deepEquals(returnLine, other.returnLine) && _deepEquals(reanchorOffered, other.reanchorOffered) && _deepEquals(suggestedStudyBlock, other.suggestedStudyBlock);
   }
 
   @override
@@ -1539,12 +1545,15 @@ class WeekRefDto {
   bool completed;
 
   List<Object?> _toList() {
-    return <Object?>[weekStartEpochMs, label, completed];
+    return <Object?>[
+      weekStartEpochMs,
+      label,
+      completed,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static WeekRefDto decode(Object result) {
     result as List<Object?>;
@@ -1564,9 +1573,7 @@ class WeekRefDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(weekStartEpochMs, other.weekStartEpochMs) &&
-        _deepEquals(label, other.label) &&
-        _deepEquals(completed, other.completed);
+    return _deepEquals(weekStartEpochMs, other.weekStartEpochMs) && _deepEquals(label, other.label) && _deepEquals(completed, other.completed);
   }
 
   @override
@@ -1613,8 +1620,7 @@ class TodayWindowDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static TodayWindowDto decode(Object result) {
     result as List<Object?>;
@@ -1637,12 +1643,7 @@ class TodayWindowDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(startEpochMs, other.startEpochMs) &&
-        _deepEquals(endEpochMs, other.endEpochMs) &&
-        _deepEquals(stays, other.stays) &&
-        _deepEquals(shape, other.shape) &&
-        _deepEquals(stretchMin, other.stretchMin) &&
-        _deepEquals(returnMin, other.returnMin);
+    return _deepEquals(startEpochMs, other.startEpochMs) && _deepEquals(endEpochMs, other.endEpochMs) && _deepEquals(stays, other.stays) && _deepEquals(shape, other.shape) && _deepEquals(stretchMin, other.stretchMin) && _deepEquals(returnMin, other.returnMin);
   }
 
   @override
@@ -1678,12 +1679,18 @@ class TodayDto {
   PartsDto? parts;
 
   List<Object?> _toList() {
-    return <Object?>[isDemo, windows, line, dataFlags, dataLines, parts];
+    return <Object?>[
+      isDemo,
+      windows,
+      line,
+      dataFlags,
+      dataLines,
+      parts,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static TodayDto decode(Object result) {
     result as List<Object?>;
@@ -1706,12 +1713,7 @@ class TodayDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(isDemo, other.isDemo) &&
-        _deepEquals(windows, other.windows) &&
-        _deepEquals(line, other.line) &&
-        _deepEquals(dataFlags, other.dataFlags) &&
-        _deepEquals(dataLines, other.dataLines) &&
-        _deepEquals(parts, other.parts);
+    return _deepEquals(isDemo, other.isDemo) && _deepEquals(windows, other.windows) && _deepEquals(line, other.line) && _deepEquals(dataFlags, other.dataFlags) && _deepEquals(dataLines, other.dataLines) && _deepEquals(parts, other.parts);
   }
 
   @override
@@ -1790,8 +1792,7 @@ class WhatISeeDto {
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static WhatISeeDto decode(Object result) {
     result as List<Object?>;
@@ -1822,23 +1823,7 @@ class WhatISeeDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(isDemo, other.isDemo) &&
-        _deepEquals(usageAccessGranted, other.usageAccessGranted) &&
-        _deepEquals(
-          notificationAccessGranted,
-          other.notificationAccessGranted,
-        ) &&
-        _deepEquals(rawEventCount, other.rawEventCount) &&
-        _deepEquals(notifEventCount, other.notifEventCount) &&
-        _deepEquals(derivedDays, other.derivedDays) &&
-        _deepEquals(workerRuns7d, other.workerRuns7d) &&
-        _deepEquals(paused, other.paused) &&
-        _deepEquals(oddEventPairs, other.oddEventPairs) &&
-        _deepEquals(lines, other.lines) &&
-        _deepEquals(oldestRawEpochMs, other.oldestRawEpochMs) &&
-        _deepEquals(listenerCoverage7d, other.listenerCoverage7d) &&
-        _deepEquals(lastWorkerRunEpochMs, other.lastWorkerRunEpochMs) &&
-        _deepEquals(lastError, other.lastError);
+    return _deepEquals(isDemo, other.isDemo) && _deepEquals(usageAccessGranted, other.usageAccessGranted) && _deepEquals(notificationAccessGranted, other.notificationAccessGranted) && _deepEquals(rawEventCount, other.rawEventCount) && _deepEquals(notifEventCount, other.notifEventCount) && _deepEquals(derivedDays, other.derivedDays) && _deepEquals(workerRuns7d, other.workerRuns7d) && _deepEquals(paused, other.paused) && _deepEquals(oddEventPairs, other.oddEventPairs) && _deepEquals(lines, other.lines) && _deepEquals(oldestRawEpochMs, other.oldestRawEpochMs) && _deepEquals(listenerCoverage7d, other.listenerCoverage7d) && _deepEquals(lastWorkerRunEpochMs, other.lastWorkerRunEpochMs) && _deepEquals(lastError, other.lastError);
   }
 
   @override
@@ -1868,12 +1853,16 @@ class LakeDto {
   int? asOfEpochMs;
 
   List<Object?> _toList() {
-    return <Object?>[state, phrase, isDemo, asOfEpochMs];
+    return <Object?>[
+      state,
+      phrase,
+      isDemo,
+      asOfEpochMs,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static LakeDto decode(Object result) {
     result as List<Object?>;
@@ -1894,10 +1883,7 @@ class LakeDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(state, other.state) &&
-        _deepEquals(phrase, other.phrase) &&
-        _deepEquals(isDemo, other.isDemo) &&
-        _deepEquals(asOfEpochMs, other.asOfEpochMs);
+    return _deepEquals(state, other.state) && _deepEquals(phrase, other.phrase) && _deepEquals(isDemo, other.isDemo) && _deepEquals(asOfEpochMs, other.asOfEpochMs);
   }
 
   @override
@@ -1911,19 +1897,24 @@ class LakeDto {
 }
 
 class ExportDto {
-  ExportDto({required this.fileName, required this.byteSize});
+  ExportDto({
+    required this.fileName,
+    required this.byteSize,
+  });
 
   String fileName;
 
   int byteSize;
 
   List<Object?> _toList() {
-    return <Object?>[fileName, byteSize];
+    return <Object?>[
+      fileName,
+      byteSize,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static ExportDto decode(Object result) {
     result as List<Object?>;
@@ -1942,8 +1933,7 @@ class ExportDto {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(fileName, other.fileName) &&
-        _deepEquals(byteSize, other.byteSize);
+    return _deepEquals(fileName, other.fileName) && _deepEquals(byteSize, other.byteSize);
   }
 
   @override
@@ -1956,6 +1946,7 @@ class ExportDto {
   }
 }
 
+
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
   @override
@@ -1963,103 +1954,103 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    } else if (value is UserClassDto) {
+    }    else if (value is UserClassDto) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
-    } else if (value is SyncStateDto) {
+    }    else if (value is SyncStateDto) {
       buffer.putUint8(130);
       writeValue(buffer, value.index);
-    } else if (value is DataStateDto) {
+    }    else if (value is DataStateDto) {
       buffer.putUint8(131);
       writeValue(buffer, value.index);
-    } else if (value is DataFlagDto) {
+    }    else if (value is DataFlagDto) {
       buffer.putUint8(132);
       writeValue(buffer, value.index);
-    } else if (value is LakeStateDto) {
+    }    else if (value is LakeStateDto) {
       buffer.putUint8(133);
       writeValue(buffer, value.index);
-    } else if (value is GoalAnswerDto) {
+    }    else if (value is GoalAnswerDto) {
       buffer.putUint8(134);
       writeValue(buffer, value.index);
-    } else if (value is CollectionHealthDto) {
+    }    else if (value is CollectionHealthDto) {
       buffer.putUint8(135);
       writeValue(buffer, value.encode());
-    } else if (value is SetupStateDto) {
+    }    else if (value is SetupStateDto) {
       buffer.putUint8(136);
       writeValue(buffer, value.encode());
-    } else if (value is AppDto) {
+    }    else if (value is AppDto) {
       buffer.putUint8(137);
       writeValue(buffer, value.encode());
-    } else if (value is WorkSetEntryDto) {
+    }    else if (value is WorkSetEntryDto) {
       buffer.putUint8(138);
       writeValue(buffer, value.encode());
-    } else if (value is SaveResultDto) {
+    }    else if (value is SaveResultDto) {
       buffer.putUint8(139);
       writeValue(buffer, value.encode());
-    } else if (value is StudyBlockDto) {
+    }    else if (value is StudyBlockDto) {
       buffer.putUint8(140);
       writeValue(buffer, value.encode());
-    } else if (value is StudyHoursDto) {
+    }    else if (value is StudyHoursDto) {
       buffer.putUint8(141);
       writeValue(buffer, value.encode());
-    } else if (value is SyncStatusDto) {
+    }    else if (value is SyncStatusDto) {
       buffer.putUint8(142);
       writeValue(buffer, value.encode());
-    } else if (value is PartLinesDto) {
+    }    else if (value is PartLinesDto) {
       buffer.putUint8(143);
       writeValue(buffer, value.encode());
-    } else if (value is PartsDto) {
+    }    else if (value is PartsDto) {
       buffer.putUint8(144);
       writeValue(buffer, value.encode());
-    } else if (value is SteadinessDto) {
+    }    else if (value is SteadinessDto) {
       buffer.putUint8(145);
       writeValue(buffer, value.encode());
-    } else if (value is StonesDto) {
+    }    else if (value is StonesDto) {
       buffer.putUint8(146);
       writeValue(buffer, value.encode());
-    } else if (value is ClearHourDto) {
+    }    else if (value is ClearHourDto) {
       buffer.putUint8(147);
       writeValue(buffer, value.encode());
-    } else if (value is PatternLineDto) {
+    }    else if (value is PatternLineDto) {
       buffer.putUint8(148);
       writeValue(buffer, value.encode());
-    } else if (value is SuggestionDto) {
+    }    else if (value is SuggestionDto) {
       buffer.putUint8(149);
       writeValue(buffer, value.encode());
-    } else if (value is ObservationDto) {
+    }    else if (value is ObservationDto) {
       buffer.putUint8(150);
       writeValue(buffer, value.encode());
-    } else if (value is VerdictDto) {
+    }    else if (value is VerdictDto) {
       buffer.putUint8(151);
       writeValue(buffer, value.encode());
-    } else if (value is GoalTapDto) {
+    }    else if (value is GoalTapDto) {
       buffer.putUint8(152);
       writeValue(buffer, value.encode());
-    } else if (value is TeacherDto) {
+    }    else if (value is TeacherDto) {
       buffer.putUint8(153);
       writeValue(buffer, value.encode());
-    } else if (value is SayingDto) {
+    }    else if (value is SayingDto) {
       buffer.putUint8(154);
       writeValue(buffer, value.encode());
-    } else if (value is MirrorDto) {
+    }    else if (value is MirrorDto) {
       buffer.putUint8(155);
       writeValue(buffer, value.encode());
-    } else if (value is WeekRefDto) {
+    }    else if (value is WeekRefDto) {
       buffer.putUint8(156);
       writeValue(buffer, value.encode());
-    } else if (value is TodayWindowDto) {
+    }    else if (value is TodayWindowDto) {
       buffer.putUint8(157);
       writeValue(buffer, value.encode());
-    } else if (value is TodayDto) {
+    }    else if (value is TodayDto) {
       buffer.putUint8(158);
       writeValue(buffer, value.encode());
-    } else if (value is WhatISeeDto) {
+    }    else if (value is WhatISeeDto) {
       buffer.putUint8(159);
       writeValue(buffer, value.encode());
-    } else if (value is LakeDto) {
+    }    else if (value is LakeDto) {
       buffer.putUint8(160);
       writeValue(buffer, value.encode());
-    } else if (value is ExportDto) {
+    }    else if (value is ExportDto) {
       buffer.putUint8(161);
       writeValue(buffer, value.encode());
     } else {
@@ -2153,21 +2144,20 @@ class SakshiHostApi {
   /// available for dependency injection. If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
   SakshiHostApi({
-    BinaryMessenger? binaryMessenger,
-    String messageChannelSuffix = '',
-  }) : pigeonVar_binaryMessenger = binaryMessenger,
-       pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
-           ? '.$messageChannelSuffix'
-           : '';
+      BinaryMessenger? binaryMessenger, 
+      String messageChannelSuffix = '', 
+      })
+      : pigeonVar_binaryMessenger = binaryMessenger,
+        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
 
   final BinaryMessenger? pigeonVar_binaryMessenger;
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
 
   final String pigeonVar_messageChannelSuffix;
 
+
   Future<SetupStateDto> getSetupState() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.getSetupState$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.getSetupState$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2177,16 +2167,16 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as SetupStateDto;
   }
 
   Future<void> openUsageAccessSettings() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.openUsageAccessSettings$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.openUsageAccessSettings$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2196,15 +2186,15 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> openNotificationAccessSettings() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.openNotificationAccessSettings$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.openNotificationAccessSettings$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2214,15 +2204,15 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> openAppInfoForRestrictedSettings() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.openAppInfoForRestrictedSettings$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.openAppInfoForRestrictedSettings$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2232,15 +2222,15 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> openBatterySettings() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.openBatterySettings$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.openBatterySettings$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2250,33 +2240,15 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
-  Future<void> markBatteryHelperShown() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.markBatteryHelperShown$pigeonVar_messageChannelSuffix';
-    final pigeonVar_channel = BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
-    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
-
-    _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
-  }
-
-  Future<List<AppDto>> listLauncherApps() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.listLauncherApps$pigeonVar_messageChannelSuffix';
+  Future<bool> requestLakeWidget() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.requestLakeWidget$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2286,118 +2258,145 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    return pigeonVar_replyValue! as bool;
+  }
+
+  Future<void> markBatteryHelperShown() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.markBatteryHelperShown$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
-      isNullValid: false,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
     );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<List<AppDto>> listLauncherApps() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.listLauncherApps$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return (pigeonVar_replyValue! as List<Object?>).cast<AppDto>();
   }
 
   Future<SaveResultDto> saveWorkSet(List<WorkSetEntryDto> entries) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.saveWorkSet$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.saveWorkSet$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[entries],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[entries]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as SaveResultDto;
   }
 
   Future<void> saveStudyHours(StudyHoursDto hours) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.saveStudyHours$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.saveStudyHours$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[hours],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[hours]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> setGentleMode(bool on) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.setGentleMode$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.setGentleMode$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[on],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[on]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> setUnder18(bool on) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.setUnder18$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.setUnder18$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[on],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[on]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<bool> setWeeklyNote(bool enabled) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.setWeeklyNote$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.setWeeklyNote$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[enabled],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[enabled]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as bool;
   }
 
   Future<SyncStatusDto> syncNow() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.syncNow$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.syncNow$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2407,37 +2406,35 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as SyncStatusDto;
   }
 
   Future<MirrorDto> getMirror(int? weekStartEpochMs) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.getMirror$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.getMirror$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[weekStartEpochMs],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[weekStartEpochMs]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as MirrorDto;
   }
 
   Future<List<WeekRefDto>> listMirrorWeeks() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.listMirrorWeeks$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.listMirrorWeeks$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2447,16 +2444,16 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return (pigeonVar_replyValue! as List<Object?>).cast<WeekRefDto>();
   }
 
   Future<TodayDto> getTodaySoFar() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.getTodaySoFar$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.getTodaySoFar$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2466,16 +2463,16 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as TodayDto;
   }
 
   Future<WhatISeeDto> getWhatISee() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.getWhatISee$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.getWhatISee$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2485,16 +2482,16 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as WhatISeeDto;
   }
 
   Future<List<SayingDto>> getSayingChoices() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.getSayingChoices$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.getSayingChoices$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2504,16 +2501,16 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return (pigeonVar_replyValue! as List<Object?>).cast<SayingDto>();
   }
 
   Future<LakeDto> getLake() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.getLake$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.getLake$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2523,96 +2520,88 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as LakeDto;
   }
 
   Future<void> pickSaying(String sayingId) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.pickSaying$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.pickSaying$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[sayingId],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[sayingId]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> tapTryThis(String kindId, String? subjectKey) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.tapTryThis$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.tapTryThis$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[kindId, subjectKey],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[kindId, subjectKey]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> dismissSuggestion(String kindId, String? subjectKey) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.dismissSuggestion$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.dismissSuggestion$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[kindId, subjectKey],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[kindId, subjectKey]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> tapGoal(GoalAnswerDto answer) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.tapGoal$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.tapGoal$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[answer],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[answer]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> reanchorBaseline() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.reanchorBaseline$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.reanchorBaseline$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2622,56 +2611,52 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> pause(bool on) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.pause$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.pause$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[on],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[on]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<ExportDto> exportData(bool includeRaw) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.exportData$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.exportData$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[includeRaw],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[includeRaw]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as ExportDto;
   }
 
   Future<void> deleteEverything() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.deleteEverything$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.deleteEverything$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2681,55 +2666,51 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> startDemo(String personaId) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.startDemo$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.startDemo$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[personaId],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[personaId]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> setDemoAsOf(int dayIndex) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.setDemoAsOf$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.setDemoAsOf$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[dayIndex],
-    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[dayIndex]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> stopDemo() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakshi.SakshiHostApi.stopDemo$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.sakshi.SakshiHostApi.stopDemo$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -2739,9 +2720,10 @@ class SakshiHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 }

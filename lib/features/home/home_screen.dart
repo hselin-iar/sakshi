@@ -268,6 +268,21 @@ class _Body extends ConsumerWidget {
         ],
         const _Heading(homeExploreHeading),
         _LinkTile(
+          icon: Icons.widgets_outlined,
+          title: homeWidgetTitle,
+          body: homeWidgetBody,
+          onTap: () async {
+            final messenger = ScaffoldMessenger.of(context);
+            var added = false;
+            try {
+              added = await ref.read(hostClientProvider).requestLakeWidget();
+            } catch (_) {}
+            if (!added) {
+              messenger.showSnackBar(const SnackBar(content: Text(homeWidgetByHand)));
+            }
+          },
+        ),
+        _LinkTile(
           icon: Icons.visibility_outlined,
           title: homeWhatISeeTitle,
           body: homeWhatISeeBody,

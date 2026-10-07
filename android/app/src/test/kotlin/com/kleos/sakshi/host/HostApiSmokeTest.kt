@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
-/** Every one of the 30 Pigeon methods answers against the real container (Room on Robolectric), with the real engine. */
+/** Every one of the 31 Pigeon methods answers against the real container (Room on Robolectric), with the real engine. */
 @RunWith(RobolectricTestRunner::class)
 class HostApiSmokeTest {
     @org.junit.Before fun freshContainer() = AppContainer.reset()
@@ -24,7 +24,7 @@ class HostApiSmokeTest {
             "getSetupState" to { api.getSetupState() }, "openUsageAccessSettings" to { api.openUsageAccessSettings() },
             "openNotificationAccessSettings" to { api.openNotificationAccessSettings() },
             "openAppInfoForRestrictedSettings" to { api.openAppInfoForRestrictedSettings() }, "openBatterySettings" to { api.openBatterySettings() },
-            "markBatteryHelperShown" to { api.markBatteryHelperShown() }, "listLauncherApps" to { api.listLauncherApps() },
+            "markBatteryHelperShown" to { api.markBatteryHelperShown() }, "requestLakeWidget" to { api.requestLakeWidget() }, "listLauncherApps" to { api.listLauncherApps() },
             "saveWorkSet" to { api.saveWorkSet(emptyList()) }, "saveStudyHours" to { api.saveStudyHours(StudyHoursDto(emptyList(), false)) },
             "setGentleMode" to { api.setGentleMode(true) }, "setUnder18" to { api.setUnder18(false) }, "setWeeklyNote" to { api.setWeeklyNote(false) },
             "syncNow" to { api.syncNow() }, "getMirror" to { api.getMirror(null) }, "listMirrorWeeks" to { api.listMirrorWeeks() },
@@ -37,7 +37,7 @@ class HostApiSmokeTest {
             "tapTryThis" to { try { api.tapTryThis("S2", null) } catch (e: FlutterError) { e.code } },
             "reanchorBaseline" to { try { api.reanchorBaseline() } catch (e: FlutterError) { e.code } })
         assertEquals(SakshiHostApi::class.java.declaredMethods.size, calls.size)
-        assertEquals(30, calls.size)
+        assertEquals(31, calls.size)
         assertEquals(calls.size, calls.map { it.first }.toSet().size)
         calls.forEach { (name, call) -> try { call() } catch (e: Throwable) { fail("$name threw $e") } }
     }

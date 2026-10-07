@@ -44,6 +44,9 @@ class PigeonHostClient implements HostClient {
   Future<void> openBatterySettings() => _call(() => _api.openBatterySettings());
 
   @override
+  Future<bool> requestLakeWidget() => _call(() => _api.requestLakeWidget());
+
+  @override
   Future<void> markBatteryHelperShown() =>
       _call(() => _api.markBatteryHelperShown());
 

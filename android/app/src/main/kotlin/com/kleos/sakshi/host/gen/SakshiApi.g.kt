@@ -2066,6 +2066,7 @@ interface SakshiHostApi {
   suspend fun openNotificationAccessSettings()
   suspend fun openAppInfoForRestrictedSettings()
   suspend fun openBatterySettings()
+  suspend fun requestLakeWidget(): Boolean
   suspend fun markBatteryHelperShown()
   suspend fun listLauncherApps(): List<AppDto>
   suspend fun saveWorkSet(entries: List<WorkSetEntryDto>): SaveResultDto
@@ -2180,6 +2181,23 @@ interface SakshiHostApi {
               val wrapped: List<Any?> = try {
                 api.openBatterySettings()
                 listOf(null)
+              } catch (exception: Throwable) {
+                SakshiApiPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.sakshi.SakshiHostApi.requestLakeWidget$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                listOf(api.requestLakeWidget())
               } catch (exception: Throwable) {
                 SakshiApiPigeonUtils.wrapError(exception)
               }

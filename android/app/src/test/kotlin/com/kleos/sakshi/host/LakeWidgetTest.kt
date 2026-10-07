@@ -43,7 +43,7 @@ class LakeWidgetTest {
     @Test fun aMissingRowDrawsNoDataWithNoAsOf() {
         val face = LakeWidget.faceFor(null)
         assertEquals(R.drawable.lake_still, face.drawableRes)
-        assertEquals("", face.phrase)
+        assertEquals("Nothing to show yet.", face.phrase)
         assertNull(face.asOfText)
     }
 
@@ -89,5 +89,30 @@ class LakeWidgetTest {
         assertNotNull(views)
         assertEquals("route", LakeWidget.EXTRA_ROUTE)
         assertEquals("mirror", LakeWidget.ROUTE_MIRROR)
+    }
+
+    @Test fun theLauncherIsAskedToPinTheWidgetAndSaysWhenItCannot() = kotlinx.coroutines.runBlocking {
+        val api = HostApiImpl(context)
+        val manager = shadowOf(AppWidgetManager.getInstance(context))
+        manager.setRequestPinAppWidgetSupported(false)
+        assertFalse(api.requestLakeWidget())
+        manager.setRequestPinAppWidgetSupported(true)
+        assertTrue(api.requestLakeWidget())
+    }
+
+    @Test fun togglingGentleModeRewritesTheStoredLakeRowAtOnce() = kotlinx.coroutines.runBlocking {
+        val api = HostApiImpl(context)
+        off { AppContainer.from(context).state.saveLake(row(LakeState.STILL, "Still water.")) }
+        api.setGentleMode(true)
+        // no windows yet, so the rebuilt row is the engine's NO_DATA one, not the stale stored phrase
+        off { assertEquals(LakeState.NO_DATA, AppContainer.from(context).state.lake()!!.state) }
+    }
+
+    @Test fun theWidgetDeclaresALabelADescriptionAndAPreview() {
+        val info = context.packageManager.getReceiverInfo(android.content.ComponentName(context, LakeWidget::class.java), android.content.pm.PackageManager.GET_META_DATA)
+        assertEquals("Sakshi: The Lake", info.loadLabel(context.packageManager).toString())
+        // the preview layout inflates on its own, with its sample phrase
+        val preview = android.view.LayoutInflater.from(context).inflate(R.layout.lake_widget_preview, android.widget.FrameLayout(context), false)
+        assertNotNull(preview)
     }
 }

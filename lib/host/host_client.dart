@@ -31,6 +31,9 @@ abstract class HostClient {
   Future<void> openNotificationAccessSettings();
   Future<void> openAppInfoForRestrictedSettings();
   Future<void> openBatterySettings();
+
+  /// Asks the launcher to pin the Lake widget to the home screen. False when the launcher cannot.
+  Future<bool> requestLakeWidget();
   Future<void> markBatteryHelperShown();
   Future<List<AppDto>> listLauncherApps();
   Future<SaveResultDto> saveWorkSet(List<WorkSetEntryDto> entries);

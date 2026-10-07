@@ -50,7 +50,9 @@ class LakeWidget : AppWidgetProvider() {
                 LakeState.RIPPLED -> R.drawable.lake_rippled
                 LakeState.STILL, LakeState.LEARNING, LakeState.NO_DATA -> R.drawable.lake_still
             }
-            return Face(drawable, row?.phrase.orEmpty(), row?.asOf?.let { "as of " + asOfClock(it.value, zone, locale) })
+            // Before the first run there is no stored row: the engine's own "nothing to show yet" wording, never a blank.
+            val phrase = row?.phrase ?: com.kleos.sakshi.engine.mirror.SentenceBuilder.lakePhrase(LakeState.NO_DATA, gentle = false)
+            return Face(drawable, phrase, row?.asOf?.let { "as of " + asOfClock(it.value, zone, locale) })
         }
 
         /** "9:42 pm" in the phone's own zone. */

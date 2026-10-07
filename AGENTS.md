@@ -18,7 +18,7 @@ It never blocks, delays, locks or hides anything. No accounts, no cloud, no `INT
 ## 3. Stack and commands
 
 - UI: Flutter (Dart), `flutter_riverpod` (manual providers, no code generation), `go_router`. **No other packages.**
-- Bridge: Pigeon, pull-only. Single file `pigeons/sakshi_api.dart` (30 host methods).
+- Bridge: Pigeon, pull-only. Single file `pigeons/sakshi_api.dart` (31 host methods; the 31st, requestLakeWidget, is a Contract Change).
 - Native: Kotlin, **one** Android module. Room (KSP), WorkManager, native `AppWidgetProvider`/RemoteViews, `NotificationListenerService`, kotlinx.serialization, manual DI (`AppContainer`). No Hilt, no kapt.
 - Engine: package `com.kleos.sakshi.engine`, pure Kotlin, JUnit 4 local tests.
 - minSdk 29. Study day starts at 04:00 local. Raw events kept 14 days.

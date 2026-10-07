@@ -43,6 +43,9 @@ class FakeHost implements HostClient {
   Future<void> openBatterySettings() async {}
 
   @override
+  Future<bool> requestLakeWidget() async => true;
+
+  @override
   Future<void> markBatteryHelperShown() async {
     _state = SetupStateDto(
       usageAccessGranted: _state.usageAccessGranted,

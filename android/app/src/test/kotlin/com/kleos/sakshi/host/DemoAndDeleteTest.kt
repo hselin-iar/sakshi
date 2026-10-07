@@ -118,8 +118,8 @@ class DemoAndDeleteTest {
         off { LakeWidget.refresh(app) }
         assertEquals("Still water. (demo)", shadowOf(manager).getViewFor(id).findViewById<TextView>(R.id.lake_phrase).text.toString())
         off { container.demoController.stop(); LakeWidget.refresh(app) }
-        // back to the real Lake, which has no row in this test: nothing to show, and no "(demo)"
-        assertEquals("", shadowOf(manager).getViewFor(id).findViewById<TextView>(R.id.lake_phrase).text.toString())
+        // back to the real Lake, which has no row in this test: the engine's "nothing to show yet", and no "(demo)"
+        assertEquals("Nothing to show yet.", shadowOf(manager).getViewFor(id).findViewById<TextView>(R.id.lake_phrase).text.toString())
     }
 
     // ---- delete ----

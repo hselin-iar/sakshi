@@ -155,6 +155,10 @@ const homeWhatISeeBody = 'Exactly what is read, with pause, export and delete.';
 const homeDemoTitle = 'Time Machine';
 const homeDemoBody = 'Try Sakshi on made-up history.';
 const homeSettingsTitle = 'Settings';
+const homeWidgetTitle = 'Add the Lake to your home screen';
+const homeWidgetBody = 'Still water, ripples or waves: how your last study window went, in one glance.';
+const homeWidgetByHand =
+    'Your launcher cannot add it from here. Touch and hold an empty spot on your home screen, tap Widgets, and find Sakshi: The Lake.';
 const homeErrorRetry = 'Try again';
 
 // ---------------------------------------------------------------------------

@@ -80,6 +80,11 @@ class SakshiEngine(private val ports: Ports, private val isDemo: Boolean = false
         FootprintStart.run(ports, asOf, zone)
         JudgeExperiments.run(ports, asOf, zone)
 
+        return saveLake(asOf)
+    }
+
+    /** Builds the Lake and stores it, so the widget (which draws the stored row) and the app agree. True if the row changed. */
+    private fun saveLake(asOf: EpochMs): Boolean {
         val before = ports.state.lake()
         val view = LakeBuilder.build(ports, asOf, zone)
         val row = LakeRow(view.state, view.phrase, view.asOf)
@@ -136,8 +141,9 @@ class SakshiEngine(private val ports: Ports, private val isDemo: Boolean = false
         rederive()
     }
 
-    fun setGentle(on: Boolean) = SettingsUseCases.setGentle(ports, on)
-    fun setUnder18(on: Boolean) = SettingsUseCases.setUnder18(ports, on)
+    // Gentle mode changes the Lake's wording, and the widget draws the stored row, so the row is rebuilt at once.
+    fun setGentle(on: Boolean) { SettingsUseCases.setGentle(ports, on); saveLake(ports.clock.now()) }
+    fun setUnder18(on: Boolean) { SettingsUseCases.setUnder18(ports, on); saveLake(ports.clock.now()) }
     fun setWeeklyNote(on: Boolean) = SettingsUseCases.setWeeklyNote(ports, on)
     fun markBatteryHelperShown() = SettingsUseCases.markBatteryHelperShown(ports)
 

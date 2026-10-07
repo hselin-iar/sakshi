@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What the widget picker shows: the same face as the widget, with a sample phrase. Nothing here is read from the phone. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CC1B2B34"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="40dp"
+        android:importantForAccessibility="no"
+        android:scaleType="fitCenter"
+        android:src="@drawable/lake_rippled" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="A few ripples."
+            android:textColor="#F2F6F8"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="as of 9:42 pm"
+            android:textColor="#B9C6CD"
+            android:textSize="11sp" />
+    </LinearLayout>
+</LinearLayout>
