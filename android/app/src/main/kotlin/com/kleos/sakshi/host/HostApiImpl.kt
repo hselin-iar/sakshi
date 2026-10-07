@@ -118,8 +118,7 @@ class HostApiImpl(context: Context, private val notificationRequester: PostNotif
     override suspend fun reanchorBaseline() = call {
         if (!engine.reanchor(now()).ok) throw HostErrors.error(HostErrors.REANCHOR_NOT_ALLOWED)
     }
-    // The host does Pause until the engine's use case is real; see PauseControl.
-    override suspend fun pause(on: Boolean) = call { refuseDuringDemo(); container.pauseControl.set(on, now()) }
+    override suspend fun pause(on: Boolean) = call { refuseDuringDemo(); engine.pause(on, now()) }
     override suspend fun exportData(includeRaw: Boolean): ExportDto = call {
         refuseDuringDemo()
         val result = try {

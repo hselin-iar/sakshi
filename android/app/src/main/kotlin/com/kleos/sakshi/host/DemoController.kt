@@ -38,7 +38,7 @@ class DemoController(
             val realNow = container.real.clock.now().value
             anchor = java.time.Instant.ofEpochMilli(realNow).atZone(zone).minusHours(Tuning.STUDY_DAY_START_HOUR.toLong()).toLocalDate()
             val demoClock = DemoClock(realNow).also { clock = it }
-            val stores = Stores(database, container.catalog, container.shelf, demoClock, SeededRandomness(personaId.hashCode().toLong()))
+            val stores = Stores(database, container.catalog, container.shelf, demoClock, SeededRandomness(personaId.hashCode().toLong()), isDemo = true)
             seed(stores, DemoHistory.stub(context.packageName, ::dayStartMs, FIRST_READ_DAY))
             container.beginDemo(stores)
             setAsOf(FIRST_READ_DAY)

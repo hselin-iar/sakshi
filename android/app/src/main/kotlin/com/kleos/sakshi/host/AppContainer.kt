@@ -22,7 +22,7 @@ import com.kleos.sakshi.engine.ports.SayingShelf
  * One database, the stores over it, and an engine on top. A phone has one real set. A demo has a second, in memory, with its own
  * injected clock; the real database is never opened through it (DOC 3, Time Machine Demo).
  */
-class Stores(val database: SakshiDatabase, catalog: AppCatalog, shelf: SayingShelf, val clock: Clock, random: Randomness) {
+class Stores(val database: SakshiDatabase, catalog: AppCatalog, shelf: SayingShelf, val clock: Clock, random: Randomness, isDemo: Boolean = false) {
     val events = RoomEventStore(database)
     val notifs = RoomNotifStore(database)
     val gaps = RoomGapStore(database)
@@ -30,8 +30,7 @@ class Stores(val database: SakshiDatabase, catalog: AppCatalog, shelf: SayingShe
     val state = RoomStateStore(database)
     val retention = Retention(events, notifs)
 
-    /** T1.2's canned façade until Track 2 lands (Sync 4); nothing in the host depends on which it is. */
-    val engine = SakshiEngine(Ports(events, notifs, notifs, gaps, derived, state, catalog, shelf, clock, random))
+    val engine = SakshiEngine(Ports(events, notifs, notifs, gaps, derived, state, catalog, shelf, clock, random), isDemo)
 }
 
 /** The one wiring point (LC-9). */
@@ -57,7 +56,6 @@ class AppContainer(private val context: Context) {
     val clock: Clock get() = stores.clock
 
     val noteNotifier by lazy { WeeklyNoteNotifier(context, real.state, permissions) }
-    val pauseControl by lazy { PauseControl(real.state, real.gaps) }
     val exporter by lazy { Exporter(context.cacheDir, real.events, real.notifs, real.derived, real.state) }
     val demoController by lazy { DemoController(context, this) }
 
@@ -90,7 +88,7 @@ class AppContainer(private val context: Context) {
 
     /** Delete everything (F10): every table in one transaction, cached exports removed, Lake reset, widget redrawn. The schedule stays. */
     fun deleteEverything() = synchronized(ingestLock) {
-        real.derived.clearAll()
+        real.engine.deleteEverything()
         exporter.clearExports()
         LakeWidget.refresh(context)
     }
