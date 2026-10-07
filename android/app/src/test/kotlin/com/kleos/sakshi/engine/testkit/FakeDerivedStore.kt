@@ -39,8 +39,12 @@ class FakeDerivedStore : DerivedStore {
     override fun weeks(): List<WeekSummary> =
         byWeek.values.sortedBy { it.weekStart.studyDay.epochDay }
 
+    // An upsert by (kind, key), like the Room table's primary key.
     override fun upsertPatterns(p: List<Pattern>) {
-        patternList += p
+        p.forEach { fresh ->
+            val i = patternList.indexOfFirst { it.kind == fresh.kind && it.key == fresh.key }
+            if (i >= 0) patternList[i] = fresh else patternList += fresh
+        }
     }
 
     override fun patterns(): List<Pattern> = patternList.toList()

@@ -32,7 +32,8 @@ import java.time.ZoneId
 
 /**
  * The façade (LC-3). It only sequences use cases and builders; every decision about attention lives in them.
- * `isDemo` is true for the Time Machine's own store, so a demo view says so.
+ * `isDemo` is true for the Time Machine's own store, so a demo view says so. It changes nothing else: the demo exercises the same
+ * use cases as a real phone, over a throwaway store (DOC 3, Time Machine Demo).
  */
 class SakshiEngine(private val ports: Ports, private val isDemo: Boolean = false) {
     // No Settings field carries the user's zone and the locked signatures cannot take one, so the device's configured zone is read.
@@ -95,7 +96,7 @@ class SakshiEngine(private val ports: Ports, private val isDemo: Boolean = false
     fun mirror(week: WeekStart?, asOf: EpochMs): MirrorView {
         val built = MirrorBuilder.build(ports, week, asOf, zone, isDemo)
         val f = built.facts
-        if (isDemo || !f.completed) return built.view
+        if (!f.completed) return built.view
         // Seeing a Mirror is what changes state: the week counts as read, a verdict is marked shown, a suggestion is marked offered, a lapse is acknowledged.
         val note = ports.state.note()
         if (note.mirrorViewedWeek != f.week) ports.state.saveNote(note.copy(mirrorViewedWeek = f.week))

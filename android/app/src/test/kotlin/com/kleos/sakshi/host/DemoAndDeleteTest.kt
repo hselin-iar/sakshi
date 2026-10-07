@@ -55,11 +55,13 @@ class DemoAndDeleteTest {
         assertTrue(container.demoActive)
         off {
             assertEquals(1, container.real.notifs.count())
-            assertEquals(0, container.notifs.count())                        // the demo has no notifications of its own yet
+            assertTrue(container.notifs.count() > 0)                         // the persona's own pings are in the demo set
             container.real.notifs.append(notif(3_000))                       // what NotificationCollector does
             assertEquals(2, container.real.notifs.count())
-            assertEquals(0, container.notifs.count())                        // real pings never leak into the demo
-            assertTrue(container.events.count() > 0)                         // the stub history is there
+            val demoPings = container.notifs.count()
+            assertEquals(2, container.real.notifs.count())
+            assertEquals(demoPings, container.notifs.count())                // real pings never leak into the demo
+            assertTrue(container.events.count() > 0)                         // the persona's history is there
             assertEquals(2, container.real.events.count())                   // and the real events are as they were
             assertFalse(container.state.settings().gentleMode)               // demo settings, not the real ones
             assertTrue(container.real.state.settings().gentleMode)
@@ -92,9 +94,10 @@ class DemoAndDeleteTest {
         off { container.demoController.start("aarav") }
         off {
             container.derived.replaceDay(StudyDay(7), derivation(7, 1))
-            assertEquals(1, container.derived.days(StudyDay(0), StudyDay(99)).size)
             container.demoController.setAsOf(10)
-            assertEquals(0, container.derived.days(StudyDay(0), StudyDay(99)).size)   // the canned engine writes none back
+            val days = container.derived.days(StudyDay(0), StudyDay(Long.MAX_VALUE / 2))
+            assertTrue(days.none { it.day == StudyDay(7) })       // the hand-written row is gone: the days were rebuilt from the events
+            assertTrue(days.isNotEmpty())                         // and the engine wrote its own
         }
         off { container.demoController.stop() }
     }

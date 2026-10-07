@@ -123,12 +123,12 @@ class SakshiEngineFacadeTest {
         assertEquals(first, second)
     }
 
-    @Test fun `a demo engine marks nothing as read`() {
+    @Test fun `a demo engine says so and otherwise works like the real one`() {
         val p = newPorts(tuesday, "10:00:00"); feed(p, 21)
         val engine = SakshiEngine(p, isDemo = true); engine.processNewEvents(at(tuesday, "10:00:00"))
         val m = engine.mirror(null, at(tuesday, "10:00:00"))
         assertTrue(m.isDemo)
-        assertNull(p.state.note().mirrorViewedWeek)
+        assertNotNull(p.state.note().mirrorViewedWeek)
     }
 
     @Test fun `with only three days it is a First look that does not claim a steadiness`() {
