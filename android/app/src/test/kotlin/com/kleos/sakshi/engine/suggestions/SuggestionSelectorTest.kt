@@ -65,7 +65,7 @@ class SuggestionSelectorTest {
     )
 
     @Test
-    fun `G-G1 7 valid days is NOT_ENOUGH_DATA; 8 days and 9 windows still is; 8 and 10 is eligible`() {
+    fun `G-G1 7 valid days is NOT_ENOUGH_DATA, 8 days and 9 windows still is, 8 and 10 is eligible`() {
         val candidates = listOf(candidate(SuggestionKind.S2, 0.5))
 
         val r1 = SuggestionSelector.select(baseCtx(validDayCount = 7, windowCount = 15), candidates)
@@ -155,7 +155,7 @@ class SuggestionSelectorTest {
     }
 
     @Test
-    fun `G-G6 week 8 - a task shown in week 7 is QUOTA-blocked; shown in week 6 is eligible`() {
+    fun `G-G6 week 8 - a task shown in week 7 is QUOTA-blocked, shown in week 6 is eligible`() {
         val week7 = WeekStart(StudyDay(weekStart.studyDay.epochDay - 7))
         val week6 = WeekStart(StudyDay(weekStart.studyDay.epochDay - 14))
         val candidates = listOf(candidate(SuggestionKind.S2, 0.9))
