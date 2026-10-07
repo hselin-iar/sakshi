@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,6 +7,12 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+// Release signing. The keystore and its passwords live outside git (android/key.properties is ignored); see docs/release.md.
+val keyProps = Properties().apply {
+    val f = rootProject.file("key.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
 }
 
 android {
@@ -36,11 +44,25 @@ android {
         unitTests.isIncludeAndroidResources = true   // WorkManager's own resources, needed by SchedulerTest
     }
 
+    signingConfigs {
+        if (keyProps.isNotEmpty()) {
+            create("release") {
+                storeFile = file(keyProps.getProperty("storeFile"))
+                storePassword = keyProps.getProperty("storePassword")
+                keyAlias = keyProps.getProperty("keyAlias")
+                keyPassword = keyProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // R8 and resource shrinking stay on at Flutter's defaults. Without key.properties the build falls back to the
+            // debug key so a fresh clone still builds, and tools/audit_apk.sh refuses that APK.
+            signingConfig = if (keyProps.isNotEmpty()) signingConfigs.getByName("release") else {
+                logger.warn("WARNING: android/key.properties is missing, so this release APK is signed with the DEBUG key.")
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
