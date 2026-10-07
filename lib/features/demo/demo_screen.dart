@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // riverpod 3 moved StateProvider here; the pinned version is 3.4.3.
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:sakshi/features/demo/demo_banner.dart';
+import 'package:sakshi/features/demo/demo_launch.dart';
 import 'package:sakshi/features/mirror/mirror_content.dart';
 import 'package:sakshi/features/mirror/mirror_screen.dart';
 import 'package:sakshi/gen/sakshi_api.g.dart';
@@ -114,12 +115,7 @@ class _DemoScreenState extends ConsumerState<DemoScreen> {
   }
 
   Future<void> _stopDemo() async {
-    try {
-      final api = ref.read(sakshiHostApiProvider);
-      await api.stopDemo();
-    } catch (_) {}
-    ref.read(isDemoActiveProvider.notifier).state = false;
-    ref.invalidate(mirrorProvider(null));
+    await exitDemo(ref);
     if (mounted) {
       Navigator.of(context).maybePop();
     }

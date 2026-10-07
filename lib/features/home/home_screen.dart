@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/providers.dart';
 import '../../core/ui_strings.dart';
 import '../../host/host_client.dart';
+import '../demo/demo_launch.dart';
 import '../lake/lake_screen.dart';
 import '../mirror/mirror_screen.dart';
 import '../today/today_screen.dart';
@@ -149,7 +150,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 }
 
 class _Body extends ConsumerWidget {
-  const _Body({required this.setup, required this.onSync, required this.syncing});
+  const _Body({
+    required this.setup,
+    required this.onSync,
+    required this.syncing,
+  });
 
   final SetupStateDto setup;
   final VoidCallback onSync;
@@ -177,14 +182,30 @@ class _Body extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (!setup.workSetSaved)
-          _PromptCard(
-            icon: Icons.apps_outlined,
-            title: homeWorkSetNeededTitle,
-            body: homeWorkSetNeededBody,
-            buttonLabel: homeWorkSetNeededButton,
-            onPressed: () => context.push('/setup/work-set'),
-          ),
+        if (setup.isDemo)
+          _DemoBar(
+            onMove: () => context.push('/demo'),
+            onExit: () => exitDemo(ref),
+          )
+        else ...[
+          if (!setup.usageAccessGranted)
+            _PromptCard(
+              icon: Icons.lock_open_outlined,
+              title: homeUsageNeededTitle,
+              body: homeUsageNeededBody,
+              buttonLabel: homeUsageNeededButton,
+              onPressed: () => context.push('/setup/usage'),
+            )
+          else if (!setup.workSetSaved)
+            _PromptCard(
+              icon: Icons.apps_outlined,
+              title: homeWorkSetNeededTitle,
+              body: homeWorkSetNeededBody,
+              buttonLabel: homeWorkSetNeededButton,
+              onPressed: () => context.push('/setup/work-set'),
+            ),
+          _TryDemoCard(onTry: () => enterDemo(ref)),
+        ],
         _InfoCard(
           icon: Icons.bar_chart_outlined,
           title: homeMirrorTitle,
@@ -215,34 +236,36 @@ class _Body extends ConsumerWidget {
             label: const Text(homeSyncNow),
           ),
         ),
-        const _Heading(homeSetupHeading),
-        if (setup.workSetSaved)
+        if (!setup.isDemo) ...[
+          const _Heading(homeSetupHeading),
+          if (setup.workSetSaved)
+            _LinkTile(
+              icon: Icons.apps_outlined,
+              title: homeWorkSetTitle,
+              body: homeWorkSetBody,
+              onTap: () => context.push('/setup/work-set'),
+            ),
           _LinkTile(
-            icon: Icons.apps_outlined,
-            title: homeWorkSetTitle,
-            body: homeWorkSetBody,
-            onTap: () => context.push('/setup/work-set'),
+            icon: Icons.schedule_outlined,
+            title: homeStudyHoursTitle,
+            body: homeStudyHoursBody,
+            onTap: () => context.push('/setup/study-hours'),
           ),
-        _LinkTile(
-          icon: Icons.schedule_outlined,
-          title: homeStudyHoursTitle,
-          body: homeStudyHoursBody,
-          onTap: () => context.push('/setup/study-hours'),
-        ),
-        if (!setup.notificationAccessGranted)
-          _LinkTile(
-            icon: Icons.notifications_none_outlined,
-            title: homeNotifTitle,
-            body: homeNotifBody,
-            onTap: () => context.push('/setup/notif'),
-          ),
-        if (!setup.batteryHelperShown)
-          _LinkTile(
-            icon: Icons.battery_charging_full_outlined,
-            title: homeBatteryTitle,
-            body: homeBatteryBody,
-            onTap: () => context.push('/setup/battery'),
-          ),
+          if (!setup.notificationAccessGranted)
+            _LinkTile(
+              icon: Icons.notifications_none_outlined,
+              title: homeNotifTitle,
+              body: homeNotifBody,
+              onTap: () => context.push('/setup/notif'),
+            ),
+          if (!setup.batteryHelperShown)
+            _LinkTile(
+              icon: Icons.battery_charging_full_outlined,
+              title: homeBatteryTitle,
+              body: homeBatteryBody,
+              onTap: () => context.push('/setup/battery'),
+            ),
+        ],
         const _Heading(homeExploreHeading),
         _LinkTile(
           icon: Icons.visibility_outlined,
@@ -250,13 +273,107 @@ class _Body extends ConsumerWidget {
           body: homeWhatISeeBody,
           onTap: () => context.push('/what-i-see'),
         ),
-        _LinkTile(
-          icon: Icons.history_toggle_off_outlined,
-          title: homeDemoTitle,
-          body: homeDemoBody,
-          onTap: () => context.push('/demo'),
-        ),
       ],
+    );
+  }
+}
+
+/// Shown above everything while a demo runs: what this is, how to move through it, how to leave.
+class _DemoBar extends StatelessWidget {
+  const _DemoBar({required this.onMove, required this.onExit});
+
+  final VoidCallback onMove;
+  final VoidCallback onExit;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Card(
+      key: const Key('home_demo_bar'),
+      color: colors.tertiaryContainer,
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              demoActiveTitle,
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(color: colors.onTertiaryContainer),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              demoActiveBody,
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(color: colors.onTertiaryContainer),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: [
+                FilledButton(
+                  onPressed: onMove,
+                  child: const Text(demoMoveButton),
+                ),
+                OutlinedButton(
+                  key: const Key('home_exit_demo'),
+                  onPressed: onExit,
+                  child: const Text(demoExitButton),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// One tap into a populated demo. Needs no permission, so it is the thing to show before anything is set up.
+class _TryDemoCard extends StatefulWidget {
+  const _TryDemoCard({required this.onTry});
+
+  final Future<void> Function() onTry;
+
+  @override
+  State<_TryDemoCard> createState() => _TryDemoCardState();
+}
+
+class _TryDemoCardState extends State<_TryDemoCard> {
+  bool _starting = false;
+
+  Future<void> _go() async {
+    setState(() => _starting = true);
+    try {
+      await widget.onTry();
+    } finally {
+      if (mounted) setState(() => _starting = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      key: const Key('home_try_demo'),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(demoTryTitle, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 6),
+            Text(demoTryBody, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 12),
+            FilledButton.tonal(
+              key: const Key('home_try_demo_button'),
+              onPressed: _starting ? null : _go,
+              child: Text(_starting ? demoStarting : demoTryButton),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -306,9 +423,8 @@ class _PromptCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: colors.onPrimaryContainer,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(color: colors.onPrimaryContainer),
                   ),
                 ),
               ],
@@ -316,9 +432,8 @@ class _PromptCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               body,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colors.onPrimaryContainer,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(color: colors.onPrimaryContainer),
             ),
             const SizedBox(height: 12),
             FilledButton(onPressed: onPressed, child: Text(buttonLabel)),

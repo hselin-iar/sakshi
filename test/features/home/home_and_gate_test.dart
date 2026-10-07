@@ -108,4 +108,46 @@ void main() {
       expect(find.text('mirror page'), findsOneWidget);
     });
   });
+
+  group('the demo', () {
+    testWidgets('one tap on Home starts the demo at week 8 and shows the demo bar', (tester) async {
+      await _launch(tester, _state());
+      expect(find.byKey(const Key('home_try_demo')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('home_try_demo_button')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('home_demo_bar')), findsOneWidget);
+      expect(find.text('You are looking at demo data'), findsOneWidget);
+      // the setup rows are not shown over made-up data
+      expect(find.text('Your setup'), findsNothing);
+      expect(find.byKey(const Key('home_try_demo')), findsNothing);
+    });
+
+    testWidgets('Exit demo goes back to the normal Home', (tester) async {
+      await _launch(tester, _state());
+      await tester.tap(find.byKey(const Key('home_try_demo_button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('home_exit_demo')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('home_demo_bar')), findsNothing);
+      expect(find.byKey(const Key('home_try_demo')), findsOneWidget);
+    });
+
+    testWidgets('the introduction offers the demo before any permission is asked for', (tester) async {
+      final r = await _launch(tester, _state(usage: false));
+      expect(_location(r), '/setup/first');
+      await tester.tap(find.byKey(const Key('first_try_demo')));
+      await tester.pumpAndSettle();
+      expect(_location(r), '/home');
+      expect(find.byKey(const Key('home_demo_bar')), findsOneWidget);
+    });
+
+    testWidgets('without usage access Home asks for it instead of the work set', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(400, 900));
+      final r = await _launch(tester, _state(usage: false));
+      r.go('/home');
+      await tester.pumpAndSettle();
+      expect(find.text('Allow usage access'), findsOneWidget);
+      expect(find.text('Choose the apps you work in'), findsNothing);
+    });
+  });
 }

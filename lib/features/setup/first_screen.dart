@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/ui_strings.dart';
+import '../demo/demo_launch.dart';
 
 // ---------------------------------------------------------------------------
 // FirstScreen — what Sakshi will and will not do (DOC 1 §1.4.1).
@@ -9,8 +11,25 @@ import '../../core/ui_strings.dart';
 // Four lines from ui_strings.dart. One button. No data, no logic.
 // ---------------------------------------------------------------------------
 
-class FirstScreen extends StatelessWidget {
+class FirstScreen extends ConsumerStatefulWidget {
   const FirstScreen({super.key});
+
+  @override
+  ConsumerState<FirstScreen> createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends ConsumerState<FirstScreen> {
+  bool _starting = false;
+
+  Future<void> _tryDemo() async {
+    setState(() => _starting = true);
+    try {
+      await enterDemo(ref);
+      if (mounted) context.go('/home');
+    } catch (_) {
+      if (mounted) setState(() => _starting = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +73,16 @@ class FirstScreen extends StatelessWidget {
                   child: const Text('Continue'),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  key: const Key('first_try_demo'),
+                  onPressed: _starting ? null : _tryDemo,
+                  child: Text(_starting ? demoStarting : demoTryFirstButton),
+                ),
+              ),
+              const SizedBox(height: 8),
             ],
           ),
         ),

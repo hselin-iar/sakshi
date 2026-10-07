@@ -156,3 +156,23 @@ const homeDemoTitle = 'Time Machine';
 const homeDemoBody = 'Try Sakshi on made-up history.';
 const homeSettingsTitle = 'Settings';
 const homeErrorRetry = 'Try again';
+
+// ---------------------------------------------------------------------------
+// Demo entry points
+// ---------------------------------------------------------------------------
+
+const demoTryTitle = 'See it with sample data';
+const demoTryBody =
+    'Eight weeks of a made-up student, so every screen is filled in. Nothing is read from your phone.';
+const demoTryButton = 'Try the demo';
+const demoTryFirstButton = 'Try the demo first';
+const demoActiveTitle = 'You are looking at demo data';
+const demoActiveBody =
+    'Aarav, a made-up student, at the end of week 8. Nothing here comes from your phone.';
+const demoMoveButton = 'Move through time';
+const demoExitButton = 'Exit demo';
+const demoStarting = 'Setting up the demo…';
+const homeUsageNeededTitle = 'Allow usage access';
+const homeUsageNeededBody =
+    'Sakshi reads which app is open and when, from Android\'s own record. It never reads what is inside an app.';
+const homeUsageNeededButton = 'Continue setup';
