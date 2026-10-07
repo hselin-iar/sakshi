@@ -1,0 +1,30 @@
+{
+  "isDemo": false,
+  "provisional": true,
+  "gentle": false,
+  "weekStartEpochMs": 1759000000000,
+  "weekLabel": "",
+  "dataState": "learningBaseline",
+  "dataFlags": [],
+  "dataLines": [],
+  "headline": "",
+  "parts": null,
+  "steadiness": null,
+  "stones": null,
+  "clearHour": null,
+  "patterns": [],
+  "suggestion": null,
+  "observation": null,
+  "nothingToFix": false,
+  "verdict": null,
+  "goalTap": {
+    "offered": false,
+    "answer": null
+  },
+  "teacher": null,
+  "lapseLine": null,
+  "saying": null,
+  "returnLine": null,
+  "reanchorOffered": false,
+  "suggestedStudyBlock": null
+}

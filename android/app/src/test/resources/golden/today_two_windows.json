@@ -1,0 +1,46 @@
+{
+  "isDemo": true,
+  "windows": [
+    {
+      "startEpochMs": 1000,
+      "endEpochMs": 2000,
+      "stays": 1,
+      "shape": "HELD",
+      "stretchMin": 12.0,
+      "returnMin": 3.5
+    },
+    {
+      "startEpochMs": 3000,
+      "endEpochMs": 4000,
+      "stays": 0,
+      "shape": null,
+      "stretchMin": null,
+      "returnMin": null
+    }
+  ],
+  "line": "Today so far: 2 finished windows.",
+  "dataFlags": [
+    "firstLook"
+  ],
+  "dataLines": [
+    "first look"
+  ],
+  "parts": {
+    "stretchMin": 10.0,
+    "longestStretchMin": 32.5,
+    "inSetShare": 0.7,
+    "quietShare": 0.36,
+    "staysPerHour": 3.2,
+    "glances": 14,
+    "returnMin": 4.5,
+    "lines": {
+      "stretch": "s",
+      "stays": "p",
+      "ret": "r",
+      "quiet": "q"
+    },
+    "extrasLines": [
+      "extra one"
+    ]
+  }
+}

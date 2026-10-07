@@ -1,4 +1,5 @@
 import 'host_client.dart';
+import 'fixtures/mirror_fixtures.dart' as mf;
 import 'fixtures/setup_fixtures.dart';
 
 // ---------------------------------------------------------------------------
@@ -6,8 +7,8 @@ import 'fixtures/setup_fixtures.dart';
 //
 // Used in debug builds and widget tests in place of PigeonHostClient.
 // State machine: tracks setup progress, gentle mode and demo flag.
-// Mirror/Today/Lake/WhatISee/Saying calls return placeholder DTOs until
-// Track 4 provides mirror_fixtures.dart (T4.1).
+// Mirror/Today/Lake/WhatISee/Saying calls serve Track 4's mirror_fixtures.dart,
+// picked from the fake state (demo, gentle, setup finished or not).
 //
 // Rules:
 //   - syncNow() waits 400 ms (simulates a real sync round trip).
@@ -144,56 +145,56 @@ class FakeHost implements HostClient {
     return SyncStatusDto(state: SyncStateDto.ok);
   }
 
-  /// Returns a placeholder MirrorDto until Track 4 provides mirror_fixtures.
+  /// A typical Mirror once setup is done; the demo, gentle and first-look variants follow the fake state.
   @override
-  Future<MirrorDto> getMirror(int? weekStartEpochMs) async => MirrorDto(
-    isDemo: _state.isDemo,
-    provisional: true,
-    gentle: _state.gentleMode,
-    weekStartEpochMs: weekStartEpochMs ?? 0,
-    weekLabel: 'Placeholder week',
-    dataState: DataStateDto.learningBaseline,
-    dataFlags: const [],
-    dataLines: const ['Waiting for Track 4 mirror fixtures'],
-    headline: '',
-    patterns: const [],
-    nothingToFix: true,
-    goalTap: GoalTapDto(offered: false),
-    reanchorOffered: false,
-  );
+  Future<MirrorDto> getMirror(int? weekStartEpochMs) async {
+    if (_state.isDemo) return mf.demoAarav;
+    if (_state.gentleMode) return mf.gentle;
+    if (!_state.workSetSaved) return mf.firstLook;
+    return mf.steadier;
+  }
 
   @override
-  Future<List<WeekRefDto>> listMirrorWeeks() async => const [];
+  Future<List<WeekRefDto>> listMirrorWeeks() async => [
+    WeekRefDto(
+      weekStartEpochMs: 1759603800000,
+      label: '5–11 Oct',
+      completed: true,
+    ),
+    WeekRefDto(
+      weekStartEpochMs: 1759603800000 - 7 * 86400000,
+      label: '28 Sep–4 Oct',
+      completed: true,
+    ),
+  ];
 
   @override
-  Future<TodayDto> getTodaySoFar() async => TodayDto(
-    isDemo: _state.isDemo,
-    windows: const [],
-    line: '',
-    dataFlags: const [],
-    dataLines: const [],
-  );
+  Future<TodayDto> getTodaySoFar() async =>
+      _state.isDemo ? mf.todayDemo : mf.todayTypical;
 
   @override
-  Future<WhatISeeDto> getWhatISee() async => WhatISeeDto(
-    isDemo: _state.isDemo,
-    usageAccessGranted: _state.usageAccessGranted,
-    notificationAccessGranted: _state.notificationAccessGranted,
-    rawEventCount: 0,
-    notifEventCount: 0,
-    derivedDays: 0,
-    workerRuns7d: _state.health.workerRuns7d,
-    paused: _state.health.paused,
-    oddEventPairs: 0,
-    lines: const [],
-  );
+  Future<WhatISeeDto> getWhatISee() async {
+    if (_state.isDemo) return mf.whatISeeDemo;
+    return _state.notificationAccessGranted
+        ? mf.whatISeeTypical
+        : mf.whatISeeNoNotif;
+  }
 
   @override
-  Future<List<SayingDto>> getSayingChoices() async => const [];
+  Future<List<SayingDto>> getSayingChoices() async => mf.sayingChoices;
 
   @override
-  Future<LakeDto> getLake() async =>
-      LakeDto(state: LakeStateDto.noData, phrase: '', isDemo: _state.isDemo);
+  Future<LakeDto> getLake() async {
+    if (_state.isDemo) {
+      return LakeDto(
+        state: mf.lakeStill.state,
+        phrase: '${mf.lakeStill.phrase} (demo)',
+        isDemo: true,
+        asOfEpochMs: mf.lakeStill.asOfEpochMs,
+      );
+    }
+    return _state.workSetSaved ? mf.lakeRippled : mf.lakeLearning;
+  }
 
   // ---- write ---------------------------------------------------------------
 

@@ -17,6 +17,7 @@ Never upgrade one. Changing a version is an Integration Owner decision.
 | WorkManager | 2.12.0 | `libs.versions.toml` `work` | dl.google.com/dl/android/maven2 |
 | kotlinx-coroutines | 1.11.0 | `libs.versions.toml` `coroutines` | repo1.maven.org |
 | kotlinx-serialization (json + plugin) | 1.11.0 (plugin = Kotlin version) | `libs.versions.toml` `serialization` | repo1.maven.org (stable only; 1.12.0-RC skipped) |
+| Robolectric (test-only) | 4.17 | `libs.versions.toml` `robolectric`, `testImplementation` | repo1.maven.org. **Deliberate exception to the "no other libraries" rule, approved at T1.4**: Room cannot open a database in a plain JVM test, and DOC 4 T1.4 requires in-memory Room tests under `testDebugUnitTest`. Never on the app's classpath. |
 | JUnit | 4.13.2 | `libs.versions.toml` `junit` | repo1.maven.org |
 | Pigeon | 29.0.6 | `pubspec.yaml` dev_dependencies | pub.dev API |
 | flutter_riverpod | 3.4.3 | `pubspec.yaml` | pub.dev API |
@@ -41,3 +42,4 @@ Never upgrade one. Changing a version is an Integration Owner decision.
 - The Flutter template sets `android.builtInKotlin=false` and `android.newDsl=false`; Flutter 3.47.6 warns that applying the Kotlin Gradle plugin in the app will fail in a future Flutter version. Left as generated. Do not migrate without an Integration Owner decision.
 - The template's `ndkVersion = flutter.ndkVersion` makes the first build download an NDK (about 1 GB). Left as generated.
 - Gradle build output is redirected by the template to `<repo>/build/`.
+- WorkManager 2.12.0's library manifest adds `FOREGROUND_SERVICE`, `WAKE_LOCK`, `ACCESS_NETWORK_STATE`, `RECEIVE_BOOT_COMPLETED` and a `SystemForegroundService` declaration to the merge. T1.3 removes `FOREGROUND_SERVICE` and the service (DOC 2 §2.6.1: no foreground service). The other three remain, because WorkManager reschedules after reboot and takes wake locks while a job runs. Consequence for T1.7: do not use expedited work on Android 10-11 (it falls back to a foreground service); use a plain one-time request for the on-open job.
