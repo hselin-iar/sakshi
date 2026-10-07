@@ -79,11 +79,10 @@ object SuggestionSelector {
     }
 
     private fun isRecent(c: Candidate, ctx: SuggestionContext): Boolean {
-        val lastVerdict = ctx.experiments.filter { it.kind == c.kind && it.subject == c.subject }
-            .maxByOrNull { it.startedAt.value }?.verdict
-        if (lastVerdict == Verdict.NO_CHANGE) return true // retired permanently once judged NO_CHANGE
-
         val state = ctx.suggestionStates.firstOrNull { it.kind == c.kind && it.subject == c.subject } ?: return false
+        // JudgeExperiments sets retiredUntil: 8 weeks after NO_CHANGE, 4 weeks after TOO_LITTLE or UNCLEAR (T2.13). Until then the
+        // kind stays quiet. (T2.12 retired a NO_CHANGE kind for good, which DOC 3 does not say.)
+        if (state.retiredUntil?.let { it.value > ctx.asOf.value } == true) return true
         val shownWeek = state.shownInWeek ?: return false
         val currentWeekStart = ctx.week?.weekStart ?: return false
         val weeksSince = (currentWeekStart.studyDay.epochDay - shownWeek.studyDay.epochDay) / 7

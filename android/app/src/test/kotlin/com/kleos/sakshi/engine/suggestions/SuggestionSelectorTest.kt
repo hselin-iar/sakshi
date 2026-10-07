@@ -183,4 +183,26 @@ class SuggestionSelectorTest {
         val ctx = baseCtx()
         assertEquals(SuggestionSelector.select(ctx, candidates), SuggestionSelector.select(ctx, candidates))
     }
+    // ---- T2.13: the retirement JudgeExperiments writes ----
+
+    private fun stateOf(kind: SuggestionKind, subject: Pkg?, retiredUntil: EpochMs?) =
+        SuggestionState(kind, subject, null, null, null, null, retiredUntil, "judged")
+
+    @Test fun `a kind retired by a judged experiment is RECENT until the retirement ends`() {
+        val pkgX = Pkg("com.x")
+        val c = candidate(SuggestionKind.S2, 0.5, pkgX)
+        val retired = baseCtx(suggestionStates = listOf(stateOf(SuggestionKind.S2, pkgX, retiredUntil = EpochMs(1))))   // asOf is 0: still retired
+        val blocked = SuggestionSelector.select(retired, listOf(c))
+        assertNull(blocked.task); assertEquals(SilenceReason.RECENT, blocked.reason)
+
+        val over = baseCtx(suggestionStates = listOf(stateOf(SuggestionKind.S2, pkgX, retiredUntil = EpochMs(0))))      // ended exactly now
+        assertEquals(c, SuggestionSelector.select(over, listOf(c)).task)
+    }
+
+    @Test fun `retirement is per kind and subject`() {
+        val pkgX = Pkg("com.x"); val pkgY = Pkg("com.y")
+        val ctx = baseCtx(suggestionStates = listOf(stateOf(SuggestionKind.S2, pkgX, retiredUntil = EpochMs(1))))
+        assertEquals(SuggestionKind.S2, SuggestionSelector.select(ctx, listOf(candidate(SuggestionKind.S2, 0.5, pkgY))).task?.kind)
+    }
 }
+
