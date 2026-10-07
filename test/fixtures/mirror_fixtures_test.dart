@@ -267,7 +267,7 @@ void main() {
   // ── Copy-rule smoke check on all headlines and lines ─────────────────────
 
   group('copy rules smoke', () {
-    final _forbidden = RegExp(
+    final forbiddenPattern = RegExp(
       r'\b(focused|distracted|distraction|wasted|waste|failed|failure|'
       r'streak|lazy|addict\w*|ruin\w*|'
       r'lost (your )?(focus|concentration)|'
@@ -275,7 +275,7 @@ void main() {
       caseSensitive: false,
     );
 
-    List<String> _allStrings(MirrorDto m) {
+    List<String> allStrings(MirrorDto m) {
       return [
         m.headline,
         ...m.dataLines,
@@ -307,8 +307,8 @@ void main() {
       'demoAarav': demoAarav,
     }.entries) {
       test('${entry.key}: no forbidden words', () {
-        for (final s in _allStrings(entry.value)) {
-          expect(_forbidden.hasMatch(s), isFalse,
+        for (final s in allStrings(entry.value)) {
+          expect(forbiddenPattern.hasMatch(s), isFalse,
               reason: 'Forbidden word in ${entry.key}: "$s"');
           expect(s.contains('!'), isFalse,
               reason: 'Exclamation mark in ${entry.key}: "$s"');

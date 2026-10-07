@@ -163,11 +163,14 @@ class _WindowRow extends StatelessWidget {
 
     final timeRange = '${_formatEpoch(window.startEpochMs)}–${_formatEpoch(window.endEpochMs)}';
 
+    final stretchMin = window.stretchMin?.round();
+    final returnMin = window.returnMin?.round();
+
     final details = <String>[
       '${window.stays} stays',
-      if (window.stretchMin != null) '${window.stretchMin!.round()}m stretch',
-      if (window.returnMin != null) '${window.returnMin!.round()}m return',
-      if (window.shape != null) window.shape!,
+      if (stretchMin != null) '${stretchMin}m stretch',
+      if (returnMin != null) '${returnMin}m return',
+      if (window.shape != null) window.shape ?? '',
     ];
 
     return Container(

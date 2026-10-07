@@ -35,11 +35,11 @@ void main() {
 
     testWidgets('paints three distinct visual states: still, rippled, choppy', (tester) async {
       // Test still painter directly
-      final stillPainter = LakePainter(state: LakeStateDto.still);
-      final learningPainter = LakePainter(state: LakeStateDto.learning);
-      final noDataPainter = LakePainter(state: LakeStateDto.noData);
-      final rippledPainter = LakePainter(state: LakeStateDto.rippled);
-      final choppyPainter = LakePainter(state: LakeStateDto.choppy);
+      const stillPainter = LakePainter(state: LakeStateDto.still);
+      const learningPainter = LakePainter(state: LakeStateDto.learning);
+      const noDataPainter = LakePainter(state: LakeStateDto.noData);
+      const rippledPainter = LakePainter(state: LakeStateDto.rippled);
+      const choppyPainter = LakePainter(state: LakeStateDto.choppy);
 
       expect(stillPainter.state, LakeStateDto.still);
       expect(learningPainter.state, LakeStateDto.learning);
