@@ -110,7 +110,7 @@ class LakeWidgetTest {
 
     @Test fun theWidgetDeclaresALabelADescriptionAndAPreview() {
         val info = context.packageManager.getReceiverInfo(android.content.ComponentName(context, LakeWidget::class.java), android.content.pm.PackageManager.GET_META_DATA)
-        assertEquals("Sakshi: The Lake", info.loadLabel(context.packageManager).toString())
+        assertEquals("साक्षी · The Lake", info.loadLabel(context.packageManager).toString())
         // the preview layout inflates on its own, with its sample phrase
         val preview = android.view.LayoutInflater.from(context).inflate(R.layout.lake_widget_preview, android.widget.FrameLayout(context), false)
         assertNotNull(preview)

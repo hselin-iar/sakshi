@@ -27,8 +27,8 @@ class LakePainter extends CustomPainter {
     final w = size.width;
     final h = size.height;
 
-    final primary = primaryColor ?? const Color(0xFF00796B);
-    final secondary = secondaryColor ?? const Color(0xFF26A69A);
+    final primary = primaryColor ?? const Color(0xFF7A2B2E);
+    final secondary = secondaryColor ?? const Color(0xFFD98F3A);
 
     final bgPaint = Paint()
       ..color = primary.withValues(alpha: 0.08)

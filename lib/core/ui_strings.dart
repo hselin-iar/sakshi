@@ -11,6 +11,9 @@
 // First screen (four lines — DOC 1 §1.4.1)
 // ---------------------------------------------------------------------------
 
+const firstScreenTagline =
+    'Do not fight your mind. Watch it, train it, then put the app down.';
+
 const firstScreenLine1 =
     'Sakshi reads what is already on your phone — which apps are open and when.';
 
@@ -144,7 +147,8 @@ const homeWorkSetBody = 'Change the apps that count as work.';
 const homeStudyHoursTitle = 'Study hours';
 const homeStudyHoursBody = 'Optional. Tell Sakshi when you usually study.';
 const homeNotifTitle = 'Notification access';
-const homeNotifBody = 'Optional. Lets Sakshi note when an app pings, never the words.';
+const homeNotifBody =
+    'Optional. Lets Sakshi note when an app pings, never the words.';
 const homeBatteryTitle = 'Keep Sakshi reading';
 const homeBatteryBody = 'A quick look at your phone\'s battery settings.';
 const homeMirrorTitle = 'Your Mirror';
@@ -156,9 +160,10 @@ const homeDemoTitle = 'Time Machine';
 const homeDemoBody = 'Try Sakshi on made-up history.';
 const homeSettingsTitle = 'Settings';
 const homeWidgetTitle = 'Add the Lake to your home screen';
-const homeWidgetBody = 'Still water, ripples or waves: how your last study window went, in one glance.';
+const homeWidgetBody =
+    'Still water, ripples or waves: how your last study window went, in one glance.';
 const homeWidgetByHand =
-    'Your launcher cannot add it from here. Touch and hold an empty spot on your home screen, tap Widgets, and find Sakshi: The Lake.';
+    'Your launcher cannot add it from here. Touch and hold an empty spot on your home screen, tap Widgets, and find साक्षी · The Lake.';
 const homeErrorRetry = 'Try again';
 
 // ---------------------------------------------------------------------------

@@ -4,7 +4,7 @@
     android:id="@+id/lake_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CC1B2B34"
+    android:background="#E6653618"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="8dp">
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textColor="#F2F6F8"
+            android:textColor="#FDF3E1"
             android:textSize="15sp" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textColor="#B9C6CD"
+            android:textColor="#E9B873"
             android:textSize="11sp" />
     </LinearLayout>
 </LinearLayout>

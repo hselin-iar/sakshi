@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lake_widget_label">Sakshi: The Lake</string>
+    <string name="lake_widget_label">साक्षी · The Lake</string>
     <string name="lake_widget_description">Still water, ripples or waves: how your last study window went, in one glance. No numbers.</string>
 </resources>

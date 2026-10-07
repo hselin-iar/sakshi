@@ -6,28 +6,28 @@
     <!-- Lake Still: calm, horizontal water surface with serene lines -->
     <!-- Base water area -->
     <path
-        android:fillColor="#E0F2F1"
+        android:fillColor="#8A5527"
         android:pathData="M0,45 L200,45 L200,100 L0,100 Z" />
     <!-- Calm surface line -->
     <path
-        android:strokeColor="#00796B"
+        android:strokeColor="#F6D08A"
         android:strokeWidth="1.5"
         android:pathData="M10,48 L190,48" />
     <!-- Subtle still water ripples -->
     <path
-        android:strokeColor="#26A69A"
+        android:strokeColor="#E9B873"
         android:strokeWidth="1.2"
         android:pathData="M25,58 L175,58" />
     <path
-        android:strokeColor="#4DB6AC"
+        android:strokeColor="#D98F3A"
         android:strokeWidth="1.0"
         android:pathData="M40,68 L160,68" />
     <path
-        android:strokeColor="#80CBC4"
+        android:strokeColor="#C27B2E"
         android:strokeWidth="0.8"
         android:pathData="M65,78 L135,78" />
     <path
-        android:strokeColor="#B2DFDB"
+        android:strokeColor="#A8641F"
         android:strokeWidth="0.8"
         android:pathData="M80,88 L120,88" />
 </vector>

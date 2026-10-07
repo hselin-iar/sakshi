@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/palette.dart';
 import '../../core/providers.dart';
 import '../../core/ui_strings.dart';
+import '../../core/widgets/wordmark.dart';
 import '../../host/host_client.dart';
 import '../demo/demo_launch.dart';
 import '../lake/lake_screen.dart';
@@ -87,48 +89,72 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final setupAsync = ref.watch(setupStateProvider);
-    final textTheme = Theme.of(context).textTheme;
-    final colors = Theme.of(context).colorScheme;
+    final top = MediaQuery.paddingOf(context).top;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(titleHome),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            tooltip: homeSettingsTitle,
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => context.push('/settings'),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _sync,
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 8, 4, 16),
+      body: RefreshIndicator(
+        edgeOffset: top + 24,
+        onRefresh: _sync,
+        child: ListView(
+          padding: const EdgeInsets.only(bottom: 32),
+          children: [
+            // The poster as a header: brown ground, the gold circle, the Devanagari name, and the greeting.
+            PosterGround(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, top + 12, 8, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(_greeting(), style: textTheme.headlineMedium),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(child: Wordmark(size: 46, latin: true)),
+                        IconButton(
+                          tooltip: homeSettingsTitle,
+                          icon: const Icon(
+                            Icons.settings_outlined,
+                            color: SakshiColors.deepBrown,
+                          ),
+                          onPressed: () => context.push('/settings'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 28),
+                    Text(
+                      _greeting(),
+                      style: const TextStyle(
+                        fontFamily: 'serif',
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: SakshiColors.cream,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       _syncing ? homeSyncing : (_syncMessage ?? homeSubtitle),
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: colors.onSurfaceVariant,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: SakshiColors.paleGold,
                       ),
                     ),
                     if (_syncing) ...[
-                      const SizedBox(height: 12),
-                      const LinearProgressIndicator(),
+                      const SizedBox(height: 14),
+                      const ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        child: LinearProgressIndicator(
+                          minHeight: 3,
+                          color: SakshiColors.gold,
+                          backgroundColor: Color(0x33FDF3E1),
+                        ),
+                      ),
                     ],
                   ],
                 ),
               ),
-              setupAsync.when(
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+              child: setupAsync.when(
                 loading: () => const Padding(
                   padding: EdgeInsets.all(32),
                   child: Center(child: CircularProgressIndicator()),
@@ -141,8 +167,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
                 data: (s) => _Body(setup: s, onSync: _sync, syncing: _syncing),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -278,7 +304,9 @@ class _Body extends ConsumerWidget {
               added = await ref.read(hostClientProvider).requestLakeWidget();
             } catch (_) {}
             if (!added) {
-              messenger.showSnackBar(const SnackBar(content: Text(homeWidgetByHand)));
+              messenger.showSnackBar(
+                const SnackBar(content: Text(homeWidgetByHand)),
+              );
             }
           },
         ),
