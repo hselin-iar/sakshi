@@ -118,3 +118,13 @@ enum class AppClass { IN_SET, DEPENDS, NEUTRAL, OFF_SET }         // four classe
 
 // ---- T2.9: Lapse (engine-internal; not part of LC-1/LC-2) ----
 data class LapseInfo(val days: Int, val endedAt: StudyDay)
+
+// ---- T2.12: Suggestions Engine (engine-internal; not part of LC-1/LC-2) ----
+enum class ActionType {
+    OPEN_NOTIFICATION_SETTINGS, MOVE_ICON, PHONE_FACE_DOWN, FIRST_THING_HARDEST, LEAVE_PAGE_OPEN,
+    PHONE_IN_OTHER_ROOM, ADD_TO_WORK_SET, SCREEN_OFF_BY_0030, PLAN_SHORT_PUT_DOWN, NONE,
+}
+data class Candidate(
+    val kind: SuggestionKind, val subject: Pkg?, val impactShare: Double,
+    val target: TargetMetric?, val args: Map<String, String>, val action: ActionType,
+)
