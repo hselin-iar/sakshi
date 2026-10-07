@@ -6,20 +6,29 @@ import 'package:sakshi/host/pigeon_host_client.dart';
 // PigeonHostClient -> generated SakshiHostApi -> channel -> reply (success, or a FlutterError as [code, message, details]).
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  final messenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   const codec = SakshiHostApi.pigeonChannelCodec;
-  String channel(String method) => 'dev.flutter.pigeon.sakshi.SakshiHostApi.$method';
+  String channel(String method) =>
+      'dev.flutter.pigeon.sakshi.SakshiHostApi.$method';
 
   void reply(String method, Object? Function(List<Object?> args) handler) {
     messenger.setMockMessageHandler(channel(method), (message) async {
       // Methods with no arguments send a null message rather than an empty list.
-      final args = (codec.decodeMessage(message) as List<Object?>?) ?? <Object?>[];
+      final args =
+          (codec.decodeMessage(message) as List<Object?>?) ?? <Object?>[];
       return codec.encodeMessage(handler(args));
     });
   }
 
   tearDown(() {
-    for (final m in ['setWeeklyNote', 'pause', 'tapTryThis', 'getLake', 'startDemo']) {
+    for (final m in [
+      'setWeeklyNote',
+      'pause',
+      'tapTryThis',
+      'getLake',
+      'startDemo',
+    ]) {
       messenger.setMockMessageHandler(channel(m), null);
     }
   });
@@ -31,7 +40,12 @@ void main() {
   });
 
   test('a DTO comes back field for field, with null staying null', () async {
-    reply('getLake', (_) => <Object?>[LakeDto(state: LakeStateDto.noData, phrase: '', isDemo: false)]);
+    reply(
+      'getLake',
+      (_) => <Object?>[
+        LakeDto(state: LakeStateDto.noData, phrase: '', isDemo: false),
+      ],
+    );
     final lake = await PigeonHostClient().getLake();
     expect(lake.state, LakeStateDto.noData);
     expect(lake.asOfEpochMs, isNull);
@@ -40,14 +54,21 @@ void main() {
 
   test('every error code from the native side becomes a HostException with its message', () async {
     for (final code in hostErrorCodes) {
-      reply('pause', (_) => <Object?>[code, 'message for $code', 'developer detail']);
+      reply(
+        'pause',
+        (_) => <Object?>[code, 'message for $code', 'developer detail'],
+      );
       try {
         await PigeonHostClient().pause(true);
         fail('expected a HostException for $code');
       } on HostException catch (e) {
         expect(e.code, code);
         expect(e.userMessage, 'message for $code');
-        expect(e.toString(), isNot(contains('developer detail')), reason: 'the dev detail is never surfaced');
+        expect(
+          e.toString(),
+          isNot(contains('developer detail')),
+          reason: 'the dev detail is never surfaced',
+        );
       }
     }
   });

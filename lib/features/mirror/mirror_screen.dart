@@ -11,14 +11,16 @@ import 'package:go_router/go_router.dart';
 import 'package:sakshi/features/mirror/mirror_content.dart';
 import 'package:sakshi/gen/sakshi_api.g.dart';
 
-import '../../core/providers.dart' show noAutoRetry;
+import '../../host/host_client.dart';
+import '../../core/providers.dart' show hostClientProvider, noAutoRetry;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Providers
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// The Pigeon API client instance, overrideable in tests.
-final sakshiHostApiProvider = Provider<SakshiHostApi>((ref) => SakshiHostApi());
+/// The host every Track 4 screen talks to: Track 3's HostClient (the real Pigeon host on a phone, FakeHost in a browser or a test).
+/// It was a raw SakshiHostApi, which skipped hostClientProvider and so never reached FakeHost.
+final sakshiHostApiProvider = Provider<HostClient>((ref) => ref.watch(hostClientProvider));
 
 /// The currently selected week start epoch ms (null = most recent completed week).
 final selectedWeekProvider = StateProvider<int?>((ref) => null);

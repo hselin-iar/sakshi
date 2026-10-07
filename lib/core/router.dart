@@ -7,6 +7,7 @@ import '../features/mirror/mirror_routes.dart';
 import '../features/today/today_routes.dart';
 import '../features/shelf/shelf_routes.dart';
 import '../features/demo/demo_routes.dart';
+import '../features/lake/lake_routes.dart';
 
 // ---------------------------------------------------------------------------
 // Application router.
@@ -24,6 +25,7 @@ final appRouter = GoRouter(
     ...whatISeeRoutes,
     ...settingsRoutes,
     ...mirrorRoutes,
+    ...lakeRoutes,
     ...todayRoutes,
     ...shelfRoutes,
     ...demoRoutes,

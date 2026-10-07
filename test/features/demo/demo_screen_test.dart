@@ -15,10 +15,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sakshi/features/demo/demo_banner.dart';
 import 'package:sakshi/features/demo/demo_screen.dart';
 import 'package:sakshi/features/mirror/mirror_screen.dart';
-import 'package:sakshi/gen/sakshi_api.g.dart';
+import 'package:sakshi/host/host_client.dart';
 import 'package:sakshi/host/fixtures/mirror_fixtures.dart';
 
-class MockSakshiHostApi extends Fake implements SakshiHostApi {
+class MockSakshiHostApi extends Fake implements HostClient {
   final List<String> startDemoCalls = [];
   final List<int> setDemoAsOfCalls = [];
   bool stopDemoCalled = false;
@@ -60,58 +60,59 @@ void main() {
         demoPersonaProvider.overrideWith((ref) => 'aarav'),
         demoDayIndexProvider.overrideWith((ref) => 31),
       ],
-      child: const MaterialApp(
-        home: DemoScreen(),
-      ),
+      child: const MaterialApp(home: DemoScreen()),
     );
   }
 
   group('DemoScreen & DemoBanner', () {
-    testWidgets('DemoBanner renders "Demo data" text and is permanent', (tester) async {
+    testWidgets('DemoBanner renders "Demo data" text and is permanent', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DemoBanner(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DemoBanner())),
       );
 
       expect(find.byKey(const Key('demo_banner')), findsOneWidget);
       expect(find.text('Demo data'), findsOneWidget);
     });
 
-    testWidgets('initializes demo on load with Aarav persona at day 31 (Week 4)', (tester) async {
-      await tester.pumpWidget(buildTestableDemoScreen());
-      await tester.pumpAndSettle();
+    testWidgets(
+      'initializes demo on load with Aarav persona at day 31 (Week 4)',
+      (tester) async {
+        await tester.pumpWidget(buildTestableDemoScreen());
+        await tester.pumpAndSettle();
 
-      // Permanent demo banner visible
-      expect(find.byKey(const Key('demo_banner')), findsOneWidget);
-      expect(find.text('Demo data'), findsOneWidget);
+        // Permanent demo banner visible
+        expect(find.byKey(const Key('demo_banner')), findsOneWidget);
+        expect(find.text('Demo data'), findsOneWidget);
 
-      // Verify initial host API calls
-      expect(mockApi.startDemoCalls, contains('aarav'));
-      expect(mockApi.setDemoAsOfCalls, contains(31));
+        // Verify initial host API calls
+        expect(mockApi.startDemoCalls, contains('aarav'));
+        expect(mockApi.setDemoAsOfCalls, contains(31));
 
-      // Day label shows Day 31
-      expect(find.byKey(const Key('slider_day_label')), findsOneWidget);
-      expect(find.text('Day 31'), findsOneWidget);
+        // Day label shows Day 31
+        expect(find.byKey(const Key('slider_day_label')), findsOneWidget);
+        expect(find.text('Day 31'), findsOneWidget);
 
-      // Persona chips exist
-      expect(find.byKey(const Key('persona_chip_aarav')), findsOneWidget);
-      expect(find.byKey(const Key('persona_chip_meera')), findsOneWidget);
-      expect(find.byKey(const Key('persona_chip_rohan')), findsOneWidget);
+        // Persona chips exist
+        expect(find.byKey(const Key('persona_chip_aarav')), findsOneWidget);
+        expect(find.byKey(const Key('persona_chip_meera')), findsOneWidget);
+        expect(find.byKey(const Key('persona_chip_rohan')), findsOneWidget);
 
-      // Preset chips exist
-      expect(find.byKey(const Key('preset_chip_3')), findsOneWidget);
-      expect(find.byKey(const Key('preset_chip_31')), findsOneWidget);
-      expect(find.byKey(const Key('preset_chip_59')), findsOneWidget);
+        // Preset chips exist
+        expect(find.byKey(const Key('preset_chip_3')), findsOneWidget);
+        expect(find.byKey(const Key('preset_chip_31')), findsOneWidget);
+        expect(find.byKey(const Key('preset_chip_59')), findsOneWidget);
 
-      // Mirror content rendered
-      expect(find.byKey(const Key('mirror_headline')), findsOneWidget);
-      expect(find.text(demoAarav.headline), findsOneWidget);
-    });
+        // Mirror content rendered
+        expect(find.byKey(const Key('mirror_headline')), findsOneWidget);
+        expect(find.text(demoAarav.headline), findsOneWidget);
+      },
+    );
 
-    testWidgets('switching persona triggers startDemo with new persona', (tester) async {
+    testWidgets('switching persona triggers startDemo with new persona', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestableDemoScreen());
       await tester.pumpAndSettle();
 
@@ -134,7 +135,9 @@ void main() {
       expect(mockApi.startDemoCalls.last, equals('aarav'));
     });
 
-    testWidgets('tapping presets changes day index and calls setDemoAsOf', (tester) async {
+    testWidgets('tapping presets changes day index and calls setDemoAsOf', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestableDemoScreen());
       await tester.pumpAndSettle();
 
@@ -160,7 +163,9 @@ void main() {
       expect(find.text('Day 31'), findsOneWidget);
     });
 
-    testWidgets('tapping "Stop demo" invokes stopDemo on host API', (tester) async {
+    testWidgets('tapping "Stop demo" invokes stopDemo on host API', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildTestableDemoScreen());
       await tester.pumpAndSettle();
 

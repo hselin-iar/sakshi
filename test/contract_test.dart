@@ -8,6 +8,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sakshi/gen/sakshi_api.g.dart';
 import 'package:sakshi/host/fixtures/mirror_fixtures.dart';
@@ -43,13 +44,21 @@ void main() {
 
   Map<String, dynamic> readJsonFile(String filename) {
     final file = File('$fixturesDir/$filename');
-    expect(file.existsSync(), isTrue, reason: 'Missing fixture file: ${file.path}');
+    expect(
+      file.existsSync(),
+      isTrue,
+      reason: 'Missing fixture file: ${file.path}',
+    );
     return jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
   }
 
   List<dynamic> readJsonArrayFile(String filename) {
     final file = File('$fixturesDir/$filename');
-    expect(file.existsSync(), isTrue, reason: 'Missing fixture file: ${file.path}');
+    expect(
+      file.existsSync(),
+      isTrue,
+      reason: 'Missing fixture file: ${file.path}',
+    );
     return jsonDecode(file.readAsStringSync()) as List<dynamic>;
   }
 
@@ -74,29 +83,32 @@ void main() {
     ];
 
     for (final name in mirrorFixtureNames) {
-      test('decodes $name.json into valid MirrorDto with round-trip equality', () {
-        final jsonMap = readJsonFile('$name.json');
-        final dto = mirrorDtoFromJson(jsonMap);
+      test(
+        'decodes $name.json into valid MirrorDto with round-trip equality',
+        () {
+          final jsonMap = readJsonFile('$name.json');
+          final dto = mirrorDtoFromJson(jsonMap);
 
-        expect(dto, isA<MirrorDto>());
-        expect(dto.weekLabel, isNotEmpty);
-        expect(dto.headline, isNotEmpty);
-        expect(dto.dataState, isA<DataStateDto>());
-        expect(dto.dataFlags, isA<List<DataFlagDto>>());
-        expect(dto.dataLines, isA<List<String>>());
-        expect(dto.patterns, isA<List<PatternLineDto>>());
-        expect(dto.goalTap, isA<GoalTapDto>());
+          expect(dto, isA<MirrorDto>());
+          expect(dto.weekLabel, isNotEmpty);
+          expect(dto.headline, isNotEmpty);
+          expect(dto.dataState, isA<DataStateDto>());
+          expect(dto.dataFlags, isA<List<DataFlagDto>>());
+          expect(dto.dataLines, isA<List<String>>());
+          expect(dto.patterns, isA<List<PatternLineDto>>());
+          expect(dto.goalTap, isA<GoalTapDto>());
 
-        // Round-trip test
-        final reEncoded = mirrorDtoToJson(dto);
-        final reDecoded = mirrorDtoFromJson(reEncoded);
-        expect(reDecoded.headline, equals(dto.headline));
-        expect(reDecoded.isDemo, equals(dto.isDemo));
-        expect(reDecoded.gentle, equals(dto.gentle));
-        expect(reDecoded.provisional, equals(dto.provisional));
-        expect(reDecoded.dataState, equals(dto.dataState));
-        expect(reDecoded.reanchorOffered, equals(dto.reanchorOffered));
-      });
+          // Round-trip test
+          final reEncoded = mirrorDtoToJson(dto);
+          final reDecoded = mirrorDtoFromJson(reEncoded);
+          expect(reDecoded.headline, equals(dto.headline));
+          expect(reDecoded.isDemo, equals(dto.isDemo));
+          expect(reDecoded.gentle, equals(dto.gentle));
+          expect(reDecoded.provisional, equals(dto.provisional));
+          expect(reDecoded.dataState, equals(dto.dataState));
+          expect(reDecoded.reanchorOffered, equals(dto.reanchorOffered));
+        },
+      );
     }
 
     test('firstLook fixture contract holds', () {
